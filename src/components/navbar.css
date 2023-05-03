@@ -1,0 +1,10 @@
+.active {
+	color: red;
+	font-weight: bold;
+}
+
+ul {
+	list-style-type: none;
+	display: flex;
+	gap: 1em;
+}
