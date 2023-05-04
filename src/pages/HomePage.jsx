@@ -1,7 +1,10 @@
+import Typography from '@mui/material/Typography';
 function HomePage() {
 	return (
 		<>
-			<h1 style={{ textAlign: 'center' }}> Oh My Dog!</h1>
+			<Typography component="h1" variant="h3" sx={{ textAlign: 'center' }}>
+				Oh My Dog!
+			</Typography>
 		</>
 	);
 }
