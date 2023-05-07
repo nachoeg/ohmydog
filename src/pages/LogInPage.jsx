@@ -7,6 +7,7 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import Copyright from '../components/Copyright';
 import { useNavigate } from 'react-router-dom';
+import backend from '../data/url.json';
 
 export default function LogInPage() {
 	const navigate = useNavigate();
@@ -22,7 +23,27 @@ export default function LogInPage() {
 			email: data.get('email'),
 			password: data.get('password'),
 		});
-		if (estaAutenticado) navigate('/');
+		// let url =
+		// 	backend.url + 'login?' + data.get('email') + '&' + data.get('password');
+		// fetch(url)
+		// 	.then((response) => response.json())
+		// 	.then((data) => {
+		// 		if (data.jwt != null) {
+		// 			localStorage.setItem('jwt', data.jwt);
+		// 			navigate('/');
+		// 		} else {
+		// 			alert('contraseña incorrecta');
+		// 		}
+		// 	})
+		// 	.catch((error) => {
+		// 		console.error('HUBO UN ERROR: ' + error);
+		// 	});
+		if (true) {
+			localStorage.setItem('jwt', '1234');
+			location.replace('/');
+		} else {
+			alert('Datos incorrectos');
+		}
 	};
 
 	return (

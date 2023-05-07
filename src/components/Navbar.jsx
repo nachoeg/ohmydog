@@ -1,4 +1,3 @@
-import * as React from 'react';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
@@ -16,36 +15,37 @@ import Logotipo from './Logotipo';
 import Switch from '@mui/material/Switch';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import FormGroup from '@mui/material/FormGroup';
-
-const pages = [
-	{ nombre: 'Turno', url: '/turnos' },
-	{ nombre: 'Adopcion', url: '/adopcion' },
-	{ nombre: 'Perdidos', url: '/perdidos' },
-	{ nombre: 'Campañas', url: '/campañas' },
-	{ nombre: 'Cruza', url: '/cruza' },
-	{ nombre: 'Usuarios', url: '/usuarios' },
-	{ nombre: 'Servicios externos', url: '/servicios' },
-];
-const settings = [
-	{ nombre: 'Perfil', url: '/perfil' },
-	{ nombre: 'Mis perros', url: '/misperros' },
-	{ nombre: 'Registrar usuario', url: '/signup' },
-	{ nombre: 'Iniciar sesión', url: '/login' },
-	{ nombre: 'Cerrar sesión', url: '/logout' },
-];
+import LoginButton from './LoginButton';
+import LogoutButton from './LogoutButton';
+import { pages, pagesAuth, settings } from '../data/pages';
+import { useState } from 'react';
+import { useEffect } from 'react';
 
 function ResponsiveAppBar() {
-	const [auth, setAuth] = React.useState(true);
-	const [anchorElNav, setAnchorElNav] = React.useState(null);
-	const [anchorElUser, setAnchorElUser] = React.useState(null);
+	const [auth, setAuth] = useState(localStorage.getItem('jwt') != null);
+	const [routes, setRoutes] = useState([]);
+	const [anchorElNav, setAnchorElNav] = useState(null);
+	const [anchorElUser, setAnchorElUser] = useState(null);
 
-	const handleChange = (event) => {
-		setAuth(event.target.checked);
-	};
+	// useEffect(() => {
+	// 	if (localStorage.getItem('jwt') != null) {
+	// 		setAuth(true);
+	// 	} else {
+	// 		setAuth(false);
+	// 	}
+	// 	//chequear si existe auth en el local storage
+	// 	// y setear el estado auth si esta logueado o no
+	// }, []);
+
+	useEffect(() => {
+		if (auth) setRoutes(pagesAuth);
+		else setRoutes(pages);
+	}, [auth]);
 
 	const handleOpenNavMenu = (event) => {
 		setAnchorElNav(event.currentTarget);
 	};
+
 	const handleOpenUserMenu = (event) => {
 		setAnchorElUser(event.currentTarget);
 	};
@@ -97,7 +97,7 @@ function ResponsiveAppBar() {
 									display: { xs: 'block', md: 'none' },
 								}}
 							>
-								{pages.map((page) => (
+								{routes.map((page) => (
 									<NavLink
 										key={page.nombre}
 										to={page.url}
@@ -114,7 +114,7 @@ function ResponsiveAppBar() {
 							<Logotipo />
 						</Box>
 						<Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
-							{pages.map((page) => (
+							{routes.map((page) => (
 								<NavLink
 									to={page.url}
 									key={page.nombre}
@@ -129,7 +129,7 @@ function ResponsiveAppBar() {
 								</NavLink>
 							))}
 						</Box>
-						{auth && (
+						{auth ? (
 							<Box sx={{ flexGrow: 0 }}>
 								<Tooltip title="Abrir preferencias">
 									<IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
@@ -166,21 +166,27 @@ function ResponsiveAppBar() {
 											</MenuItem>
 										</NavLink>
 									))}
+									<MenuItem
+										onClick={() => {
+											handleCloseUserMenu;
+											localStorage.clear('jwt');
+											location.replace('/');
+										}}
+									>
+										<Typography>{'Cerrar Sesión'}</Typography>
+									</MenuItem>
+									{/* <LogoutButton
+										onClick={() => {
+											handleCloseUserMenu;
+											localStorage.clear('jwt');
+											location.replace('/');
+										}}
+									/> */}
 								</Menu>
 							</Box>
+						) : (
+							<LoginButton />
 						)}
-						<FormGroup>
-							<FormControlLabel
-								control={
-									<Switch
-										checked={auth}
-										onChange={handleChange}
-										aria-label="login switch"
-									/>
-								}
-								label={auth ? 'Logout' : 'Login'}
-							/>
-						</FormGroup>
 					</Toolbar>
 				</Container>
 			</AppBar>
