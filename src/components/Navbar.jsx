@@ -17,9 +17,12 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import FormGroup from '@mui/material/FormGroup';
 import LoginButton from './LoginButton';
 import LogoutButton from './LogoutButton';
-import { pages, pagesAuth, settings } from '../data/pages';
+import { pages, pagesAuth } from '../data/pages';
 import { useState } from 'react';
 import { useEffect } from 'react';
+import AccountIcon from '@mui/icons-material/AccountCircle';
+import LogoutIcon from '@mui/icons-material/Logout';
+import PetsIcon from '@mui/icons-material/Pets';
 
 function ResponsiveAppBar() {
 	const [auth, setAuth] = useState(localStorage.getItem('jwt') != null);
@@ -152,20 +155,33 @@ function ResponsiveAppBar() {
 									open={Boolean(anchorElUser)}
 									onClose={handleCloseUserMenu}
 								>
-									{settings.map((setting) => (
-										<NavLink
-											key={setting.nombre}
-											to={setting.url}
-											style={{
-												textDecoration: 'none',
-												color: '#000',
-											}}
-										>
-											<MenuItem onClick={handleCloseUserMenu}>
-												<Typography>{setting.nombre}</Typography>
-											</MenuItem>
-										</NavLink>
-									))}
+									<NavLink
+										key={'Perfil'}
+										to={'/perfil'}
+										style={{
+											textDecoration: 'none',
+											color: '#000',
+										}}
+									>
+										<MenuItem onClick={handleCloseUserMenu}>
+											<AccountIcon sx={{ mr: '4px' }} />
+											<Typography>Perfil</Typography>
+										</MenuItem>
+									</NavLink>
+									<NavLink
+										key={'Mis perros'}
+										to={'/misperros'}
+										style={{
+											textDecoration: 'none',
+											color: '#000',
+										}}
+									>
+										<MenuItem onClick={handleCloseUserMenu}>
+											<PetsIcon sx={{ mr: '4px' }} />
+											<Typography>Mis perros</Typography>
+										</MenuItem>
+									</NavLink>
+
 									<MenuItem
 										onClick={() => {
 											handleCloseUserMenu;
@@ -173,6 +189,7 @@ function ResponsiveAppBar() {
 											location.replace('/');
 										}}
 									>
+										<LogoutIcon sx={{ mr: '4px' }} />
 										<Typography>{'Cerrar Sesión'}</Typography>
 									</MenuItem>
 									{/* <LogoutButton
