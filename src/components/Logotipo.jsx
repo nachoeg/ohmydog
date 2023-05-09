@@ -16,7 +16,11 @@ function Logotipo() {
 			}}
 		>
 			<Avatar
-				sx={{ mr: 1, alignSelf: 'center' }}
+				sx={{
+					display: { xs: 'none', md: 'block' },
+					mr: 1,
+					alignSelf: 'center',
+				}}
 				alt="Oh My Dog! logo"
 				src="/logo.png"
 			/>
