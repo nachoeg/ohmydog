@@ -7,11 +7,11 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import Copyright from '../components/Copyright';
 import { useNavigate } from 'react-router-dom';
-import backend from '../data/url.json';
+import { url as urlBackend } from '../data/url';
 
 export default function LogInPage() {
 	const navigate = useNavigate();
-	const estaAutenticado = true;
+	// const estaAutenticado = true;
 
 	// const [username, setUsername] = useState('');
 	// const [password, setPassword] = useState('');
@@ -19,31 +19,41 @@ export default function LogInPage() {
 	const handleSubmit = (event) => {
 		event.preventDefault();
 		const data = new FormData(event.currentTarget);
-		console.log({
-			email: data.get('email'),
-			password: data.get('password'),
-		});
-		// let url =
-		// 	backend.url + 'login?' + data.get('email') + '&' + data.get('password');
-		// fetch(url)
-		// 	.then((response) => response.json())
-		// 	.then((data) => {
-		// 		if (data.jwt != null) {
-		// 			localStorage.setItem('jwt', data.jwt);
-		// 			navigate('/');
-		// 		} else {
-		// 			alert('contraseña incorrecta');
-		// 		}
-		// 	})
-		// 	.catch((error) => {
-		// 		console.error('HUBO UN ERROR: ' + error);
-		// 	});
-		if (true) {
-			localStorage.setItem('jwt', '1234');
-			location.replace('/');
-		} else {
-			alert('Datos incorrectos');
-		}
+		const url = urlBackend + 'auth/login';
+		fetch(url, {
+			method: 'POST',
+			body: JSON.stringify({
+				email: data.get('email'),
+				password: data.get('password'),
+			}),
+		})
+			.then((response) => {
+				if (!response.ok) {
+					throw `Server error: [${response.status}] [${response.statusText}] [${response.url}]`;
+				}
+				return response.json();
+			})
+			.then((data) => {
+				if (data.jwt != null) {
+					localStorage.setItem('jwt', data.jwt);
+					navigate('/');
+				} else {
+					alert('contraseña incorrecta');
+				}
+			})
+			.catch((error) => {
+				console.error('Error en el fetch: ' + error);
+			});
+		// if (true) {
+		// 	localStorage.setItem('jwt', '1234');
+		// 	location.replace('/');
+		// } else {
+		// 	alert('Datos incorrectos');
+		// }
+		// console.log({
+		// 	email: data.get('email'),
+		// 	password: data.get('password'),
+		// });
 	};
 
 	return (
