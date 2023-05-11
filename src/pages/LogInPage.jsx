@@ -6,54 +6,41 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import Copyright from '../components/Copyright';
-import { useNavigate } from 'react-router-dom';
-import { url as urlBackend } from '../data/url';
+import { url } from '../data/url';
 
 export default function LogInPage() {
-	const navigate = useNavigate();
-	// const estaAutenticado = true;
-
-	// const [username, setUsername] = useState('');
-	// const [password, setPassword] = useState('');
-
 	const handleSubmit = (event) => {
 		event.preventDefault();
 		const data = new FormData(event.currentTarget);
-		const url = urlBackend + 'auth/login';
-		fetch(url, {
+		fetch(url + 'auth/login', {
 			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json',
+			},
+			mode: 'cors',
 			body: JSON.stringify({
 				email: data.get('email'),
 				password: data.get('password'),
 			}),
 		})
 			.then((response) => {
-				if (!response.ok) {
-					throw `Server error: [${response.status}] [${response.statusText}] [${response.url}]`;
+				console.log(response);
+				if (response.status == 401) {
+					alert('Datos incorrectos');
+					throw response.status;
 				}
 				return response.json();
 			})
 			.then((data) => {
-				if (data.jwt != null) {
-					localStorage.setItem('jwt', data.jwt);
-					navigate('/');
-				} else {
-					alert('contraseña incorrecta');
+				console.log(data);
+				if (data.token != null) {
+					localStorage.setItem('jwt', data.token);
+					location.replace('/');
 				}
 			})
 			.catch((error) => {
 				console.error('Error en el fetch: ' + error);
 			});
-		// if (true) {
-		// 	localStorage.setItem('jwt', '1234');
-		// 	location.replace('/');
-		// } else {
-		// 	alert('Datos incorrectos');
-		// }
-		// console.log({
-		// 	email: data.get('email'),
-		// 	password: data.get('password'),
-		// });
 	};
 
 	return (
