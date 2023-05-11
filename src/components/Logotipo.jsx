@@ -10,21 +10,23 @@ function Logotipo() {
 			underline="none"
 			sx={{
 				textDecoration: 'none',
-				mr: 2,
+				mr: { xs: 0, sm: 2 },
 				display: 'flex',
 				flexDirection: 'row',
 			}}
 		>
 			<Avatar
 				sx={{
-					display: { xs: 'none', md: 'block' },
-					mr: 1,
+					// display: { xs: 'none', md: 'block' },
+					mr: { xs: 0, sm: 1 },
 					alignSelf: 'center',
 				}}
 				alt="Oh My Dog! logo"
 				src="/logo.png"
 			/>
-			<Box sx={{ display: 'flex', flexDirection: 'column' }}>
+			<Box
+				sx={{ display: { xs: 'none', sm: 'flex' }, flexDirection: 'column' }}
+			>
 				<Typography
 					variant="h5"
 					noWrap
