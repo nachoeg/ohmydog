@@ -23,6 +23,7 @@ import { useEffect } from 'react';
 import AccountIcon from '@mui/icons-material/AccountCircle';
 import LogoutIcon from '@mui/icons-material/Logout';
 import PetsIcon from '@mui/icons-material/Pets';
+import { url } from '../data/url';
 
 function ResponsiveAppBar() {
 	const [auth, setAuth] = useState(localStorage.getItem('jwt') != null);
@@ -30,20 +31,27 @@ function ResponsiveAppBar() {
 	const [anchorElNav, setAnchorElNav] = useState(null);
 	const [anchorElUser, setAnchorElUser] = useState(null);
 
-	// useEffect(() => {
-	// 	if (localStorage.getItem('jwt') != null) {
-	// 		setAuth(true);
-	// 	} else {
-	// 		setAuth(false);
-	// 	}
-	// 	//chequear si existe auth en el local storage
-	// 	// y setear el estado auth si esta logueado o no
-	// }, []);
-
 	useEffect(() => {
 		if (auth) setRoutes(pagesAuth);
 		else setRoutes(pages);
 	}, [auth]);
+
+	const handleLogout = () => {
+		fetch(url + 'auth/logout', {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json',
+			},
+			body: { token: localStorage.getItem('jwt') },
+		})
+			.then(() => {
+				localStorage.clear('jwt');
+				location.replace('/login');
+			})
+			.catch((error) => {
+				console.error('Error en el fetch: ' + error);
+			});
+	};
 
 	const handleOpenNavMenu = (event) => {
 		setAnchorElNav(event.currentTarget);
@@ -66,8 +74,6 @@ function ResponsiveAppBar() {
 			<AppBar sx={{ backgroundColor: 'white' }} position="static">
 				<Container maxWidth="xl">
 					<Toolbar disableGutters>
-						{/* <AdbIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }} /> */}
-
 						<Box sx={{ display: { xs: 'none', md: 'flex' } }}>
 							<Logotipo />
 						</Box>
@@ -184,21 +190,13 @@ function ResponsiveAppBar() {
 
 									<MenuItem
 										onClick={() => {
-											handleCloseUserMenu;
-											localStorage.clear('jwt');
-											location.replace('/');
+											handleCloseUserMenu();
+											handleLogout();
 										}}
 									>
 										<LogoutIcon sx={{ mr: '4px' }} />
 										<Typography>{'Cerrar Sesión'}</Typography>
 									</MenuItem>
-									{/* <LogoutButton
-										onClick={() => {
-											handleCloseUserMenu;
-											localStorage.clear('jwt');
-											location.replace('/');
-										}}
-									/> */}
 								</Menu>
 							</Box>
 						) : (
