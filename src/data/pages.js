@@ -6,9 +6,10 @@ const pages = [
 	{ nombre: 'Servicios externos', url: '/servicios' },
 ];
 
-const pagesAuth = [
-	...pages,
-	{ nombre: 'Turnos', url: '/turnos' },
+const pagesLoggedUsers = [...pages, { nombre: 'Turnos', url: '/turnos' }];
+
+const pagesAdminUsers = [
+	...pagesLoggedUsers,
 	{ nombre: 'Usuarios', url: '/usuarios' },
 ];
 
@@ -18,4 +19,4 @@ const settings = [
 	{ nombre: 'Registrar usuario', url: '/signup' },
 ];
 
-export { pages, settings, pagesAuth };
+export { pages, settings, pagesLoggedUsers, pagesAdminUsers };

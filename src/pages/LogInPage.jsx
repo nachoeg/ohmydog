@@ -35,6 +35,7 @@ export default function LogInPage() {
 				console.log(data);
 				if (data.token != null) {
 					localStorage.setItem('jwt', data.token);
+					localStorage.setItem('usuario', JSON.stringify(data.usuario));
 					location.replace('/');
 				}
 			})

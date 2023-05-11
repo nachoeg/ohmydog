@@ -17,7 +17,7 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import FormGroup from '@mui/material/FormGroup';
 import LoginButton from './LoginButton';
 import LogoutButton from './LogoutButton';
-import { pages, pagesAuth } from '../data/pages';
+import { pages, pagesLoggedUsers, pagesAdminUsers } from '../data/pages';
 import { useState } from 'react';
 import { useEffect } from 'react';
 import AccountIcon from '@mui/icons-material/AccountCircle';
@@ -32,8 +32,14 @@ function ResponsiveAppBar() {
 	const [anchorElUser, setAnchorElUser] = useState(null);
 
 	useEffect(() => {
-		if (auth) setRoutes(pagesAuth);
-		else setRoutes(pages);
+		if (auth) {
+			let rol = JSON.parse(localStorage.getItem('usuario')).rol;
+			if (rol == 'veterinario') {
+				setRoutes(pagesAdminUsers);
+			} else {
+				setRoutes(pagesLoggedUsers);
+			}
+		} else setRoutes(pages);
 	}, [auth]);
 
 	const handleLogout = () => {
