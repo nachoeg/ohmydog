@@ -11,22 +11,59 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import Copyright from '../components/Copyright';
+import { MenuItem } from '@mui/material';
+import { url } from '../data/url';
 
 export default function SignUp() {
 	const handleSubmit = (event) => {
 		event.preventDefault();
 		const data = new FormData(event.currentTarget);
-		console.log({
-			firstname: data.get('firstName'),
-			lastname: data.get('lastName'),
-			email: data.get('email'),
-			password: data.get('password'),
-		});
+		fetch(url + 'usuarios/register', {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json',
+			},
+			mode: 'cors',
+			body: JSON.stringify({
+				token: localStorage.getItem('jwt'),
+				email: data.get('email'),
+				password: data.get('password'),
+				nombre: data.get('nombre'),
+				apellido: data.get('apellido'),
+				dni: data.get('dni'),
+				localidad: data.get('localidad'),
+				direccion: data.get('direccion'),
+				telefono: data.get('telefono'),
+				rol: data.get('rol'),
+			}),
+		})
+			.then((response) => {
+				if (!response.ok) {
+					alert('Ocurrio un error ' + response.status);
+					throw response.status;
+				}
+			})
+			.catch((error) => {
+				console.error('Error en el fetch: ' + error);
+			});
+		console.log(
+			JSON.stringify({
+				token: localStorage.getItem('jwt'),
+				email: data.get('email'),
+				password: data.get('password'),
+				nombre: data.get('nombre'),
+				apellido: data.get('apellido'),
+				dni: data.get('dni'),
+				localidad: data.get('localidad'),
+				direccion: data.get('direccion'),
+				telefono: data.get('telefono'),
+				rol: data.get('rol'),
+			})
+		);
 	};
 
 	return (
 		<Container component="main" maxWidth="xs">
-			<CssBaseline />
 			<Box
 				sx={{
 					marginTop: 8,
@@ -46,10 +83,10 @@ export default function SignUp() {
 						<Grid item xs={12} sm={6}>
 							<TextField
 								autoComplete="given-name"
-								name="firstName"
+								name="nombre"
 								required
 								fullWidth
-								id="firstName"
+								id="nombre"
 								label="Nombre"
 								autoFocus
 							/>
@@ -58,9 +95,9 @@ export default function SignUp() {
 							<TextField
 								required
 								fullWidth
-								id="lastName"
+								id="apellido"
 								label="Apellido"
-								name="lastName"
+								name="apellido"
 								autoComplete="family-name"
 							/>
 						</Grid>
@@ -85,14 +122,64 @@ export default function SignUp() {
 								autoComplete="new-password"
 							/>
 						</Grid>
-						{/* <Grid item xs={12}>
-								<FormControlLabel
-									control={
-										<Checkbox value="allowExtraEmails" color="primary" />
-									}
-									label="I want to receive inspiration, marketing promotions and updates via email."
-								/>
-							</Grid> */}
+						<Grid item xs={12} sm={6}>
+							<TextField
+								required
+								fullWidth
+								name="direccion"
+								label="Direccion"
+								id="address"
+								autoComplete="street-address"
+							/>
+						</Grid>
+						<Grid item xs={12} sm={6}>
+							<TextField
+								required
+								fullWidth
+								name="localidad"
+								label="Localidad"
+								id="localidad"
+								autoComplete="country-name"
+							/>
+						</Grid>
+						<Grid item xs={12}>
+							<TextField
+								required
+								fullWidth
+								name="telefono"
+								label="Telefono"
+								id="telefono"
+								autoComplete="tel"
+							/>
+						</Grid>
+						<Grid item xs={12}>
+							<TextField
+								required
+								fullWidth
+								name="dni"
+								label="Dni"
+								id="dni"
+								autoComplete="dni"
+							/>
+						</Grid>
+						<Grid item xs={12}>
+							<TextField
+								id="rol"
+								select
+								required
+								fullWidth
+								name="rol"
+								label="Rol"
+								defaultValue="cliente"
+							>
+								<MenuItem key={'cliente'} value={'cliente'}>
+									Cliente
+								</MenuItem>
+								<MenuItem key={'veterinario'} value={'veterinario'}>
+									Veterinario
+								</MenuItem>
+							</TextField>
+						</Grid>
 					</Grid>
 					<Button
 						type="submit"
