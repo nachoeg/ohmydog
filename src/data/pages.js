@@ -6,7 +6,7 @@ const pages = [
 	{ nombre: 'Servicios externos', url: '/servicios' },
 ];
 
-const pagesLoggedUsers = [...pages, { nombre: 'Turnos', url: '/turnos' }];
+const pagesLoggedUsers = [{ nombre: 'Turnos', url: '/turnos' }, ...pages];
 
 const pagesAdminUsers = [
 	...pagesLoggedUsers,

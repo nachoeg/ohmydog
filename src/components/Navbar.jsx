@@ -30,10 +30,12 @@ function ResponsiveAppBar() {
 	const [routes, setRoutes] = useState([]);
 	const [anchorElNav, setAnchorElNav] = useState(null);
 	const [anchorElUser, setAnchorElUser] = useState(null);
+	const usuario = JSON.parse(localStorage.getItem('usuario')); // estoy pidiendo esto en varios componentes, tendria que de alguna manera compartirlo entre los componentes
+	console.log(usuario);
 
 	useEffect(() => {
 		if (auth) {
-			let rol = JSON.parse(localStorage.getItem('usuario')).rol;
+			let rol = usuario.rol;
 			if (rol == 'veterinario') {
 				setRoutes(pagesAdminUsers);
 			} else {
@@ -146,7 +148,7 @@ function ResponsiveAppBar() {
 						</Box>
 						{auth ? (
 							<Box sx={{ flexGrow: 0 }}>
-								<Tooltip title="Abrir preferencias">
+								<Tooltip title={usuario.nombre + ' ' + usuario.apellido}>
 									<IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
 										<Avatar alt="Foto perfil" src="" />
 									</IconButton>
