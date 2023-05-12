@@ -25,7 +25,7 @@ export default function LogInPage() {
 		})
 			.then((response) => {
 				console.log(response);
-				if (response.status == 401) {
+				if (!response.ok) {
 					alert('Datos incorrectos');
 					throw response.status;
 				}
