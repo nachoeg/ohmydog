@@ -12,31 +12,27 @@ import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import { Outlet, NavLink } from 'react-router-dom';
 import Logotipo from './Logotipo';
-import Switch from '@mui/material/Switch';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import FormGroup from '@mui/material/FormGroup';
 import LoginButton from './LoginButton';
-import LogoutButton from './LogoutButton';
 import { pages, pagesLoggedUsers, pagesAdminUsers } from '../data/pages';
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import { useEffect } from 'react';
 import AccountIcon from '@mui/icons-material/AccountCircle';
 import LogoutIcon from '@mui/icons-material/Logout';
 import PetsIcon from '@mui/icons-material/Pets';
 import { url } from '../data/url';
+import { Context } from '../context/Context';
+import Copyright from './Copyright';
 
 function ResponsiveAppBar() {
-	const [auth, setAuth] = useState(localStorage.getItem('jwt') != null);
 	const [routes, setRoutes] = useState([]);
 	const [anchorElNav, setAnchorElNav] = useState(null);
 	const [anchorElUser, setAnchorElUser] = useState(null);
-	const usuario = JSON.parse(localStorage.getItem('usuario')); // estoy pidiendo esto en varios componentes, tendria que de alguna manera compartirlo entre los componentes
-	console.log(usuario);
+	const { auth, usuario } = useContext(Context);
 
+	console.log(auth);
 	useEffect(() => {
 		if (auth) {
-			let rol = usuario.rol;
-			if (rol == 'veterinario') {
+			if (usuario.rol == 'veterinario') {
 				setRoutes(pagesAdminUsers);
 			} else {
 				setRoutes(pagesLoggedUsers);
@@ -52,9 +48,11 @@ function ResponsiveAppBar() {
 			},
 			body: { token: localStorage.getItem('jwt') },
 		})
-			.then(() => {
-				localStorage.clear('jwt');
-				location.replace('/login');
+			.then((response) => {
+				if (response.status != 401) {
+					localStorage.clear('jwt');
+					location.replace('/login');
+				}
 			})
 			.catch((error) => {
 				console.error('Error en el fetch: ' + error);
@@ -215,6 +213,7 @@ function ResponsiveAppBar() {
 			</AppBar>
 
 			<Outlet />
+			<Copyright sx={{ mt: 5 }} />
 		</>
 	);
 }

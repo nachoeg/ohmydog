@@ -16,9 +16,11 @@ import HttpsIcon from '@mui/icons-material/Https';
 import PhoneIcon from '@mui/icons-material/Phone';
 import MapIcon from '@mui/icons-material/Map';
 import MapsHomeWorkIcon from '@mui/icons-material/MapsHomeWork';
+import { Context } from '../context/Context';
+import { useContext } from 'react';
 
 function ProfilePage() {
-	const usuario = JSON.parse(localStorage.getItem('usuario'));
+	const { usuario } = useContext(Context);
 	return (
 		<Container component="main" maxWidth="sm">
 			<Card sx={{ padding: '10px', marginTop: 8 }}>

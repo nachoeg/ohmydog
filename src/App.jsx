@@ -22,6 +22,10 @@ function App() {
 				main: '#0197b2',
 				darker: '#053e85',
 			},
+			secondary: {
+				main: '#ff914d',
+				darker: '#b3561b',
+			},
 			neutral: {
 				main: '#64748B',
 				contrastText: '#fff',

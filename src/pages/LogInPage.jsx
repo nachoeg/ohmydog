@@ -91,7 +91,6 @@ export default function LogInPage() {
 					</Button>
 				</Box>
 			</Box>
-			<Copyright sx={{ mt: 8, mb: 4 }} />
 		</Container>
 	);
 }
