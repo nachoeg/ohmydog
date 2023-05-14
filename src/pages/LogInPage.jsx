@@ -5,7 +5,7 @@ import Box from '@mui/material/Box';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
-import { url } from '../data/url';
+import url from '../data/url';
 
 export default function LogInPage() {
 	const handleSubmit = (event) => {

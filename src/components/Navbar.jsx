@@ -19,7 +19,7 @@ import { useEffect } from 'react';
 import AccountIcon from '@mui/icons-material/AccountCircle';
 import LogoutIcon from '@mui/icons-material/Logout';
 import PetsIcon from '@mui/icons-material/Pets';
-import { url } from '../data/url';
+import url from '../data/url';
 import { Context } from '../context/Context';
 import Copyright from './Copyright';
 

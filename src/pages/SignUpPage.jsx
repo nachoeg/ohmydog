@@ -10,7 +10,7 @@ import LockOutlinedIcon from '@mui/icons-material/PersonAdd';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { MenuItem } from '@mui/material';
-import { url } from '../data/url';
+import url from '../data/url';
 
 export default function SignUp() {
 	const handleSubmit = (event) => {
@@ -21,7 +21,7 @@ export default function SignUp() {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json',
-				'Authorization': `${token}`,
+				Authorization: `${token}`,
 			},
 			mode: 'cors',
 			body: JSON.stringify({
