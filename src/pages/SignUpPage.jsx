@@ -1,6 +1,5 @@
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
-import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
 // import FormControlLabel from '@mui/material/FormControlLabel';
 // import Checkbox from '@mui/material/Checkbox';
@@ -10,7 +9,6 @@ import Box from '@mui/material/Box';
 import LockOutlinedIcon from '@mui/icons-material/PersonAdd';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
-import Copyright from '../components/Copyright';
 import { MenuItem } from '@mui/material';
 import { url } from '../data/url';
 
@@ -18,14 +16,15 @@ export default function SignUp() {
 	const handleSubmit = (event) => {
 		event.preventDefault();
 		const data = new FormData(event.currentTarget);
+		const token = localStorage.getItem('jwt');
 		fetch(url + 'usuarios/register', {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json',
+				'Authorization': `${token}`,
 			},
 			mode: 'cors',
 			body: JSON.stringify({
-				token: localStorage.getItem('jwt'),
 				email: data.get('email'),
 				password: data.get('password'),
 				nombre: data.get('nombre'),
@@ -38,28 +37,29 @@ export default function SignUp() {
 			}),
 		})
 			.then((response) => {
-				if (!response.ok) {
-					alert('Ocurrio un error ' + response.status);
-					throw response.status;
+				if (response.ok) {
+					console.log('registro exitoso');
+				} else {
+					throw new Error('Error en la solicitud fetch');
 				}
 			})
 			.catch((error) => {
-				console.error('Error en el fetch: ' + error);
+				console.error(error);
 			});
-		console.log(
-			JSON.stringify({
-				token: localStorage.getItem('jwt'),
-				email: data.get('email'),
-				password: data.get('password'),
-				nombre: data.get('nombre'),
-				apellido: data.get('apellido'),
-				dni: data.get('dni'),
-				localidad: data.get('localidad'),
-				direccion: data.get('direccion'),
-				telefono: data.get('telefono'),
-				rol: data.get('rol'),
-			})
-		);
+		// console.log(
+		// 	JSON.stringify({
+		// 		token: localStorage.getItem('jwt'),
+		// 		email: data.get('email'),
+		// 		password: data.get('password'),
+		// 		nombre: data.get('nombre'),
+		// 		apellido: data.get('apellido'),
+		// 		dni: data.get('dni'),
+		// 		localidad: data.get('localidad'),
+		// 		direccion: data.get('direccion'),
+		// 		telefono: data.get('telefono'),
+		// 		rol: data.get('rol'),
+		// 	})
+		// );
 	};
 
 	return (
