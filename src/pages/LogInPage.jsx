@@ -6,8 +6,18 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import url from '../data/url';
+import { Context } from '../context/Context';
+import { useContext, useEffect } from 'react';
 
 export default function LogInPage() {
+	const { auth } = useContext(Context);
+
+	useEffect(() => {
+		if (auth) {
+			location.replace('/');
+		}
+	});
+
 	const handleSubmit = (event) => {
 		event.preventDefault();
 		const data = new FormData(event.currentTarget);
@@ -17,6 +27,7 @@ export default function LogInPage() {
 				'Content-Type': 'application/json',
 			},
 			mode: 'cors',
+			credentials: 'include',
 			body: JSON.stringify({
 				email: data.get('email'),
 				password: data.get('password'),

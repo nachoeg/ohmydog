@@ -9,9 +9,10 @@ function UsersPage() {
 	const token = localStorage.getItem('jwt');
 	fetch(url + 'usuarios', {
 		method: 'GET',
+		credentials: 'include',
 		headers: {
 			'Content-Type': 'application/json',
-			Authorization: `${token}`,
+			token: `${token}`,
 		},
 	})
 		.then((response) => {
@@ -84,8 +85,12 @@ function UsersPage() {
 					checkboxSelection
 				/>
 			</div>
-			<NavLink to="/signup" style={{ textDecoration: 'none' }}>
-				<Button startIcon={<AddIcon />} sx={{ mt: 2 }} variant="contained">
+			<NavLink to="/signup" style={{ textDecoration: 'none', width: '100%' }}>
+				<Button
+					startIcon={<AddIcon />}
+					sx={{ mt: 2, width: '100%' }}
+					variant="contained"
+				>
 					Crear Usuario
 				</Button>
 			</NavLink>

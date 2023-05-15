@@ -21,8 +21,9 @@ export default function SignUp() {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json',
-				Authorization: `${token}`,
+				token: `${token}`,
 			},
+			credentials: 'include',
 			mode: 'cors',
 			body: JSON.stringify({
 				email: data.get('email'),

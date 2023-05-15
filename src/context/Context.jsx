@@ -8,6 +8,7 @@ export function ContextProvider(props) {
 	useEffect(() => {
 		setAuth(localStorage.getItem('jwt') != null);
 	}, []);
+
 	return (
 		<Context.Provider
 			value={{

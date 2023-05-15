@@ -42,15 +42,17 @@ function ResponsiveAppBar() {
 
 	const handleLogout = () => {
 		fetch(url + 'auth/logout', {
-			method: 'POST',
+			method: 'GET',
 			headers: {
 				'Content-Type': 'application/json',
+				token: localStorage.getItem('jwt'),
 			},
-			body: { token: localStorage.getItem('jwt') },
+			credentials: 'include',
 		})
 			.then((response) => {
-				if (response.status != 401) {
+				if (response.ok) {
 					localStorage.clear('jwt');
+					localStorage.clear('usuarios');
 					location.replace('/login');
 				}
 			})
