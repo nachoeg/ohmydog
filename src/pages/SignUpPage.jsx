@@ -47,20 +47,6 @@ export default function SignUp() {
 			.catch((error) => {
 				console.error(error);
 			});
-		// console.log(
-		// 	JSON.stringify({
-		// 		token: localStorage.getItem('jwt'),
-		// 		email: data.get('email'),
-		// 		password: data.get('password'),
-		// 		nombre: data.get('nombre'),
-		// 		apellido: data.get('apellido'),
-		// 		dni: data.get('dni'),
-		// 		localidad: data.get('localidad'),
-		// 		direccion: data.get('direccion'),
-		// 		telefono: data.get('telefono'),
-		// 		rol: data.get('rol'),
-		// 	})
-		// );
 	};
 
 	return (
@@ -190,13 +176,6 @@ export default function SignUp() {
 					>
 						Registrar
 					</Button>
-					{/* <Grid container justifyContent="flex-end">
-							<Grid item>
-								<Link href="#" variant="body2">
-									Already have an account? Sign in
-								</Link>
-							</Grid>
-						</Grid> */}
 				</Box>
 			</Box>
 		</Container>
