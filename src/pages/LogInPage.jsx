@@ -1,5 +1,6 @@
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
+import Snackbar from '@mui/material/Snackbar';
 import TextField from '@mui/material/TextField';
 import Box from '@mui/material/Box';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
@@ -7,10 +8,15 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import url from '../data/url';
 import { Context } from '../context/Context';
-import { useContext, useEffect } from 'react';
+import { useContext, useEffect, useState } from 'react';
+import { Alert } from '@mui/material';
 
 export default function LogInPage() {
 	const { auth } = useContext(Context);
+
+	const [snackbar, setSnackbar] = useState(null);
+
+	const handleCloseSnackbar = () => setSnackbar(null);
 
 	useEffect(() => {
 		if (auth) {
@@ -36,7 +42,6 @@ export default function LogInPage() {
 			.then((response) => {
 				console.log(response);
 				if (!response.ok) {
-					alert('Datos incorrectos');
 					throw response.status;
 				}
 				return response.json();
@@ -50,7 +55,18 @@ export default function LogInPage() {
 				}
 			})
 			.catch((error) => {
-				console.error('Error en el fetch: ' + error);
+				console.error(error);
+				if (error == 401) {
+					setSnackbar({
+						children: 'Mail o contraseña incorrectos',
+						severity: 'error',
+					});
+				} else {
+					setSnackbar({
+						children: 'Error al conectar con la base de datos',
+						severity: 'error',
+					});
+				}
 			});
 	};
 
@@ -99,6 +115,16 @@ export default function LogInPage() {
 					>
 						Entrar
 					</Button>
+					{!!snackbar && (
+						<Snackbar
+							open
+							anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+							onClose={handleCloseSnackbar}
+							autoHideDuration={6000}
+						>
+							<Alert {...snackbar} onClose={handleCloseSnackbar} />
+						</Snackbar>
+					)}
 				</Box>
 			</Box>
 		</Container>
