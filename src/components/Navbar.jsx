@@ -50,11 +50,10 @@ function ResponsiveAppBar() {
 			credentials: 'include',
 		})
 			.then((response) => {
-				if (response.ok) {
-					localStorage.clear('jwt');
-					localStorage.clear('usuarios');
-					location.replace('/login');
-				}
+				console.log(response);
+				localStorage.clear('jwt');
+				localStorage.clear('usuarios');
+				location.replace('/login');
 			})
 			.catch((error) => {
 				console.error('Error en el fetch: ' + error);
