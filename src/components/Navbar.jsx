@@ -182,20 +182,21 @@ function ResponsiveAppBar() {
 											<Typography>Perfil</Typography>
 										</MenuItem>
 									</NavLink>
-									<NavLink
-										key={'Mis perros'}
-										to={'/misperros'}
-										style={{
-											textDecoration: 'none',
-											color: '#000',
-										}}
-									>
-										<MenuItem onClick={handleCloseUserMenu}>
-											<PetsIcon sx={{ mr: '4px' }} />
-											<Typography>Mis perros</Typography>
-										</MenuItem>
-									</NavLink>
-
+									{usuario.rol == 'cliente' && (
+										<NavLink
+											key={'Mis perros'}
+											to={'/misperros'}
+											style={{
+												textDecoration: 'none',
+												color: '#000',
+											}}
+										>
+											<MenuItem onClick={handleCloseUserMenu}>
+												<PetsIcon sx={{ mr: '4px' }} />
+												<Typography>Mis perros</Typography>
+											</MenuItem>
+										</NavLink>
+									)}
 									<MenuItem
 										onClick={() => {
 											handleCloseUserMenu();
