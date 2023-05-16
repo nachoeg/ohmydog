@@ -44,7 +44,19 @@ function HomePage() {
 							color: 'white',
 						}}
 					>
-						salud y bienestar
+						salud
+					</Typography>{' '}
+					y el{' '}
+					<Typography
+						component="span"
+						variant="h3"
+						sx={{
+							fontWeight: 'bold',
+							bgcolor: 'secondary.main',
+							color: 'white',
+						}}
+					>
+						bienestar
 					</Typography>{' '}
 					de tus mascotas
 				</Typography>
