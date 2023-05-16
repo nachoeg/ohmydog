@@ -95,7 +95,7 @@ function HomePage() {
 						maxHeight: '70vh',
 						maxWidth: '70vw',
 					}}
-					src="/hero-orange.svg"
+					src="/hero.svg"
 					alt="Foto de veterinario"
 				/>
 			</Grid>
