@@ -21,6 +21,9 @@ import { useContext } from 'react';
 
 function ProfilePage() {
 	const { usuario } = useContext(Context);
+	if (usuario == null) {
+		location.replace('/login');
+	}
 	return (
 		<Container component="main" maxWidth="sm">
 			<Card sx={{ padding: '10px', marginTop: 8 }}>
