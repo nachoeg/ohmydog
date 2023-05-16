@@ -5,14 +5,20 @@ import TextField from '@mui/material/TextField';
 // import Checkbox from '@mui/material/Checkbox';
 // import Link from '@mui/material/Link';
 import Grid from '@mui/material/Grid';
+import Snackbar from '@mui/material/Snackbar';
 import Box from '@mui/material/Box';
 import LockOutlinedIcon from '@mui/icons-material/PersonAdd';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
-import { MenuItem } from '@mui/material';
+import { Alert, MenuItem } from '@mui/material';
 import url from '../data/url';
+import { useState } from 'react';
 
 export default function SignUp() {
+	const [snackbar, setSnackbar] = useState(null);
+
+	const handleCloseSnackbar = () => setSnackbar(null);
+
 	const handleSubmit = (event) => {
 		event.preventDefault();
 		const data = new FormData(event.currentTarget);
@@ -39,12 +45,22 @@ export default function SignUp() {
 		})
 			.then((response) => {
 				if (response.ok) {
-					console.log('registro exitoso');
+					setSnackbar({
+						children: 'Registro exitoso',
+						severity: 'success',
+					});
 				} else {
-					throw new Error('Error en la solicitud fetch');
+					setSnackbar({
+						children: 'Error al conectar con la base de datos',
+						severity: 'error',
+					});
 				}
 			})
 			.catch((error) => {
+				setSnackbar({
+					children: 'Error al conectar con la base de datos',
+					severity: 'error',
+				});
 				console.error(error);
 			});
 	};
@@ -176,6 +192,16 @@ export default function SignUp() {
 					>
 						Registrar
 					</Button>
+					{!!snackbar && (
+						<Snackbar
+							open
+							anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+							onClose={handleCloseSnackbar}
+							autoHideDuration={6000}
+						>
+							<Alert {...snackbar} onClose={handleCloseSnackbar} />
+						</Snackbar>
+					)}
 				</Box>
 			</Box>
 		</Container>
