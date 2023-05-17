@@ -17,7 +17,7 @@ function TurnosPage() {
 			}}
 		>
 			<TablaTurnos />
-			<NavLink to="/signup" style={{ textDecoration: 'none', width: '100%' }}>
+			<NavLink to="/turnos/register" style={{ textDecoration: 'none', width: '55%' }}>
 				<Button
 					startIcon={<AddIcon />}
 					sx={{ mt: 2, width: '100%' }}

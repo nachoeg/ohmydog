@@ -44,7 +44,7 @@ function TablaTurnos() {
 				} else {
 					if (response.status == 401) {
 						setSnackbar({
-							children: 'No esta autorizado para ver los turnos',
+							children: 'No estas autorizado para ver los turnos',
 							severity: 'error',
 						});
 					}
@@ -64,9 +64,9 @@ function TablaTurnos() {
 
 	const columns = [
 	    {
-    		    field: 'perro',
-    		    headerName: 'Perro',
-    		    width: 50
+    	    field: 'perro',
+            headerName: 'Perro',
+            width: 50
     	},
 		{
 		    field: 'fecha',

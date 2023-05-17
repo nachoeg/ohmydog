@@ -17,6 +17,7 @@ const settings = [
 	{ nombre: 'Perfil', url: '/perfil' },
 	{ nombre: 'Mis perros', url: '/misperros' },
 	{ nombre: 'Registrar usuario', url: '/signup' },
+	{ nombre: 'Solicitar turno', url: '/turnos/register' },
 ];
 
 export { pages, settings, pagesLoggedUsers, pagesAdminUsers };

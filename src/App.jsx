@@ -6,6 +6,7 @@ import LogInPage from './pages/LogInPage';
 import HomePage from './pages/HomePage';
 import NotFoundPage from './pages/NotFoundPage';
 import SignUpPage from './pages/SignUpPage';
+import AddTurnPage from './pages/AddTurnPage';
 import UsersPage from './pages/UsersPage';
 import TurnosPage from './pages/TurnosPage';
 import Navbar from './components/Navbar';
@@ -46,6 +47,7 @@ function App() {
 						<Route path="perfil" element={<ProfilePage />} />
 						<Route path="usuarios" element={<UsersPage />} />
 						<Route path="turnos" element={<TurnosPage />} />
+						<Route path="turnos/register" element={<AddTurnPage />} />
 						<Route path="misperros" element={<MyDogsPage />} />
 						<Route path="*" element={<NotFoundPage />} />
 					</Route>
