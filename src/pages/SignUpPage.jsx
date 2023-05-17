@@ -125,6 +125,16 @@ export default function SignUp() {
 								autoComplete="new-password"
 							/>
 						</Grid>
+						<Grid item xs={12}>
+							<TextField
+								required
+								fullWidth
+								name="dni"
+								label="Dni"
+								id="dni"
+								autoComplete="dni"
+							/>
+						</Grid>
 						<Grid item xs={12} sm={6}>
 							<TextField
 								required
@@ -153,16 +163,6 @@ export default function SignUp() {
 								label="Telefono"
 								id="telefono"
 								autoComplete="tel"
-							/>
-						</Grid>
-						<Grid item xs={12}>
-							<TextField
-								required
-								fullWidth
-								name="dni"
-								label="Dni"
-								id="dni"
-								autoComplete="dni"
 							/>
 						</Grid>
 						<Grid item xs={12}>
