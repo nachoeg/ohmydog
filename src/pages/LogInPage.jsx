@@ -58,7 +58,7 @@ export default function LogInPage() {
 				console.error(error);
 				if (error == 401) {
 					setSnackbar({
-						children: 'Mail o contraseña incorrectos',
+						children: 'Email o contraseña incorrecta',
 						severity: 'error',
 					});
 				} else {
@@ -92,7 +92,7 @@ export default function LogInPage() {
 						required
 						fullWidth
 						id="email"
-						label="Correo eletrónico"
+						label="Correo electrónico"
 						name="email"
 						autoComplete="email"
 						autoFocus

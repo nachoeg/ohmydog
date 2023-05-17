@@ -7,6 +7,7 @@ import HomePage from './pages/HomePage';
 import NotFoundPage from './pages/NotFoundPage';
 import SignUpPage from './pages/SignUpPage';
 import UsersPage from './pages/UsersPage';
+import TurnosPage from './pages/TurnosPage';
 import Navbar from './components/Navbar';
 import ProfilePage from './pages/ProfilePage';
 import MyDogsPage from './pages/MyDogsPage';
@@ -44,6 +45,7 @@ function App() {
 						<Route path="signup" element={<SignUpPage />} />
 						<Route path="perfil" element={<ProfilePage />} />
 						<Route path="usuarios" element={<UsersPage />} />
+						<Route path="turnos" element={<TurnosPage />} />
 						<Route path="misperros" element={<MyDogsPage />} />
 						<Route path="*" element={<NotFoundPage />} />
 					</Route>

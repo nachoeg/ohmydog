@@ -93,7 +93,7 @@ function TablaUsuarios() {
 		},
 		{
 			field: 'dni',
-			headerName: 'Dni',
+			headerName: 'DNI',
 			type: 'number',
 			editable: true,
 			width: 100,
