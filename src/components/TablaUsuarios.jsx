@@ -5,22 +5,6 @@ import Snackbar from '@mui/material/Snackbar';
 import Alert from '@mui/material/Alert';
 import Delete from '@mui/icons-material/DeleteForever';
 
-const useFakeMutation = () => {
-	return useCallback(
-		(user) =>
-			new Promise((resolve, reject) => {
-				setTimeout(() => {
-					if (user.name?.trim() === '') {
-						reject(new Error("Error while saving user: name can't be empty."));
-					} else {
-						resolve({ ...user, name: user.name?.toUpperCase() });
-					}
-				}, 200);
-			}),
-		[]
-	);
-};
-
 function TablaUsuarios() {
 	const token = localStorage.getItem('jwt');
 	const [rows, setRows] = useState([]);
@@ -63,25 +47,31 @@ function TablaUsuarios() {
 	}
 
 	const columns = [
-		{ field: 'id', headerName: 'ID', width: 50 },
+		{ field: 'id', headerName: 'ID', width: 70, id: 'id' },
 		{
 			field: 'email',
 			headerName: 'Email',
 			editable: true,
 			width: 170,
 		},
+		{ field: 'nombre', headerName: 'Nombre', width: 100 },
+		{ field: 'apellido', headerName: 'Apellido', width: 100 },
 		{
-			field: 'password',
-			headerName: 'Contraseña',
-			editable: true,
+			field: 'dni',
+			headerName: 'DNI',
+			type: 'number',
 			width: 100,
 		},
-		{ field: 'nombre', headerName: 'Nombre', editable: true, width: 100 },
-		{ field: 'apellido', headerName: 'Apellido', editable: true, width: 100 },
 		{
 			field: 'telefono',
 			headerName: 'Telefono',
 			type: 'number',
+			editable: true,
+			width: 100,
+		},
+		{
+			field: 'direccion',
+			headerName: 'Direccion',
 			editable: true,
 			width: 100,
 		},
@@ -92,23 +82,9 @@ function TablaUsuarios() {
 			width: 100,
 		},
 		{
-			field: 'dni',
-			headerName: 'DNI',
-			type: 'number',
-			editable: true,
-			width: 100,
-		},
-		{
-			field: 'rol',
-			headerName: 'Rol',
-			editable: true,
-			width: 100,
-		},
-		{
 			field: 'actions',
 			type: 'actions',
-			headerName: 'Eliminar',
-			width: 100,
+			width: 50,
 			cellClassName: 'actions',
 			getActions: ({ id }) => {
 				return [
@@ -123,8 +99,6 @@ function TablaUsuarios() {
 			},
 		},
 	];
-
-	const mutateRow = useFakeMutation();
 
 	const [snackbar, setSnackbar] = useState(null);
 
@@ -154,35 +128,53 @@ function TablaUsuarios() {
 		}
 	};
 
-	const processRowUpdate = useCallback(
-		async (newRow, oldRow) => {
-			// Make the HTTP request to save in the backend
-			const responseFetch = await fetch(url + 'usuarios/modify/' + newRow.id, {
-				method: 'PUT',
-				credentials: 'include',
-				headers: {
-					'Content-Type': 'application/json',
-					token: `${token}`,
-				},
-				body: JSON.stringify(newRow),
+	function validarDatos(datos) {
+		return (
+			datos.email.trim() != '' &&
+			toString(datos.telefono).trim() != '' &&
+			datos.localidad.trim() != '' &&
+			datos.direccion.trim() != ''
+		);
+	}
+
+	const processRowUpdate = useCallback(async (newRow, oldRow) => {
+		if (!validarDatos(newRow)) {
+			setSnackbar({
+				children: 'No puede ingresar un campo vacio',
+				severity: 'error',
 			});
-			console.log(responseFetch);
-			if (responseFetch.ok) {
-				const response = await mutateRow(newRow);
-				setSnackbar({
-					children: 'Usuario guardado con exito',
-					severity: 'success',
-				});
-				return response;
-			}
+			return oldRow;
+		}
+		const response = await fetch(url + 'usuarios/modify/' + newRow.id, {
+			method: 'PUT',
+			credentials: 'include',
+			headers: {
+				'Content-Type': 'application/json',
+				token: `${token}`,
+			},
+			body: JSON.stringify(newRow),
+		});
+		if (response.ok) {
+			setSnackbar({
+				children: 'Usuario guardado con exito',
+				severity: 'success',
+			});
+			return newRow;
+		}
+		if (response.status == 403) {
+			setSnackbar({
+				children: 'El email ya está en uso',
+				severity: 'error',
+			});
+		}
+		if (response.status == 500) {
 			setSnackbar({
 				children: 'Error al conectar con la base de datos',
 				severity: 'error',
 			});
-			return oldRow;
-		},
-		[mutateRow]
-	);
+		}
+		return oldRow;
+	}, []);
 
 	const handleProcessRowUpdateError = useCallback((error) => {
 		setSnackbar({ children: error.message, severity: 'error' });
