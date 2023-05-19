@@ -50,12 +50,14 @@ function ResponsiveAppBar() {
 		})
 			.then((response) => {
 				console.log(response);
-				localStorage.clear('jwt');
-				localStorage.clear('usuarios');
-				location.replace('/login');
 			})
 			.catch((error) => {
 				console.error('Error en el fetch: ' + error);
+			})
+			.finally(() => {
+				localStorage.clear('jwt');
+				localStorage.clear('usuarios');
+				location.replace('/login');
 			});
 	};
 
