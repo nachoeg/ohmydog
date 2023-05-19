@@ -5,22 +5,6 @@ import Snackbar from '@mui/material/Snackbar';
 import Alert from '@mui/material/Alert';
 import Delete from '@mui/icons-material/DeleteForever';
 
-const useFakeMutation = () => {
-	return useCallback(
-		(user) =>
-			new Promise((resolve, reject) => {
-				setTimeout(() => {
-					if (user.name?.trim() === '') {
-						reject(new Error("Error while saving user: name can't be empty."));
-					} else {
-						resolve({ ...user, name: user.name?.toUpperCase() });
-					}
-				}, 200);
-			}),
-		[]
-	);
-};
-
 function TablaTurnos() {
 	const token = localStorage.getItem('jwt');
 	const [rows, setRows] = useState([]);
@@ -66,36 +50,73 @@ function TablaTurnos() {
 	    {
     	    field: 'perro',
             headerName: 'Perro',
-            width: 50
+            width: 150
     	},
 		{
 		    field: 'fecha',
 		    headerName: 'Fecha',
-		    width: 50
+		    width: 150,
 		},
 		{
 			field: 'motivo',
 			headerName: 'Motivo',
 			editable: true,
-			width: 170,
+			width: 150,
 		},
 		{
 			field: 'estado',
 			headerName: 'Estado',
 			editable: true,
-			width: 100,
+			width: 150,
 		}
 	];
-
-	const mutateRow = useFakeMutation();
 
 	const [snackbar, setSnackbar] = useState(null);
 
 	const handleCloseSnackbar = () => setSnackbar(null);
 
-	const handleProcessRowUpdateError = useCallback((error) => {
-		setSnackbar({ children: error.message, severity: 'error' });
-	}, []);
+	function validarDatos(datos) {
+    		return (
+    			datos.estado.trim() != ''
+    		);
+    	}
+
+    	const processRowUpdate = useCallback(async (newRow, oldRow) => {
+    		if (!validarDatos(newRow)) {
+    			setSnackbar({
+    				children: 'No puede ingresar un campo vacio',
+    				severity: 'error',
+    			});
+    			return oldRow;
+    		}
+    		const response = await fetch(url + 'turnos/modify/' + newRow.id, {
+    			method: 'PUT',
+    			credentials: 'include',
+    			headers: {
+    				'Content-Type': 'application/json',
+    				token: `${token}`,
+    			},
+    			body: JSON.stringify(newRow),
+    		});
+    		if (response.ok) {
+    			setSnackbar({
+    				children: 'Turno procesado con exito',
+    				severity: 'success',
+    			});
+    			return newRow;
+    		}
+    		if (response.status == 500) {
+    			setSnackbar({
+    				children: 'Error al conectar con la base de datos',
+    				severity: 'error',
+    			});
+    		}
+    		return oldRow;
+    	}, []);
+
+    const handleProcessRowUpdateError = useCallback((error) => {
+    	setSnackbar({ children: error.message, severity: 'error' });
+    }, []);
 
 	return (
 		<div style={{ height: 400, width: '55%' }}>

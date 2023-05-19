@@ -29,6 +29,7 @@ export default function AddTurn() {
 			credentials: 'include',
 			mode: 'cors',
 			body: JSON.stringify({
+			    fecha: data.get('perro'),
 				fecha: data.get('fecha'),
 				motivo: data.get('motivo'),
 			}),
@@ -73,6 +74,16 @@ export default function AddTurn() {
 				</Typography>
 				<Box component="form" onSubmit={handleSubmit} sx={{ mt: 3 }}>
 					<Grid container spacing={2}>
+					    <Grid item xs={12} sm={6}>
+                    		<TextField
+                    		    required
+                    			fullWidth
+                    		    id="perro"
+                    			label="Perro"
+                    			name="perro"
+                    			autoComplete="perro"
+                    			/>
+                    	</Grid>
 						<Grid item xs={12} sm={6}>
 							<TextField
 								required
