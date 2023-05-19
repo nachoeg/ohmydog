@@ -48,8 +48,8 @@ function TablaTurnos() {
 
 	const columns = [
 	    {
-    	    field: 'perro',
-            headerName: 'Perro',
+    	    field: 'idPerro',
+            headerName: 'ID Perro',
             width: 150
     	},
 		{

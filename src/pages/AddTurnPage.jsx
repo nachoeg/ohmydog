@@ -29,7 +29,7 @@ export default function AddTurn() {
 			credentials: 'include',
 			mode: 'cors',
 			body: JSON.stringify({
-			    fecha: data.get('perro'),
+			    idPerro: data.get('idPerro'),
 				fecha: data.get('fecha'),
 				motivo: data.get('motivo'),
 			}),
@@ -78,9 +78,9 @@ export default function AddTurn() {
                     		<TextField
                     		    required
                     			fullWidth
-                    		    id="perro"
+                    		    id="idPerro"
                     			label="Perro"
-                    			name="perro"
+                    			name="idPerro"
                     			autoComplete="perro"
                     			/>
                     	</Grid>
@@ -104,19 +104,19 @@ export default function AddTurn() {
 								label="Motivo"
 								defaultValue="consulta"
 							>
-								<MenuItem key={'consulta'} value={'consulta'}>
+								<MenuItem key={'consulta'} value={'Consulta General'}>
 									Consulta General
 								</MenuItem>
-								<MenuItem key={'castracion'} value={'castracion'}>
+								<MenuItem key={'castracion'} value={'Castracion'}>
 									Castracion
 								</MenuItem>
-								<MenuItem key={'antirrabica'} value={'antibarrica'}>
+								<MenuItem key={'antirrabica'} value={'Vacuna Antirrabica'}>
                                 	Vacuna Antirrabica
                                 </MenuItem>
-                                <MenuItem key={'antienfermedades'} value={'antienfermedades'}>
+                                <MenuItem key={'antienfermedades'} value={'Vacuna Antienfermedades'}>
                                    Vacuna Antienfermedades
                                 </MenuItem>
-                                <MenuItem key={'desparasitacion'} value={'desparasitacion'}>
+                                <MenuItem key={'desparasitacion'} value={'Desparasitacion'}>
                                     Desparasitacion
                                 </MenuItem>
 							</TextField>
