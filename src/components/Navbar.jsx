@@ -29,7 +29,6 @@ function ResponsiveAppBar() {
 	const [anchorElUser, setAnchorElUser] = useState(null);
 	const { auth, usuario } = useContext(Context);
 
-	console.log(auth);
 	useEffect(() => {
 		if (auth) {
 			if (usuario.rol == 'veterinario') {
