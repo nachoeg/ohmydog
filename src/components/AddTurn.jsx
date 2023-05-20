@@ -10,12 +10,57 @@ import Container from '@mui/material/Container';
 import { Alert, MenuItem } from '@mui/material';
 import url from '../data/url';
 import motivoTurnos from '../data/motivoTurnos';
-import { useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
+import { Context } from '../context/Context';
 
 export default function AddTurn() {
-	const [snackbar, setSnackbar] = useState(null);
+	const { usuario } = useContext(Context);
+	const token = localStorage.getItem('jwt');
 
+	const [snackbar, setSnackbar] = useState(null);
 	const handleCloseSnackbar = () => setSnackbar(null);
+
+	const [perros, setPerros] = useState([]);
+
+	useEffect(() => {
+		obtenerPerros();
+		// .then((p)=>setPerros(p))
+	}, []);
+
+	function obtenerPerros() {
+		fetch(url + 'perros/' + usuario.id, {
+			method: 'GET',
+			credentials: 'include',
+			headers: {
+				'Content-Type': 'application/json',
+				token: `${token}`,
+			},
+		})
+			.then((response) => {
+				console.log(response);
+				if (response.ok) {
+					return response.json();
+				} else {
+					if (response.status == 401) {
+						setSnackbar({
+							children: 'No estas autorizado para ver los perros',
+							severity: 'error',
+						});
+					}
+					return [];
+				}
+			})
+			.catch((error) => {
+				console.error('Error en el fetch: ' + error);
+
+				setSnackbar({
+					children: 'Error al conectar con la base de datos',
+					severity: 'error',
+				});
+				return [];
+			})
+			.finally((p) => console.log(p));
+	}
 
 	const handleSubmit = (event) => {
 		event.preventDefault();
@@ -57,10 +102,6 @@ export default function AddTurn() {
 			});
 	};
 
-	const perros = [
-		{ id: 1, nombre: 'Toro' },
-		{ id: 2, nombre: 'Kala' },
-	];
 	const hoy = new Date().toISOString().split('T')[0];
 
 	return (
