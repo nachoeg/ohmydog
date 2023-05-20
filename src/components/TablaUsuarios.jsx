@@ -35,6 +35,15 @@ function TablaUsuarios() {
 					return [];
 				}
 			})
+			.then((usuarios) => {
+				if (usuarios.length == 0) {
+					setSnackbar({
+						children: 'La tabla de usuarios esta vacia',
+						severity: 'info',
+					});
+				}
+				return usuarios;
+			})
 			.catch((error) => {
 				console.error('Error en el fetch: ' + error);
 
