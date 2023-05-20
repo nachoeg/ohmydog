@@ -60,15 +60,21 @@ function TablaTurnos() {
 		{
 			field: 'motivo',
 			headerName: 'Motivo',
-			editable: true,
-			type: 'singleSelect',
-			valueOptions: motivoTurnos,
+			// editable: true,
+			// type: 'singleSelect',
+			// valueOptions: motivoTurnos,
 			width: 150,
 		},
 		{
 			field: 'estado',
 			headerName: 'Estado',
+			type: 'singleSelect',
 			editable: true,
+			valueOptions: [
+				{ value: 'pendiente', label: 'Pendiente' },
+				{ value: 'cancelado', label: 'Cancelado' },
+				{ value: 'confirmado', label: 'Confirmado' },
+			],
 			width: 150,
 		},
 	];
