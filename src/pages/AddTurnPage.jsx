@@ -9,6 +9,7 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { Alert, MenuItem } from '@mui/material';
 import url from '../data/url';
+import motivoTurnos from '../data/motivoTurnos';
 import { useState } from 'react';
 
 export default function AddTurn() {
@@ -118,24 +119,11 @@ export default function AddTurn() {
 								label="Motivo"
 								defaultValue="Consulta General"
 							>
-								<MenuItem key={'consulta'} value={'Consulta General'}>
-									Consulta General
-								</MenuItem>
-								<MenuItem key={'castracion'} value={'Castracion'}>
-									Castracion
-								</MenuItem>
-								<MenuItem key={'antirrabica'} value={'Vacuna Antirrabica'}>
-									Vacuna Antirrabica
-								</MenuItem>
-								<MenuItem
-									key={'antienfermedades'}
-									value={'Vacuna Antienfermedades'}
-								>
-									Vacuna Antienfermedades
-								</MenuItem>
-								<MenuItem key={'desparasitacion'} value={'Desparasitacion'}>
-									Desparasitacion
-								</MenuItem>
+								{motivoTurnos.map((motivo) => (
+									<MenuItem value={motivo} key={motivo}>
+										{motivo}
+									</MenuItem>
+								))}
 							</TextField>
 						</Grid>
 					</Grid>

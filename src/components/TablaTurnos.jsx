@@ -3,6 +3,7 @@ import url from '../data/url';
 import { DataGrid } from '@mui/x-data-grid';
 import Snackbar from '@mui/material/Snackbar';
 import Alert from '@mui/material/Alert';
+import motivoTurnos from '../data/motivoTurnos';
 
 function TablaTurnos() {
 	const token = localStorage.getItem('jwt');
@@ -60,6 +61,8 @@ function TablaTurnos() {
 			field: 'motivo',
 			headerName: 'Motivo',
 			editable: true,
+			type: 'singleSelect',
+			valueOptions: motivoTurnos,
 			width: 150,
 		},
 		{
