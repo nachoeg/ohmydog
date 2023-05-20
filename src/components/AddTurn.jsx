@@ -23,12 +23,11 @@ export default function AddTurn() {
 	const [perros, setPerros] = useState([]);
 
 	useEffect(() => {
-		obtenerPerros();
-		// .then((p)=>setPerros(p))
+		obtenerPerros().then((p) => setPerros(p));
 	}, []);
 
 	function obtenerPerros() {
-		fetch(url + 'perros/' + usuario.id, {
+		return fetch(url + 'perros/' + usuario.id, {
 			method: 'GET',
 			credentials: 'include',
 			headers: {
@@ -58,8 +57,7 @@ export default function AddTurn() {
 					severity: 'error',
 				});
 				return [];
-			})
-			.finally((p) => console.log(p));
+			});
 	}
 
 	const handleSubmit = (event) => {
@@ -75,7 +73,7 @@ export default function AddTurn() {
 			credentials: 'include',
 			mode: 'cors',
 			body: JSON.stringify({
-				idPerro: data.get('idPerro'),
+				idPerro: data.get('perros'),
 				fecha: data.get('fecha'),
 				motivo: data.get('motivo'),
 			}),
@@ -133,7 +131,7 @@ export default function AddTurn() {
 								defaultValue={''}
 							>
 								{perros.map((perro) => (
-									<MenuItem value={perro.nombre} key={perro.id}>
+									<MenuItem value={perro.id} key={perro.id}>
 										{perro.nombre}
 									</MenuItem>
 								))}
@@ -146,7 +144,7 @@ export default function AddTurn() {
 								type="date"
 								id="fecha"
 								label="Fecha"
-								name="Fecha"
+								name="fecha"
 								defaultValue={hoy}
 							/>
 						</Grid>
