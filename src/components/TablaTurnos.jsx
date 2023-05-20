@@ -1,9 +1,8 @@
 import { useEffect, useState, useCallback } from 'react';
 import url from '../data/url';
-import { DataGrid, GridActionsCellItem } from '@mui/x-data-grid';
+import { DataGrid } from '@mui/x-data-grid';
 import Snackbar from '@mui/material/Snackbar';
 import Alert from '@mui/material/Alert';
-import Delete from '@mui/icons-material/DeleteForever';
 
 function TablaTurnos() {
 	const token = localStorage.getItem('jwt');
@@ -47,15 +46,15 @@ function TablaTurnos() {
 	}
 
 	const columns = [
-	    {
-    	    field: 'idPerro',
-            headerName: 'ID Perro',
-            width: 150
-    	},
 		{
-		    field: 'fecha',
-		    headerName: 'Fecha',
-		    width: 150,
+			field: 'idPerro',
+			headerName: 'ID Perro',
+			width: 100,
+		},
+		{
+			field: 'fecha',
+			headerName: 'Fecha',
+			width: 150,
 		},
 		{
 			field: 'motivo',
@@ -68,7 +67,7 @@ function TablaTurnos() {
 			headerName: 'Estado',
 			editable: true,
 			width: 150,
-		}
+		},
 	];
 
 	const [snackbar, setSnackbar] = useState(null);
@@ -76,54 +75,53 @@ function TablaTurnos() {
 	const handleCloseSnackbar = () => setSnackbar(null);
 
 	function validarDatos(datos) {
-    		return (
-    			datos.estado.trim() != ''
-    		);
-    	}
+		return datos.estado.trim() != '';
+	}
 
-    	const processRowUpdate = useCallback(async (newRow, oldRow) => {
-    		if (!validarDatos(newRow)) {
-    			setSnackbar({
-    				children: 'No puede ingresar un campo vacio',
-    				severity: 'error',
-    			});
-    			return oldRow;
-    		}
-    		const response = await fetch(url + 'turnos/modify/' + newRow.id, {
-    			method: 'PUT',
-    			credentials: 'include',
-    			headers: {
-    				'Content-Type': 'application/json',
-    				token: `${token}`,
-    			},
-    			body: JSON.stringify(newRow),
-    		});
-    		if (response.ok) {
-    			setSnackbar({
-    				children: 'Turno procesado con exito',
-    				severity: 'success',
-    			});
-    			return newRow;
-    		}
-    		if (response.status == 500) {
-    			setSnackbar({
-    				children: 'Error al conectar con la base de datos',
-    				severity: 'error',
-    			});
-    		}
-    		return oldRow;
-    	}, []);
+	const processRowUpdate = useCallback(async (newRow, oldRow) => {
+		if (!validarDatos(newRow)) {
+			setSnackbar({
+				children: 'No puede ingresar un campo vacio',
+				severity: 'error',
+			});
+			return oldRow;
+		}
+		const response = await fetch(url + 'turnos/modify/' + newRow.id, {
+			method: 'PUT',
+			credentials: 'include',
+			headers: {
+				'Content-Type': 'application/json',
+				token: `${token}`,
+			},
+			body: JSON.stringify(newRow),
+		});
+		if (response.ok) {
+			setSnackbar({
+				children: 'Turno procesado con exito',
+				severity: 'success',
+			});
+			return newRow;
+		}
+		if (response.status == 500) {
+			setSnackbar({
+				children: 'Error al conectar con la base de datos',
+				severity: 'error',
+			});
+		}
+		return oldRow;
+	}, []);
 
-    const handleProcessRowUpdateError = useCallback((error) => {
-    	setSnackbar({ children: error.message, severity: 'error' });
-    }, []);
+	const handleProcessRowUpdateError = useCallback((error) => {
+		setSnackbar({ children: error.message, severity: 'error' });
+	}, []);
 
 	return (
-		<div style={{ height: 400, width: '55%' }}>
+		<div style={{ height: 400, width: '100%' }}>
 			<DataGrid
 				editMode="row"
 				rows={rows}
 				columns={columns}
+				processRowUpdate={processRowUpdate}
 				onProcessRowUpdateError={handleProcessRowUpdateError}
 				initialState={{
 					pagination: {

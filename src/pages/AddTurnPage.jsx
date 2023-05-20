@@ -4,7 +4,7 @@ import TextField from '@mui/material/TextField';
 import Grid from '@mui/material/Grid';
 import Snackbar from '@mui/material/Snackbar';
 import Box from '@mui/material/Box';
-import LockOutlinedIcon from '@mui/icons-material/PersonAdd';
+import EventIcon from '@mui/icons-material/Event';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { Alert, MenuItem } from '@mui/material';
@@ -29,7 +29,7 @@ export default function AddTurn() {
 			credentials: 'include',
 			mode: 'cors',
 			body: JSON.stringify({
-			    idPerro: data.get('idPerro'),
+				idPerro: data.get('idPerro'),
 				fecha: data.get('fecha'),
 				motivo: data.get('motivo'),
 			}),
@@ -56,6 +56,12 @@ export default function AddTurn() {
 			});
 	};
 
+	const perros = [
+		{ id: 1, nombre: 'Toro' },
+		{ id: 2, nombre: 'Kala' },
+	];
+	const hoy = new Date().toISOString().split('T')[0];
+
 	return (
 		<Container component="main" maxWidth="xs">
 			<Box
@@ -67,31 +73,39 @@ export default function AddTurn() {
 				}}
 			>
 				<Avatar sx={{ m: 1, bgcolor: 'primary.main' }}>
-					<LockOutlinedIcon />
+					<EventIcon />
 				</Avatar>
 				<Typography component="h1" variant="h5">
 					Solicitar turno
 				</Typography>
 				<Box component="form" onSubmit={handleSubmit} sx={{ mt: 3 }}>
 					<Grid container spacing={2}>
-					    <Grid item xs={12} sm={6}>
-                    		<TextField
-                    		    required
-                    			fullWidth
-                    		    id="idPerro"
-                    			label="Perro"
-                    			name="idPerro"
-                    			autoComplete="perro"
-                    			/>
-                    	</Grid>
 						<Grid item xs={12} sm={6}>
 							<TextField
 								required
 								fullWidth
+								select
+								id="perros"
+								name="perros"
+								label="Perro"
+								defaultValue={''}
+							>
+								{perros.map((perro) => (
+									<MenuItem value={perro.nombre} key={perro.id}>
+										{perro.nombre}
+									</MenuItem>
+								))}
+							</TextField>
+						</Grid>
+						<Grid item xs={12} sm={6}>
+							<TextField
+								required
+								fullWidth
+								type="date"
 								id="fecha"
 								label="Fecha"
 								name="Fecha"
-								autoComplete="family-name"
+								defaultValue={hoy}
 							/>
 						</Grid>
 						<Grid item xs={12}>
@@ -102,7 +116,7 @@ export default function AddTurn() {
 								fullWidth
 								name="motivo"
 								label="Motivo"
-								defaultValue="consulta"
+								defaultValue="Consulta General"
 							>
 								<MenuItem key={'consulta'} value={'Consulta General'}>
 									Consulta General
@@ -111,14 +125,17 @@ export default function AddTurn() {
 									Castracion
 								</MenuItem>
 								<MenuItem key={'antirrabica'} value={'Vacuna Antirrabica'}>
-                                	Vacuna Antirrabica
-                                </MenuItem>
-                                <MenuItem key={'antienfermedades'} value={'Vacuna Antienfermedades'}>
-                                   Vacuna Antienfermedades
-                                </MenuItem>
-                                <MenuItem key={'desparasitacion'} value={'Desparasitacion'}>
-                                    Desparasitacion
-                                </MenuItem>
+									Vacuna Antirrabica
+								</MenuItem>
+								<MenuItem
+									key={'antienfermedades'}
+									value={'Vacuna Antienfermedades'}
+								>
+									Vacuna Antienfermedades
+								</MenuItem>
+								<MenuItem key={'desparasitacion'} value={'Desparasitacion'}>
+									Desparasitacion
+								</MenuItem>
 							</TextField>
 						</Grid>
 					</Grid>
@@ -128,7 +145,7 @@ export default function AddTurn() {
 						variant="contained"
 						sx={{ mt: 3, mb: 2 }}
 					>
-						Registrar
+						Solicitar turno
 					</Button>
 					{!!snackbar && (
 						<Snackbar

@@ -1,32 +1,31 @@
-import AddIcon from '@mui/icons-material/Add';
 import { Container } from '@mui/material';
-import Button from '@mui/material/Button';
-import { NavLink } from 'react-router-dom';
 import TablaTurnos from '../components/TablaTurnos';
+import { useContext } from 'react';
+import { Context } from '../context/Context';
+import AddTurn from './AddTurnPage';
 
 function TurnosPage() {
+	const { usuario } = useContext(Context);
+
 	return (
-		<Container
-			component="main"
-			maxWidth="lg"
-			sx={{
-				display: 'flex',
-				alignItems: 'center',
-				flexDirection: 'column',
-				mt: 4,
-			}}
-		>
-			<TablaTurnos />
-			<NavLink to="/turnos/register" style={{ textDecoration: 'none', width: '55%' }}>
-				<Button
-					startIcon={<AddIcon />}
-					sx={{ mt: 2, width: '100%' }}
-					variant="contained"
+		<>
+			{usuario.rol == 'veterinario' ? (
+				<Container
+					component="main"
+					maxWidth="sm"
+					sx={{
+						display: 'flex',
+						alignItems: 'center',
+						flexDirection: 'column',
+						mt: 4,
+					}}
 				>
-					Solicitar Turno
-				</Button>
-			</NavLink>
-		</Container>
+					<TablaTurnos />
+				</Container>
+			) : (
+				<AddTurn />
+			)}
+		</>
 	);
 }
 

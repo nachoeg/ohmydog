@@ -47,7 +47,6 @@ function App() {
 						<Route path="perfil" element={<ProfilePage />} />
 						<Route path="usuarios" element={<UsersPage />} />
 						<Route path="turnos" element={<TurnosPage />} />
-						<Route path="turnos/register" element={<AddTurnPage />} />
 						<Route path="misperros" element={<MyDogsPage />} />
 						<Route path="*" element={<NotFoundPage />} />
 					</Route>
