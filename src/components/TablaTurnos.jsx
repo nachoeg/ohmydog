@@ -35,6 +35,15 @@ function TablaTurnos() {
 					return [];
 				}
 			})
+			.then((turnos) => {
+				if (turnos.length == 0) {
+					setSnackbar({
+						children: 'La tabla de turnos esta vacia',
+						severity: 'info',
+					});
+				}
+				return turnos;
+			})
 			.catch((error) => {
 				console.error('Error en el fetch: ' + error);
 
