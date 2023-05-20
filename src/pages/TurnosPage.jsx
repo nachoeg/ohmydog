@@ -2,7 +2,7 @@ import { Container } from '@mui/material';
 import TablaTurnos from '../components/TablaTurnos';
 import { useContext } from 'react';
 import { Context } from '../context/Context';
-import AddTurn from './AddTurnPage';
+import AddTurn from '../components/AddTurn';
 
 function TurnosPage() {
 	const { usuario } = useContext(Context);

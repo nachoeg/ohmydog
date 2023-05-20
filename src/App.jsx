@@ -6,7 +6,6 @@ import LogInPage from './pages/LogInPage';
 import HomePage from './pages/HomePage';
 import NotFoundPage from './pages/NotFoundPage';
 import SignUpPage from './pages/SignUpPage';
-import AddTurnPage from './pages/AddTurnPage';
 import UsersPage from './pages/UsersPage';
 import TurnosPage from './pages/TurnosPage';
 import Navbar from './components/Navbar';
