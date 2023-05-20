@@ -81,6 +81,13 @@ function ProfilePage() {
 			});
 			return;
 		}
+		if (response.status == 403) {
+        	setSnackbar({
+        		children: 'El email ingresado ya está en uso',
+        		severity: 'error',
+        	});
+        	return;
+        }
 		setSnackbar({
 			children: 'Error al conectar con la base de datos',
 			severity: 'error',
