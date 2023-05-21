@@ -2,17 +2,16 @@ import Link from '@mui/material/Link';
 import Avatar from '@mui/material/Avatar';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
+import { NavLink } from 'react-router-dom';
 
 function Logotipo() {
 	return (
-		<Link
-			href="/"
-			underline="none"
-			sx={{
+		<NavLink
+			to="/"
+			style={{
 				textDecoration: 'none',
-				mr: { xs: 0, sm: 2 },
+				color: '#0197b2',
 				display: 'flex',
-				flexDirection: 'row',
 			}}
 		>
 			<Avatar
@@ -25,7 +24,11 @@ function Logotipo() {
 				src="/logo.png"
 			/>
 			<Box
-				sx={{ display: { xs: 'none', sm: 'flex' }, flexDirection: 'column' }}
+				sx={{
+					display: { xs: 'none', sm: 'flex' },
+					flexDirection: 'column',
+					marginRight: { xs: 0, sm: 3 },
+				}}
 			>
 				<Typography
 					variant="h5"
@@ -49,7 +52,7 @@ function Logotipo() {
 					VETERINARIA
 				</Typography>
 			</Box>
-		</Link>
+		</NavLink>
 	);
 }
 
