@@ -31,9 +31,21 @@ function ProfilePage() {
 		JSON.parse(localStorage.getItem('usuario'))
 	);
 
+	const [localidad, setLocalidad] = useState('');
+	const [direccion, setDireccion] = useState('');
+	const [telefono, setTelefono] = useState('');
+	const [email, setEmail] = useState('');
+
 	useEffect(() => {
 		setUsuario(JSON.parse(localStorage.getItem('usuario')));
 	}, []);
+
+	useEffect(() => {
+		setDireccion(usuario.direccion);
+		setTelefono(usuario.telefono);
+		setEmail(usuario.email);
+		setLocalidad(usuario.localidad);
+	}, [usuario]);
 
 	if (usuario == null) {
 		location.replace('/login');
@@ -65,6 +77,7 @@ function ProfilePage() {
 			body: JSON.stringify(user),
 		});
 		if (response.ok) {
+			setUsuario(user);
 			localStorage.setItem('usuario', JSON.stringify(user));
 
 			setSnackbar({
@@ -82,12 +95,12 @@ function ProfilePage() {
 			return;
 		}
 		if (response.status == 403) {
-        	setSnackbar({
-        		children: 'El email ingresado ya está en uso',
-        		severity: 'error',
-        	});
-        	return;
-        }
+			setSnackbar({
+				children: 'El email ingresado ya está en uso',
+				severity: 'error',
+			});
+			return;
+		}
 		setSnackbar({
 			children: 'Error al conectar con la base de datos',
 			severity: 'error',
@@ -95,7 +108,10 @@ function ProfilePage() {
 	};
 
 	const handleCancelarClick = () => {
-		//aca deberia de alguna forma volver al estado de los input con el valor de usuario
+		setLocalidad(usuario.localidad);
+		setEmail(usuario.email);
+		setTelefono(usuario.telefono);
+		setDireccion(usuario.direccion);
 		setEditar(false);
 	};
 
@@ -170,7 +186,10 @@ function ProfilePage() {
 								fullWidth
 								name="email"
 								id="email"
-								defaultValue={usuario.email}
+								value={email}
+								onChange={(event) => {
+									setEmail(event.target.value);
+								}}
 								variant="outlined"
 								size="small"
 							/>
@@ -191,7 +210,10 @@ function ProfilePage() {
 								type="number"
 								id="telefono"
 								name="telefono"
-								defaultValue={usuario.telefono}
+								value={telefono}
+								onChange={(event) => {
+									setTelefono(event.target.value);
+								}}
 								variant="outlined"
 								size="small"
 							/>
@@ -211,7 +233,10 @@ function ProfilePage() {
 								required
 								name="localidad"
 								id="localidad"
-								defaultValue={usuario.localidad}
+								value={localidad}
+								onChange={(event) => {
+									setLocalidad(event.target.value);
+								}}
 								variant="outlined"
 								size="small"
 							/>
@@ -231,7 +256,10 @@ function ProfilePage() {
 								name="direccion"
 								fullWidth
 								id="direccion"
-								defaultValue={usuario.direccion}
+								value={direccion}
+								onChange={(event) => {
+									setDireccion(event.target.value);
+								}}
 								variant="outlined"
 								size="small"
 							/>
