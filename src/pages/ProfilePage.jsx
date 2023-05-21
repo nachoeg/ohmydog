@@ -57,9 +57,25 @@ function ProfilePage() {
 		setEditar(true);
 	};
 
+	function validarDatos(datos) {
+		return (
+			datos.get('email').trim() != '' &&
+			toString(datos.get('telefono')).trim() != '' &&
+			datos.get('localidad').trim() != '' &&
+			datos.get('direccion').trim() != ''
+		);
+	}
+
 	const handleSubmit = async (event) => {
 		event.preventDefault();
 		const data = new FormData(event.currentTarget);
+		if (!validarDatos(data)) {
+			setSnackbar({
+				children: 'No puede ingresar un campo vacio',
+				severity: 'error',
+			});
+			return;
+		}
 		const user = {
 			...usuario,
 			email: data.get('email'),
