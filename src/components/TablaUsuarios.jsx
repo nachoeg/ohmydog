@@ -30,7 +30,7 @@ function TablaUsuarios() {
 				} else {
 					if (response.status == 401) {
 						setSnackbar({
-							children: 'Error no esta autorizado para ver los usuarios',
+							children: 'No estas autorizado para ver los usuarios',
 							severity: 'error',
 						});
 					}
@@ -40,7 +40,7 @@ function TablaUsuarios() {
 			.then((usuarios) => {
 				if (usuarios.length == 0) {
 					setSnackbar({
-						children: 'La tabla de usuarios esta vacia',
+						children: 'La lista de usuarios clientes se encuentra vacia',
 						severity: 'info',
 					});
 				}
@@ -185,7 +185,7 @@ function TablaUsuarios() {
 		}
 		if (response.status == 403) {
 			setSnackbar({
-				children: 'El email ya está en uso',
+				children: 'El email ingresado ya está en uso',
 				severity: 'error',
 			});
 		}

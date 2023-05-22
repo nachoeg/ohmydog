@@ -38,7 +38,7 @@ function TablaTurnos() {
 			.then((turnos) => {
 				if (turnos.length == 0) {
 					setSnackbar({
-						children: 'La tabla de turnos esta vacia',
+						children: 'La lista de turnos se encuentra vacia',
 						severity: 'info',
 					});
 				}
