@@ -17,7 +17,7 @@ function UserDogsPage() {
             <TablaPerros idUsuario={idUsuario} />
             <NavLink to={`/agregarperro/${idUsuario}`} style={{ textDecoration: 'none', width: '50%' }}>
 				<Button startIcon={<AddIcon />} sx={{ mt: 2, width: '100%' }} variant="contained">
-					Agregar perro
+					Registrar perro
 				</Button>
 			</NavLink>
         </Container>

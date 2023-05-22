@@ -49,7 +49,7 @@ function LoadDogPage() {
             .then((response) => {
                 if (response.ok) {
                     setSnackbar({
-						children: 'Se agrego el perro.',
+						children: 'Registro exitoso.',
 						severity: 'success',
 					});
                 } else {
@@ -75,7 +75,7 @@ function LoadDogPage() {
 				sx={{ marginTop: 8, display: 'flex', flexDirection: 'column', alignItems: 'center', }} 
             >
 				<Typography component="h1" variant="h5">
-					Agregar perro
+					Registrar perro
 				</Typography>
                 
 				<Box component="form" onSubmit={handleSubmit} sx={{ mt: 3 }}>
@@ -120,13 +120,13 @@ function LoadDogPage() {
 								select
 								required
 								fullWidth
-								defaultValue="hembra"
+								defaultValue="Femenino"
 							>
-								<MenuItem key={'hembra'} value={'Hembra'}>
-                                    Hembra
+								<MenuItem key={'femenino'} value={'Femenino'}>
+                                    Femenino
 								</MenuItem>
-								<MenuItem key={'macho'} value={'Macho'}>
-                                    Macho
+								<MenuItem key={'masculino'} value={'Masculino'}>
+                                    Masculino
 								</MenuItem>
 							</TextField>
 						</Grid>
@@ -156,7 +156,7 @@ function LoadDogPage() {
 						variant="contained"
 						sx={{ mt: 3, mb: 2 }}
 					>
-						Agregar
+						Registrar
 					</Button>
 					{!!snackbar && (
 						<Snackbar
