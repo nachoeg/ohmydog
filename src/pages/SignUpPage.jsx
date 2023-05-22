@@ -49,19 +49,22 @@ export default function SignUp() {
 						children: 'Registro exitoso',
 						severity: 'success',
 					});
+					setTimeout(() => {
+						location.replace('/usuarios');
+					}, 1000);
 				}
 				if (response.status == 400) {
-                    setSnackbar({
-                        children: 'El email ingresado ya se encuentra registrado',
-                        severity: 'error',
-                    });
-                }
-                if (response.status == 403) {
-                    setSnackbar({
-                        children: 'El DNI ingresado ya se encuentra registrado',
-                        severity: 'error',
-                    });
-                }
+					setSnackbar({
+						children: 'El email ingresado ya se encuentra registrado',
+						severity: 'error',
+					});
+				}
+				if (response.status == 403) {
+					setSnackbar({
+						children: 'El DNI ingresado ya se encuentra registrado',
+						severity: 'error',
+					});
+				}
 			})
 			.catch((error) => {
 				setSnackbar({
