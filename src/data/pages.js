@@ -16,7 +16,7 @@ const pagesAdminUsers = [
 
 const settings = [
 	{ nombre: 'Perfil', url: '/perfil' },
-	{ nombre: 'Mis perros', url: '/misperros' },
+	{ nombre: 'Perros', url: '/misperros' },
 	{ nombre: 'Registrar usuario', url: '/signup' },
 	{ nombre: 'Solicitar turno', url: '/turnos/register' },
 ];
