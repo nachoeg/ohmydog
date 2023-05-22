@@ -84,12 +84,13 @@ export default function AddTurn() {
 						children: 'Solicitud exitosa. Verifique el estado de su turno en el perfil del perrito a atender.',
 						severity: 'success',
 					});
-				} else {
-					setSnackbar({
-						children: 'Error al conectar con la base de datos',
-						severity: 'error',
-					});
 				}
+				if (response.status == 400) {
+                    setSnackbar({
+                        children: 'El perro no cumple con los requisitos solicitados para vacunarse',
+                        severity: 'error',
+                    });
+                }
 			})
 			.catch((error) => {
 				setSnackbar({
