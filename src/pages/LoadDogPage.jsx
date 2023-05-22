@@ -52,6 +52,9 @@ function LoadDogPage() {
 						children: 'Registro exitoso.',
 						severity: 'success',
 					});
+					setTimeout(() => {
+						window.location.replace('/perrosusuario/'+idUsuario);
+					}, 1000);
                 } else {
                     setSnackbar({
 						children: 'Error al conectar con la base de datos',
