@@ -80,9 +80,9 @@ function TablaTurnos() {
 			type: 'singleSelect',
 			editable: true,
 			valueOptions: [
-				{ value: 'pendiente', label: 'Pendiente' },
-				{ value: 'cancelado', label: 'Cancelado' },
-				{ value: 'confirmado', label: 'Confirmado' },
+				{ value: 'Pendiente', label: 'Pendiente' },
+				{ value: 'Cancelado', label: 'Cancelado' },
+				{ value: 'Confirmado', label: 'Confirmado' },
 			],
 			width: 150,
 		},

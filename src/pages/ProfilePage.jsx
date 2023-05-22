@@ -15,7 +15,6 @@ import {
 	Snackbar,
 	Alert,
 } from '@mui/material';
-
 import EmailIcon from '@mui/icons-material/Email';
 import PhoneIcon from '@mui/icons-material/Phone';
 import MapIcon from '@mui/icons-material/Map';
@@ -23,28 +22,35 @@ import MapsHomeWorkIcon from '@mui/icons-material/MapsHomeWork';
 import { useEffect, useState } from 'react';
 import { Close, Edit, Save } from '@mui/icons-material';
 import url from '../data/url';
-
 function ProfilePage() {
 	const token = localStorage.getItem('jwt');
-
 	const [usuario, setUsuario] = useState(
 		JSON.parse(localStorage.getItem('usuario'))
 	);
+
+	const [localidad, setLocalidad] = useState('');
+	const [direccion, setDireccion] = useState('');
+	const [telefono, setTelefono] = useState('');
+	const [email, setEmail] = useState('');
 
 	useEffect(() => {
 		setUsuario(JSON.parse(localStorage.getItem('usuario')));
 	}, []);
 
+	useEffect(() => {
+		setDireccion(usuario.direccion);
+		setTelefono(usuario.telefono);
+		setEmail(usuario.email);
+		setLocalidad(usuario.localidad);
+	}, [usuario]);
+
 	if (usuario == null) {
 		location.replace('/login');
 	}
-
 	const [editar, setEditar] = useState(false);
-
 	const handleEditarClick = () => {
 		setEditar(true);
 	};
-
 	const handleSubmit = async (event) => {
 		event.preventDefault();
 		const data = new FormData(event.currentTarget);
@@ -65,6 +71,7 @@ function ProfilePage() {
 			body: JSON.stringify(user),
 		});
 		if (response.ok) {
+			setUsuario(user);
 			localStorage.setItem('usuario', JSON.stringify(user));
 
 			setSnackbar({
@@ -81,6 +88,13 @@ function ProfilePage() {
 			});
 			return;
 		}
+		if (response.status == 403) {
+			setSnackbar({
+				children: 'El email ingresado ya está en uso',
+				severity: 'error',
+			});
+			return;
+		}
 		setSnackbar({
 			children: 'Error al conectar con la base de datos',
 			severity: 'error',
@@ -88,7 +102,10 @@ function ProfilePage() {
 	};
 
 	const handleCancelarClick = () => {
-		//aca deberia de alguna forma volver al estado de los input con el valor de usuario
+		setLocalidad(usuario.localidad);
+		setEmail(usuario.email);
+		setTelefono(usuario.telefono);
+		setDireccion(usuario.direccion);
 		setEditar(false);
 	};
 
@@ -102,7 +119,6 @@ function ProfilePage() {
 			Editar
 		</Button>
 	);
-
 	const GuardarBoton = () => (
 		<Button
 			startIcon={<Save />}
@@ -114,7 +130,6 @@ function ProfilePage() {
 			Guardar
 		</Button>
 	);
-
 	const CancelarBoton = () => (
 		<Button
 			startIcon={<Close />}
@@ -126,11 +141,8 @@ function ProfilePage() {
 			Cancelar
 		</Button>
 	);
-
 	const [snackbar, setSnackbar] = useState(null);
-
 	const handleCloseSnackbar = () => setSnackbar(null);
-
 	return (
 		<Container component="main" maxWidth="sm">
 			<Card sx={{ padding: '10px', marginTop: 8 }}>
@@ -163,7 +175,10 @@ function ProfilePage() {
 								fullWidth
 								name="email"
 								id="email"
-								defaultValue={usuario.email}
+								value={email}
+								onChange={(event) => {
+									setEmail(event.target.value);
+								}}
 								variant="outlined"
 								size="small"
 							/>
@@ -184,7 +199,10 @@ function ProfilePage() {
 								type="number"
 								id="telefono"
 								name="telefono"
-								defaultValue={usuario.telefono}
+								value={telefono}
+								onChange={(event) => {
+									setTelefono(event.target.value);
+								}}
 								variant="outlined"
 								size="small"
 							/>
@@ -204,7 +222,10 @@ function ProfilePage() {
 								required
 								name="localidad"
 								id="localidad"
-								defaultValue={usuario.localidad}
+								value={localidad}
+								onChange={(event) => {
+									setLocalidad(event.target.value);
+								}}
 								variant="outlined"
 								size="small"
 							/>
@@ -224,7 +245,10 @@ function ProfilePage() {
 								name="direccion"
 								fullWidth
 								id="direccion"
-								defaultValue={usuario.direccion}
+								value={direccion}
+								onChange={(event) => {
+									setDireccion(event.target.value);
+								}}
 								variant="outlined"
 								size="small"
 							/>
@@ -259,5 +283,4 @@ function ProfilePage() {
 		</Container>
 	);
 }
-
 export default ProfilePage;

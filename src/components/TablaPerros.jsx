@@ -1,7 +1,7 @@
 import { Context } from '../context/Context';
 import { useEffect, useState, useCallback, useContext } from 'react';
 import url from '../data/url';
-import { DataGrid, GridActionsCellItem } from '@mui/x-data-grid';
+import { DataGrid, GridActionsCellItem, GridOverlay } from '@mui/x-data-grid';
 import Snackbar from '@mui/material/Snackbar';
 import Alert from '@mui/material/Alert';
 import Delete from '@mui/icons-material/DeleteForever';
@@ -171,18 +171,30 @@ function TablaPerros(props) {
         });
     }
 
+    // Para cambiar el mensaje que muestra si no hay perros
+    const CustomNoRowsOverlay = () => {
+        return (
+          <GridOverlay>
+            <div>No hay perros cargados</div>
+          </GridOverlay>
+        );
+      };
+
     return <div>
         <div style={{ height: 400, width: '100%' }}>
             <DataGrid
                 editMode="row"
                 rows={rows}
                 columns={columns}
-            processRowUpdate={processRowUpdate}
-            onProcessRowUpdateError={handleProcessRowUpdateError}
-            initialState={{ pagination: {
-            		paginationModel: { page: 0, pageSize: 5 } }
-            }}
-            pageSizeOptions={[5, 10]}
+				processRowUpdate={processRowUpdate}
+                onProcessRowUpdateError={handleProcessRowUpdateError}
+                initialState={{ pagination: {
+            		    paginationModel: { page: 0, pageSize: 5 } }
+                }}
+                pageSizeOptions={[5, 10]}
+                components={{
+                    NoRowsOverlay: CustomNoRowsOverlay,
+                  }}
             />
 
             {!!snackbar && (
