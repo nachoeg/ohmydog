@@ -71,14 +71,14 @@ function TablaPerros(props) {
                     return response.json();
                 } else {
                     if (response.status == 401) {
-                        console.log("No esta autorizado a ver los perros.");
+                        console.log("No estas autorizado a ver los perros.");
                     }
                     return [];
                 }
             })
             .then((perros) => {
                 if (perros.length == 0) {
-                    console.log("La tabla de perros esta vacia.");
+                    console.log("La lista de perros se encuentra vacia.");
                 }
                 return perros;
             })
