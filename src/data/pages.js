@@ -11,6 +11,7 @@ const pagesLoggedUsers = [...pages, { nombre: 'Turnos', url: '/turnos' }];
 const pagesAdminUsers = [
 	...pagesLoggedUsers,
 	{ nombre: 'Usuarios', url: '/usuarios' },
+	{ nombre: 'Perros', url: '/perros' },
 ];
 
 const settings = [

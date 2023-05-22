@@ -13,6 +13,7 @@ import ProfilePage from './pages/ProfilePage';
 import MyDogsPage from './pages/MyDogsPage';
 import LoadDogPage from './pages/LoadDogPage';
 import UserDogsPage from './pages/UserDogsPage';
+import AllDogsPage from './pages/AllDogsPage';
 
 function App() {
 	const theme = createTheme({
@@ -48,6 +49,7 @@ function App() {
 						<Route path="usuarios" element={<UsersPage />} />
 						<Route path="turnos" element={<TurnosPage />} />
 						<Route path="misperros" element={<MyDogsPage />} />
+						<Route path="perros" element={<AllDogsPage />} />
 						<Route path="agregarperro/:idUsuario" element={<LoadDogPage />} />
 						<Route path="perrosusuario/:idUsuario" element={<UserDogsPage />} />
 						<Route path="*" element={<NotFoundPage />} />
