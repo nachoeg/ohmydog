@@ -167,7 +167,7 @@ function ProfilePage() {
 						</ListItemIcon>
 						<ListItemText>
 							<TextField
-								label="Correo Eletrónico"
+								label="Correo Electrónico"
 								InputProps={{
 									readOnly: !editar,
 								}}
