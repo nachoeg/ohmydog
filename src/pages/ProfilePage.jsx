@@ -31,21 +31,9 @@ function ProfilePage() {
 		JSON.parse(localStorage.getItem('usuario'))
 	);
 
-	const [localidad, setLocalidad] = useState('');
-	const [direccion, setDireccion] = useState('');
-	const [telefono, setTelefono] = useState('');
-	const [email, setEmail] = useState('');
-
 	useEffect(() => {
 		setUsuario(JSON.parse(localStorage.getItem('usuario')));
 	}, []);
-
-	useEffect(() => {
-		setDireccion(usuario.direccion);
-		setTelefono(usuario.telefono);
-		setEmail(usuario.email);
-		setLocalidad(usuario.localidad);
-	}, [usuario]);
 
 	if (usuario == null) {
 		location.replace('/login');
@@ -57,25 +45,9 @@ function ProfilePage() {
 		setEditar(true);
 	};
 
-	function validarDatos(datos) {
-		return (
-			datos.get('email').trim() != '' &&
-			toString(datos.get('telefono')).trim() != '' &&
-			datos.get('localidad').trim() != '' &&
-			datos.get('direccion').trim() != ''
-		);
-	}
-
 	const handleSubmit = async (event) => {
 		event.preventDefault();
 		const data = new FormData(event.currentTarget);
-		if (!validarDatos(data)) {
-			setSnackbar({
-				children: 'No puede ingresar un campo vacio',
-				severity: 'error',
-			});
-			return;
-		}
 		const user = {
 			...usuario,
 			email: data.get('email'),
@@ -93,7 +65,6 @@ function ProfilePage() {
 			body: JSON.stringify(user),
 		});
 		if (response.ok) {
-			setUsuario(user);
 			localStorage.setItem('usuario', JSON.stringify(user));
 
 			setSnackbar({
@@ -110,13 +81,6 @@ function ProfilePage() {
 			});
 			return;
 		}
-		if (response.status == 403) {
-			setSnackbar({
-				children: 'El email ingresado ya está en uso',
-				severity: 'error',
-			});
-			return;
-		}
 		setSnackbar({
 			children: 'Error al conectar con la base de datos',
 			severity: 'error',
@@ -124,10 +88,7 @@ function ProfilePage() {
 	};
 
 	const handleCancelarClick = () => {
-		setLocalidad(usuario.localidad);
-		setEmail(usuario.email);
-		setTelefono(usuario.telefono);
-		setDireccion(usuario.direccion);
+		//aca deberia de alguna forma volver al estado de los input con el valor de usuario
 		setEditar(false);
 	};
 
@@ -202,10 +163,7 @@ function ProfilePage() {
 								fullWidth
 								name="email"
 								id="email"
-								value={email}
-								onChange={(event) => {
-									setEmail(event.target.value);
-								}}
+								defaultValue={usuario.email}
 								variant="outlined"
 								size="small"
 							/>
@@ -226,10 +184,7 @@ function ProfilePage() {
 								type="number"
 								id="telefono"
 								name="telefono"
-								value={telefono}
-								onChange={(event) => {
-									setTelefono(event.target.value);
-								}}
+								defaultValue={usuario.telefono}
 								variant="outlined"
 								size="small"
 							/>
@@ -249,10 +204,7 @@ function ProfilePage() {
 								required
 								name="localidad"
 								id="localidad"
-								value={localidad}
-								onChange={(event) => {
-									setLocalidad(event.target.value);
-								}}
+								defaultValue={usuario.localidad}
 								variant="outlined"
 								size="small"
 							/>
@@ -272,10 +224,7 @@ function ProfilePage() {
 								name="direccion"
 								fullWidth
 								id="direccion"
-								value={direccion}
-								onChange={(event) => {
-									setDireccion(event.target.value);
-								}}
+								defaultValue={usuario.direccion}
 								variant="outlined"
 								size="small"
 							/>

@@ -11,6 +11,8 @@ import TurnosPage from './pages/TurnosPage';
 import Navbar from './components/Navbar';
 import ProfilePage from './pages/ProfilePage';
 import MyDogsPage from './pages/MyDogsPage';
+import LoadDogPage from './pages/LoadDogPage';
+import UserDogsPage from './pages/UserDogsPage';
 
 function App() {
 	const theme = createTheme({
@@ -37,7 +39,6 @@ function App() {
 		<BrowserRouter>
 			<ThemeProvider theme={theme}>
 				<CssBaseline />
-
 				<Routes>
 					<Route path="/" element={<Navbar />}>
 						<Route index element={<HomePage />} />
@@ -47,6 +48,8 @@ function App() {
 						<Route path="usuarios" element={<UsersPage />} />
 						<Route path="turnos" element={<TurnosPage />} />
 						<Route path="misperros" element={<MyDogsPage />} />
+						<Route path="agregarperro/:idUsuario" element={<LoadDogPage />} />
+						<Route path="perrosusuario/:idUsuario" element={<UserDogsPage />} />
 						<Route path="*" element={<NotFoundPage />} />
 					</Route>
 				</Routes>

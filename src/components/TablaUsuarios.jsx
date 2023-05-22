@@ -4,6 +4,8 @@ import { DataGrid, GridActionsCellItem } from '@mui/x-data-grid';
 import Snackbar from '@mui/material/Snackbar';
 import Alert from '@mui/material/Alert';
 import Delete from '@mui/icons-material/DeleteForever';
+import Button from '@mui/material/Button';
+import { NavLink } from 'react-router-dom';
 
 function TablaUsuarios() {
 	const token = localStorage.getItem('jwt');
@@ -28,7 +30,7 @@ function TablaUsuarios() {
 				} else {
 					if (response.status == 401) {
 						setSnackbar({
-							children: 'No estas autorizado para ver los usuarios clientes',
+							children: 'Error no esta autorizado para ver los usuarios',
 							severity: 'error',
 						});
 					}
@@ -38,7 +40,7 @@ function TablaUsuarios() {
 			.then((usuarios) => {
 				if (usuarios.length == 0) {
 					setSnackbar({
-						children: 'La lista de usuarios clientes se encuentra vacia',
+						children: 'La tabla de usuarios esta vacia',
 						severity: 'info',
 					});
 				}
@@ -92,19 +94,30 @@ function TablaUsuarios() {
 		},
 		{
 			field: 'actions',
-			type: 'actions',
-			width: 50,
-			cellClassName: 'actions',
-			getActions: ({ id }) => {
-				return [
-					<GridActionsCellItem
-						icon={<Delete />}
-						key=""
-						label="Delete"
-						onClick={handleDeleteClick(id)}
-						color="inherit"
-					/>,
-				];
+			headerName: '',
+			width: 200,
+			renderCell: (params) => {
+				const { id } = params.row;
+				return (
+					<>
+						<NavLink to={`/perrosusuario/${id}`}  style={{ textDecoration: 'none', display: 'flex', justifyContent: 'center' }}>
+							<Button style={{
+								border: 'none',
+								background: 'none',
+								fontSize: '0.8em',
+							}}>
+								Ver perros
+							</Button>
+						</NavLink>
+						<GridActionsCellItem
+							icon={<Delete />}
+							key="delete"
+							label="Delete"
+							onClick={handleDeleteClick(id)}
+							color="inherit"
+						/>
+					</>
+				);
 			},
 		},
 	];
@@ -165,14 +178,14 @@ function TablaUsuarios() {
 		});
 		if (response.ok) {
 			setSnackbar({
-				children: 'Modificacion realizada con exito',
+				children: 'Usuario guardado con exito',
 				severity: 'success',
 			});
 			return newRow;
 		}
 		if (response.status == 403) {
 			setSnackbar({
-				children: 'El email ingresado ya está en uso',
+				children: 'El email ya está en uso',
 				severity: 'error',
 			});
 		}

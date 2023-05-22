@@ -81,7 +81,7 @@ export default function AddTurn() {
 			.then((response) => {
 				if (response.ok) {
 					setSnackbar({
-						children: 'Solicitud exitosa. Verifique el estado de su turno en el perfil del perrito a atender.',
+						children: 'Registro exitoso',
 						severity: 'success',
 					});
 				} else {

@@ -38,7 +38,7 @@ function TablaTurnos() {
 			.then((turnos) => {
 				if (turnos.length == 0) {
 					setSnackbar({
-						children: 'La lista de turnos se encuentra vacia',
+						children: 'La tabla de turnos esta vacia',
 						severity: 'info',
 					});
 				}
@@ -80,9 +80,9 @@ function TablaTurnos() {
 			type: 'singleSelect',
 			editable: true,
 			valueOptions: [
-				{ value: 'Pendiente', label: 'Pendiente' },
-				{ value: 'Cancelado', label: 'Cancelado' },
-				{ value: 'Confirmado', label: 'Confirmado' },
+				{ value: 'pendiente', label: 'Pendiente' },
+				{ value: 'cancelado', label: 'Cancelado' },
+				{ value: 'confirmado', label: 'Confirmado' },
 			],
 			width: 150,
 		},
