@@ -184,7 +184,7 @@ function ResponsiveAppBar() {
 									</NavLink>
 									{usuario.rol == 'cliente' && (
 										<NavLink
-											key={'Mis perros'}
+											key={'Perros'}
 											to={'/misperros'}
 											style={{
 												textDecoration: 'none',
@@ -193,7 +193,7 @@ function ResponsiveAppBar() {
 										>
 											<MenuItem onClick={handleCloseUserMenu}>
 												<PetsIcon sx={{ mr: '4px' }} />
-												<Typography>Mis perros</Typography>
+												<Typography>Perros</Typography>
 											</MenuItem>
 										</NavLink>
 									)}
