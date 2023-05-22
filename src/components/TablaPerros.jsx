@@ -91,13 +91,64 @@ function TablaPerros(props) {
     // Establece las columnas a mostrar de la tabla de perros.
     const columns = [
         // Datos de los perros: ID, nombre, raza, edad, enfermedad, sexo y caracteristicas
-        { field: 'id', headerName: 'ID', width: 50, id: 'id' },
-        { field: 'nombre', headerName: 'Nombre', width: 100 },
-        { field: 'raza', headerName: 'Raza', width: 100 },
-        { field: 'sexo', headerName: 'Sexo', width: 100 },
-        { field: 'caracteristicas', headerName: 'Caracteristicas', width: 200 },
-        { field: 'enfermedad', headerName: 'Enfermedad', width: 200 },
+        { field: 'id', headerName: 'ID', width: 50, id: 'id', },
+        { field: 'nombre', headerName: 'Nombre', width: 100, editable: true, },
+        { field: 'raza', headerName: 'Raza', width: 100, editable: true, },
+        { field: 'sexo', headerName: 'Sexo', width: 100, editable: true, },
+        { field: 'caracteristicas', headerName: 'Caracteristicas', width: 200, editable: true, },
+        { field: 'enfermedad', headerName: 'Enfermedad', width: 200, editable: true },
     ];
+
+    // Funcion para validar los datos al modificarlos
+    function validarDatos(datos) {
+		return (
+			datos.nombre.trim() !== '' &&
+            datos.edad.toString().trim() !== '' &&
+			datos.raza.trim() !== '' &&
+			datos.caracteristicas.trim() !== '' &&
+            datos.enfermedad.trim() !== '' &&
+            datos.sexo.trim() !== ''
+		);
+	}
+
+    // Fetch de modificacion de los datos de un perro
+    const processRowUpdate = useCallback(async (newRow, oldRow) => {
+		if (!validarDatos(newRow)) {
+			setSnackbar({
+				children: 'No puede ingresar un campo vacio.',
+				severity: 'error',
+			});
+			return oldRow;
+		}
+		const response = await fetch(url + 'perros/modify/' + newRow.id, {
+			method: 'PUT',
+			credentials: 'include',
+			headers: {
+				'Content-Type': 'application/json',
+				token: `${token}`,
+			},
+			body: JSON.stringify(newRow),
+		});
+		if (response.ok) {
+			setSnackbar({
+				children: 'Perro modificado con exito',
+				severity: 'success',
+			});
+			return newRow;
+		}
+		if (response.status == 500) {
+			setSnackbar({
+				children: 'Error al conectar con la base de datos',
+				severity: 'error',
+			});
+		}
+		return oldRow;
+	}, []);
+
+    // Manejador de errores en el update (modificacion)
+    const handleProcessRowUpdateError = useCallback((error) => {
+		setSnackbar({ children: error.message, severity: 'error' });
+	}, []);
 
     // Si es veterinario se agrega la columna que permite borrar
     if (esVeterinario) {
@@ -126,12 +177,12 @@ function TablaPerros(props) {
                 editMode="row"
                 rows={rows}
                 columns={columns}
-            //processRowUpdate={processRowUpdate}
-            //onProcessRowUpdateError={handleProcessRowUpdateError}
-            //initialState={{ pagination: {
-            //		paginationModel: { page: 0, pageSize: 5 } }
-            //}}
-            //pageSizeOptions={[5, 10]}
+            processRowUpdate={processRowUpdate}
+            onProcessRowUpdateError={handleProcessRowUpdateError}
+            initialState={{ pagination: {
+            		paginationModel: { page: 0, pageSize: 5 } }
+            }}
+            pageSizeOptions={[5, 10]}
             />
 
             {!!snackbar && (
