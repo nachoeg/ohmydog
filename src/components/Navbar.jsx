@@ -144,14 +144,17 @@ function ResponsiveAppBar() {
 												{
 													my: 2,
 													mx: '2px',
+													color: 'primary.main',
 													display: 'block',
+													paddingInline: 1,
 												},
 												isActive && {
-													'&:hover': { bgcolor: 'primary.darker' },
-													bgcolor: 'primary.main',
+													// '&:hover': { bgcolor: 'primary.darker' },
+													// bgcolor: 'primary.main',
 													color: 'white',
 												},
 											]}
+											variant={isActive && 'contained'}
 										>
 											{page.nombre}
 										</Button>
