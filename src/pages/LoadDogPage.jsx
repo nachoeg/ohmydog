@@ -9,78 +9,84 @@ import { Alert, MenuItem } from '@mui/material';
 import url from '../data/url';
 import { useState } from 'react';
 import { useLocation } from 'react-router-dom'; // Para obtener el parametro pasado por la url
+import { razas, enfermedades } from '../data/perros';
 
 function LoadDogPage() {
-    // Obtiene el id del usuario que se pasa como parametro en la url
-    const location = useLocation();
-    const idUsuario = location.pathname.split('/')[2];
-    const token = localStorage.getItem('jwt'); // Se obtiene el token del admin
+	// Obtiene el id del usuario que se pasa como parametro en la url
+	const location = useLocation();
+	const idUsuario = location.pathname.split('/')[2];
+	const token = localStorage.getItem('jwt'); // Se obtiene el token del admin
 
-    // Se declara una snackbar para mostrar mensajes
-    const [snackbar, setSnackbar] = useState(null);
-    const handleCloseSnackbar = () => setSnackbar(null);
+	// Se declara una snackbar para mostrar mensajes
+	const [snackbar, setSnackbar] = useState(null);
+	const handleCloseSnackbar = () => setSnackbar(null);
 
-    // Manejador del boton submit del formulario
-    const handleSubmit = (event) => {
-        event.preventDefault(); // Se elimina las acciones default del formulario
-        // Almacena la informacion del formulario, currentTarget hace referencia al formulario actual
-        const data = new FormData(event.currentTarget);
-        
-        // Se realiza el fetch con la BD y se manda en el cuerpo del mensaje los datos del formulario
-        // Datos de los perros: ID del usuario, nombre, raza, edad, enfermedad, sexo y caracteristicas
-        fetch(url + 'perros/register', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                token: `${token}`,
-            },
-            credentials: 'include',
-            mode: 'cors',
-            body: JSON.stringify({
-                idUsuario: idUsuario,
-                nombre: data.get('nombre'),
-                raza: data.get('raza'),
-                edad: data.get('edad'),
-                enfermedad: data.get('enfermedad'),
-                sexo: data.get('sexo'),
-                caracteristicas: data.get('caracteristicas')
-            }),
-        })
-            .then((response) => {
-                if (response.ok) {
-                    setSnackbar({
+	// Manejador del boton submit del formulario
+	const handleSubmit = (event) => {
+		event.preventDefault(); // Se elimina las acciones default del formulario
+		// Almacena la informacion del formulario, currentTarget hace referencia al formulario actual
+		const data = new FormData(event.currentTarget);
+
+		// Se realiza el fetch con la BD y se manda en el cuerpo del mensaje los datos del formulario
+		// Datos de los perros: ID del usuario, nombre, raza, edad, enfermedad, sexo y caracteristicas
+		fetch(url + 'perros/register', {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json',
+				token: `${token}`,
+			},
+			credentials: 'include',
+			mode: 'cors',
+			body: JSON.stringify({
+				idUsuario: idUsuario,
+				nombre: data.get('nombre'),
+				raza: data.get('raza'),
+				edad: data.get('edad'),
+				enfermedad: data.get('enfermedad'),
+				sexo: data.get('sexo'),
+				caracteristicas: data.get('caracteristicas'),
+			}),
+		})
+			.then((response) => {
+				if (response.ok) {
+					setSnackbar({
 						children: 'Registro exitoso.',
 						severity: 'success',
 					});
 					setTimeout(() => {
-						window.location.replace('/perrosusuario/'+idUsuario);
+						window.location.replace('/perrosusuario/' + idUsuario);
 					}, 1000);
-                } else {
-                    setSnackbar({
+				} else {
+					setSnackbar({
 						children: 'Error al conectar con la base de datos',
 						severity: 'error',
 					});
-                }
-            })
-            .catch((error) => {
-                setSnackbar({
+				}
+			})
+			.catch((error) => {
+				setSnackbar({
 					children: 'Error al conectar con la base de datos',
 					severity: 'error',
 				});
-                console.error(error);
-            });
-    };
+				console.error(error);
+			});
+	};
 
-    // Datos de los perros: ID del usuario, nombre, raza, edad, enfermedad, sexo y caracteristicas
-    return (
-        <Container component="main" maxWidth="xs">
+	// Datos de los perros: ID del usuario, nombre, raza, edad, enfermedad, sexo y caracteristicas
+	return (
+		<Container component="main" maxWidth="xs">
 			<Box
-				sx={{ marginTop: 8, display: 'flex', flexDirection: 'column', alignItems: 'center', }} 
-            >
+				sx={{
+					marginTop: 8,
+					display: 'flex',
+					flexDirection: 'column',
+					alignItems: 'center',
+				}}
+			>
 				<Typography component="h1" variant="h5">
 					Registrar perro
 				</Typography>
-                
+
 				<Box component="form" onSubmit={handleSubmit} sx={{ mt: 3 }}>
 					<Grid container spacing={2}>
 						<Grid item xs={12} sm={6}>
@@ -90,16 +96,25 @@ function LoadDogPage() {
 								fullWidth
 								id="nombre"
 								label="Nombre"
-								autoFocus />
+								autoFocus
+							/>
 						</Grid>
 						<Grid item xs={12} sm={6}>
 							<TextField
 								required
 								fullWidth
+								select
 								id="raza"
 								label="Raza"
 								name="raza"
-							/>
+								defaultValue={''}
+							>
+								{razas.map((raza) => (
+									<MenuItem value={raza} key={raza}>
+										{raza}
+									</MenuItem>
+								))}
+							</TextField>
 						</Grid>
 						<Grid item xs={12} sm={6}>
 							<TextField
@@ -108,17 +123,17 @@ function LoadDogPage() {
 								id="edad"
 								label="Edad"
 								name="edad"
-                                type="number"
-                                inputProps={{
-                                    min: 1,
-                                    max: 39
-                                }}
+								type="number"
+								inputProps={{
+									min: 1,
+									max: 39,
+								}}
 							/>
 						</Grid>
-                        <Grid item xs={12} sm={6}>
+						<Grid item xs={12} sm={6}>
 							<TextField
 								id="sexo"
-                                name="sexo"
+								name="sexo"
 								label="Sexo"
 								select
 								required
@@ -126,21 +141,28 @@ function LoadDogPage() {
 								defaultValue="Femenino"
 							>
 								<MenuItem key={'femenino'} value={'Femenino'}>
-                                    Femenino
+									Femenino
 								</MenuItem>
 								<MenuItem key={'masculino'} value={'Masculino'}>
-                                    Masculino
+									Masculino
 								</MenuItem>
 							</TextField>
 						</Grid>
 						<Grid item xs={12}>
 							<TextField
-								required
 								fullWidth
 								name="enfermedad"
-								label="Enfermedad"
+								label="Enfermedades"
 								id="enfermedad"
-							/>
+								defaultValue=""
+								select
+							>
+								{enfermedades.map((enfermedad) => (
+									<MenuItem value={enfermedad} key={enfermedad}>
+										{enfermedad}
+									</MenuItem>
+								))}
+							</TextField>
 						</Grid>
 						<Grid item xs={12}>
 							<TextField

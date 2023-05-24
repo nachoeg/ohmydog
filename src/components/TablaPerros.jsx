@@ -5,6 +5,7 @@ import { DataGrid, GridActionsCellItem, GridOverlay } from '@mui/x-data-grid';
 import Snackbar from '@mui/material/Snackbar';
 import Alert from '@mui/material/Alert';
 import Delete from '@mui/icons-material/DeleteForever';
+import { razas, enfermedades } from '../data/perros';
 
 // La tabla de perros recibe en props el id del usuario que va a mostrar los perros
 function TablaPerros(props) {
@@ -93,8 +94,22 @@ function TablaPerros(props) {
 		// Datos de los perros: ID, nombre, raza, edad, enfermedad, sexo y caracteristicas
 		{ field: 'id', headerName: 'ID', width: 50, id: 'id' },
 		{ field: 'nombre', headerName: 'Nombre', width: 100, editable: true },
-		{ field: 'raza', headerName: 'Raza', width: 100, editable: true },
-		{ field: 'sexo', headerName: 'Sexo', width: 100, editable: true },
+		{
+			field: 'raza',
+			headerName: 'Raza',
+			width: 150,
+			type: 'singleSelect',
+			valueOptions: razas,
+			editable: true,
+		},
+		{
+			field: 'sexo',
+			headerName: 'Sexo',
+			width: 100,
+			type: 'singleSelect',
+			valueOptions: ['Masculino', 'Femenino'],
+			editable: true,
+		},
 		{
 			field: 'caracteristicas',
 			headerName: 'Caracteristicas',
@@ -103,8 +118,11 @@ function TablaPerros(props) {
 		},
 		{
 			field: 'enfermedad',
-			headerName: 'Enfermedad',
+			headerName: 'Enfermedades',
 			width: 200,
+
+			type: 'singleSelect',
+			valueOptions: enfermedades,
 			editable: true,
 		},
 	];
