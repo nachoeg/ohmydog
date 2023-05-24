@@ -6,7 +6,7 @@ function AllDogsPage() {
 	return (
 		<Container
 			component="main"
-			maxWidth="md"
+			maxWidth="lg"
 			sx={{
 				display: 'flex',
 				alignItems: 'center',

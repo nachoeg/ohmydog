@@ -113,16 +113,13 @@ function TablaPerros(props) {
 		{
 			field: 'caracteristicas',
 			headerName: 'Caracteristicas',
-			width: 200,
+			width: 300,
 			editable: true,
 		},
 		{
 			field: 'enfermedad',
 			headerName: 'Enfermedades',
-			width: 200,
-
-			type: 'singleSelect',
-			valueOptions: enfermedades,
+			width: 400,
 			editable: true,
 		},
 	];
@@ -133,8 +130,8 @@ function TablaPerros(props) {
 			datos.nombre.trim() !== '' &&
 			datos.edad.toString().trim() !== '' &&
 			datos.raza.trim() !== '' &&
-			datos.caracteristicas.trim() !== '' &&
-			datos.enfermedad.trim() !== '' &&
+			// datos.caracteristicas.trim() !== '' &&
+			// datos.enfermedad.trim() !== '' &&
 			datos.sexo.trim() !== ''
 		);
 	}

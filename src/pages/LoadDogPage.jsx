@@ -5,7 +5,7 @@ import Snackbar from '@mui/material/Snackbar';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
-import { Alert, MenuItem } from '@mui/material';
+import { Alert, Autocomplete, MenuItem } from '@mui/material';
 import url from '../data/url';
 import { useState } from 'react';
 import { useLocation } from 'react-router-dom'; // Para obtener el parametro pasado por la url
@@ -21,6 +21,8 @@ function LoadDogPage() {
 	const [snackbar, setSnackbar] = useState(null);
 	const handleCloseSnackbar = () => setSnackbar(null);
 
+	const [enf, setEnf] = useState([]);
+
 	// Manejador del boton submit del formulario
 	const handleSubmit = (event) => {
 		event.preventDefault(); // Se elimina las acciones default del formulario
@@ -29,6 +31,7 @@ function LoadDogPage() {
 
 		// Se realiza el fetch con la BD y se manda en el cuerpo del mensaje los datos del formulario
 		// Datos de los perros: ID del usuario, nombre, raza, edad, enfermedad, sexo y caracteristicas
+
 		fetch(url + 'perros/register', {
 			method: 'POST',
 			headers: {
@@ -42,7 +45,7 @@ function LoadDogPage() {
 				nombre: data.get('nombre'),
 				raza: data.get('raza'),
 				edad: data.get('edad'),
-				enfermedad: data.get('enfermedad'),
+				enfermedad: enf.toString(),
 				sexo: data.get('sexo'),
 				caracteristicas: data.get('caracteristicas'),
 			}),
@@ -149,24 +152,24 @@ function LoadDogPage() {
 							</TextField>
 						</Grid>
 						<Grid item xs={12}>
-							<TextField
-								fullWidth
-								name="enfermedad"
-								label="Enfermedades"
+							<Autocomplete
+								multiple
 								id="enfermedad"
-								defaultValue=""
-								select
-							>
-								{enfermedades.map((enfermedad) => (
-									<MenuItem value={enfermedad} key={enfermedad}>
-										{enfermedad}
-									</MenuItem>
-								))}
-							</TextField>
+								value={enf}
+								onChange={(event, newValue) => {
+									setEnf(newValue);
+								}}
+								options={enfermedades}
+								freeSolo
+								getOptionLabel={(option) => option}
+								defaultValue={[enfermedades[1]]}
+								renderInput={(params) => (
+									<TextField {...params} label="Enfermedades" />
+								)}
+							/>
 						</Grid>
 						<Grid item xs={12}>
 							<TextField
-								required
 								fullWidth
 								name="caracteristicas"
 								label="Caracteristicas"
