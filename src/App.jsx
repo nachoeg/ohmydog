@@ -23,7 +23,7 @@ function App() {
 		palette: {
 			primary: {
 				main: '#0197b2',
-				darker: '#053e85',
+				darker: '#00697c',
 			},
 			secondary: {
 				main: '#ff914d',

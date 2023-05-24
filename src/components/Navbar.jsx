@@ -137,12 +137,25 @@ function ResponsiveAppBar() {
 									key={page.nombre}
 									style={{ textDecoration: 'none' }}
 								>
-									<Button
-										onClick={handleCloseNavMenu}
-										sx={{ my: 2, display: 'block' }}
-									>
-										{page.nombre}
-									</Button>
+									{({ isActive }) => (
+										<Button
+											onClick={handleCloseNavMenu}
+											sx={[
+												{
+													my: 2,
+													mx: '2px',
+													display: 'block',
+												},
+												isActive && {
+													'&:hover': { bgcolor: 'primary.darker' },
+													bgcolor: 'primary.main',
+													color: 'white',
+												},
+											]}
+										>
+											{page.nombre}
+										</Button>
+									)}
 								</NavLink>
 							))}
 						</Box>
