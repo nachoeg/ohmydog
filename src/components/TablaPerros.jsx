@@ -5,7 +5,7 @@ import { DataGrid, GridActionsCellItem, GridOverlay } from '@mui/x-data-grid';
 import Snackbar from '@mui/material/Snackbar';
 import Alert from '@mui/material/Alert';
 import Delete from '@mui/icons-material/DeleteForever';
-import { razas, enfermedades } from '../data/perros';
+import { razas } from '../data/perros';
 
 // La tabla de perros recibe en props el id del usuario que va a mostrar los perros
 function TablaPerros(props) {
@@ -72,19 +72,30 @@ function TablaPerros(props) {
 					return response.json();
 				} else {
 					if (response.status == 401) {
-						console.log('No estas autorizado a ver los perros.');
+						setSnackbar({
+							children: 'No estas autorizado para ver los perros',
+							severity: 'error',
+						});
 					}
 					return [];
 				}
 			})
 			.then((perros) => {
 				if (perros.length == 0) {
-					console.log('La lista de perros se encuentra vacia.');
+					setSnackbar({
+						children: 'La lista de perros se encuentra vacia',
+						severity: 'info',
+					});
 				}
 				return perros;
 			})
 			.catch((error) => {
 				console.error('Error en el fetch: ' + error);
+
+				setSnackbar({
+					children: 'Error al conectar con la base de datos',
+					severity: 'error',
+				});
 				return [];
 			});
 	}
