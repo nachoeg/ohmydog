@@ -97,15 +97,24 @@ function TablaUsuarios() {
 			headerName: '',
 			width: 200,
 			renderCell: (params) => {
-				const { id } = params.row;
+				const { id, nombre } = params.row;
 				return (
 					<>
-						<NavLink to={`/perrosusuario/${id}`}  style={{ textDecoration: 'none', display: 'flex', justifyContent: 'center' }}>
-							<Button style={{
-								border: 'none',
-								background: 'none',
-								fontSize: '0.8em',
-							}}>
+						<NavLink
+							to={`/perrosusuario/${id}/${nombre}`}
+							style={{
+								textDecoration: 'none',
+								display: 'flex',
+								justifyContent: 'center',
+							}}
+						>
+							<Button
+								style={{
+									border: 'none',
+									background: 'none',
+									fontSize: '0.8em',
+								}}
+							>
 								Ver perros
 							</Button>
 						</NavLink>

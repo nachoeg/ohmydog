@@ -1,5 +1,5 @@
 import AddIcon from '@mui/icons-material/Add';
-import { Container } from '@mui/material';
+import { Container, Typography } from '@mui/material';
 import Button from '@mui/material/Button';
 import { NavLink } from 'react-router-dom';
 import TablaPerros from '../components/TablaPerros';
@@ -9,6 +9,7 @@ function UserDogsPage() {
 	// Obtiene el id del usuario que se pasa como parametro en la url
 	const location = useLocation();
 	const idUsuario = location.pathname.split('/')[2];
+	const nombre = location.pathname.split('/')[3];
 
 	return (
 		<Container
@@ -18,9 +19,19 @@ function UserDogsPage() {
 				display: 'flex',
 				alignItems: 'center',
 				flexDirection: 'column',
-				mt: 4,
+				mt: 2,
 			}}
 		>
+			<Typography
+				component="h1"
+				variant="h6"
+				autoCapitalize
+				sx={{
+					mb: 2,
+				}}
+			>
+				PERROS DE {nombre.toUpperCase()}
+			</Typography>
 			<TablaPerros idUsuario={idUsuario} />
 			<NavLink
 				to={`/agregarperro/${idUsuario}`}

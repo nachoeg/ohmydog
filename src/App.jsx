@@ -51,7 +51,10 @@ function App() {
 						<Route path="misperros" element={<MyDogsPage />} />
 						<Route path="perros" element={<AllDogsPage />} />
 						<Route path="agregarperro/:idUsuario" element={<LoadDogPage />} />
-						<Route path="perrosusuario/:idUsuario" element={<UserDogsPage />} />
+						<Route
+							path="perrosusuario/:idUsuario/:nombre"
+							element={<UserDogsPage />}
+						/>
 						<Route path="*" element={<NotFoundPage />} />
 					</Route>
 				</Routes>
