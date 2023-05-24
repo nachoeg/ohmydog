@@ -64,10 +64,10 @@ function TablaUsuarios() {
 			field: 'email',
 			headerName: 'Email',
 			editable: true,
-			width: 170,
+			width: 230,
 		},
-		{ field: 'nombre', headerName: 'Nombre', width: 100 },
-		{ field: 'apellido', headerName: 'Apellido', width: 100 },
+		{ field: 'nombre', headerName: 'Nombre', width: 150 },
+		{ field: 'apellido', headerName: 'Apellido', width: 150 },
 		{
 			field: 'dni',
 			headerName: 'DNI',
@@ -96,7 +96,7 @@ function TablaUsuarios() {
 		{
 			field: 'actions',
 			headerName: '',
-			width: 200,
+			width: 150,
 			renderCell: (params) => {
 				const { id, nombre, apellido } = params.row;
 				return (
