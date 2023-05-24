@@ -6,6 +6,7 @@ import Alert from '@mui/material/Alert';
 import Delete from '@mui/icons-material/DeleteForever';
 import Button from '@mui/material/Button';
 import { NavLink } from 'react-router-dom';
+import { GridOverlay } from '@mui/x-data-grid';
 
 function TablaUsuarios() {
 	const token = localStorage.getItem('jwt');
@@ -211,6 +212,14 @@ function TablaUsuarios() {
 		setSnackbar({ children: error.message, severity: 'error' });
 	}, []);
 
+	const CustomNoRowsOverlay = () => {
+		return (
+			<GridOverlay>
+				<div>No hay usuarios cargados</div>
+			</GridOverlay>
+		);
+	};
+
 	return (
 		<div style={{ height: 400, width: '100%' }}>
 			<DataGrid
@@ -225,6 +234,9 @@ function TablaUsuarios() {
 					},
 				}}
 				pageSizeOptions={[5, 10]}
+				components={{
+					NoRowsOverlay: CustomNoRowsOverlay,
+				}}
 			/>
 			{!!snackbar && (
 				<Snackbar

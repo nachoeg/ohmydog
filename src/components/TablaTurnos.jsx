@@ -3,6 +3,7 @@ import url from '../data/url';
 import { DataGrid } from '@mui/x-data-grid';
 import Snackbar from '@mui/material/Snackbar';
 import Alert from '@mui/material/Alert';
+import { GridOverlay } from '@mui/x-data-grid';
 
 function TablaTurnos() {
 	const token = localStorage.getItem('jwt');
@@ -53,6 +54,49 @@ function TablaTurnos() {
 				return [];
 			});
 	}
+	// const obtenerTurnos = async () => {
+	// 	const response = await fetch(url + 'turnos', {
+	// 		method: 'GET',
+	// 		credentials: 'include',
+	// 		headers: {
+	// 			'Content-Type': 'application/json',
+	// 			token: `${token}`,
+	// 		},
+	// 	}).catch((error) => {
+	// 		console.error('Error en el fetch: ' + error);
+	// 		setSnackbar({
+	// 			children: 'Error al conectar con la base de datos',
+	// 			severity: 'error',
+	// 		});
+	// 		return [];
+	// 	});
+
+	// 	console.log(response);
+
+	// 	let turnos = [];
+	// 	if (response.ok) {
+	// 		turnos = await response.json();
+	// 		if (turnos.length == 0) {
+	// 			setSnackbar({
+	// 				children: 'La lista de turnos se encuentra vacia',
+	// 				severity: 'info',
+	// 			});
+	// 		}
+	// 	} else if (response.status == 401) {
+	// 		setSnackbar({
+	// 			children: 'No estas autorizado para ver los turnos',
+	// 			severity: 'error',
+	// 		});
+	// 	}
+
+	// 	if (response.turnos.length == 0) {
+	// 		setSnackbar({
+	// 			children: 'La lista de turnos se encuentra vacia',
+	// 			severity: 'info',
+	// 		});
+	// 	}
+	// 	return turnos;
+	// };
 
 	const columns = [
 		{
@@ -132,6 +176,14 @@ function TablaTurnos() {
 		setSnackbar({ children: error.message, severity: 'error' });
 	}, []);
 
+	const CustomNoRowsOverlay = () => {
+		return (
+			<GridOverlay>
+				<div>No hay turnos cargados</div>
+			</GridOverlay>
+		);
+	};
+
 	return (
 		<div style={{ height: 400, width: '100%' }}>
 			<DataGrid
@@ -146,6 +198,9 @@ function TablaTurnos() {
 					},
 				}}
 				pageSizeOptions={[5, 10]}
+				components={{
+					NoRowsOverlay: CustomNoRowsOverlay,
+				}}
 			/>
 			{!!snackbar && (
 				<Snackbar
