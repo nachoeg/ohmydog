@@ -5,16 +5,18 @@ import Snackbar from '@mui/material/Snackbar';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
-import { Alert, Autocomplete, MenuItem } from '@mui/material';
+import { Alert, Autocomplete, Avatar, MenuItem } from '@mui/material';
 import url from '../data/url';
 import { useState } from 'react';
 import { useLocation } from 'react-router-dom'; // Para obtener el parametro pasado por la url
 import { razas, enfermedades } from '../data/perros';
+import { Pets } from '@mui/icons-material';
 
 function LoadDogPage() {
 	// Obtiene el id del usuario que se pasa como parametro en la url
 	const location = useLocation();
 	const idUsuario = location.pathname.split('/')[2];
+	const nombre = location.pathname.split('/')[3];
 	const token = localStorage.getItem('jwt'); // Se obtiene el token del admin
 
 	// Se declara una snackbar para mostrar mensajes
@@ -57,7 +59,9 @@ function LoadDogPage() {
 						severity: 'success',
 					});
 					setTimeout(() => {
-						window.location.replace('/perrosusuario/' + idUsuario);
+						window.location.replace(
+							'/perrosusuario/' + idUsuario + '/' + nombre
+						);
 					}, 1000);
 				} else {
 					setSnackbar({
@@ -80,12 +84,15 @@ function LoadDogPage() {
 		<Container component="main" maxWidth="xs">
 			<Box
 				sx={{
-					marginTop: 8,
+					marginTop: 4,
 					display: 'flex',
 					flexDirection: 'column',
 					alignItems: 'center',
 				}}
 			>
+				<Avatar sx={{ m: 1, bgcolor: 'primary.main' }}>
+					<Pets />
+				</Avatar>
 				<Typography component="h1" variant="h5">
 					Registrar perro
 				</Typography>

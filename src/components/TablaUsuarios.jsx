@@ -97,11 +97,11 @@ function TablaUsuarios() {
 			headerName: '',
 			width: 200,
 			renderCell: (params) => {
-				const { id, nombre } = params.row;
+				const { id, nombre, apellido } = params.row;
 				return (
 					<>
 						<NavLink
-							to={`/perrosusuario/${id}/${nombre}`}
+							to={`/perrosusuario/${id}/${nombre}-${apellido}`}
 							style={{
 								textDecoration: 'none',
 								display: 'flex',

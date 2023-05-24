@@ -79,7 +79,7 @@ export default function SignUp() {
 		<Container component="main" maxWidth="xs">
 			<Box
 				sx={{
-					marginTop: 8,
+					marginTop: 4,
 					display: 'flex',
 					flexDirection: 'column',
 					alignItems: 'center',
@@ -139,7 +139,7 @@ export default function SignUp() {
 							<TextField
 								required
 								fullWidth
-								type='number'
+								type="number"
 								name="dni"
 								label="Dni"
 								id="dni"
@@ -170,7 +170,7 @@ export default function SignUp() {
 							<TextField
 								required
 								fullWidth
-								type='number'
+								type="number"
 								name="telefono"
 								label="Telefono"
 								id="telefono"

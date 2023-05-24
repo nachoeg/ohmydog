@@ -50,7 +50,10 @@ function App() {
 						<Route path="turnos" element={<TurnosPage />} />
 						<Route path="misperros" element={<MyDogsPage />} />
 						<Route path="perros" element={<AllDogsPage />} />
-						<Route path="agregarperro/:idUsuario" element={<LoadDogPage />} />
+						<Route
+							path="agregarperro/:idUsuario/:nombre"
+							element={<LoadDogPage />}
+						/>
 						<Route
 							path="perrosusuario/:idUsuario/:nombre"
 							element={<UserDogsPage />}

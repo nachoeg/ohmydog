@@ -145,7 +145,7 @@ function ProfilePage() {
 	const handleCloseSnackbar = () => setSnackbar(null);
 	return (
 		<Container component="main" maxWidth="sm">
-			<Card sx={{ padding: '10px', marginTop: 8 }}>
+			<Card sx={{ padding: '10px', marginTop: 4 }}>
 				<List component="form" onSubmit={handleSubmit}>
 					<ListItem>
 						<ListItemAvatar>
