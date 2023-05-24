@@ -154,7 +154,7 @@ function ResponsiveAppBar() {
 													color: 'white',
 												},
 											]}
-											variant={isActive && 'contained'}
+											variant={isActive ? 'contained' : 'text'}
 										>
 											{page.nombre}
 										</Button>
