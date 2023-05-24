@@ -48,14 +48,14 @@ function App() {
 						<Route path="perfil" element={<ProfilePage />} />
 						<Route path="usuarios" element={<UsersPage />} />
 						<Route path="turnos" element={<TurnosPage />} />
-						<Route path="misperros" element={<MyDogsPage />} />
+						<Route path="mis-perros" element={<MyDogsPage />} />
 						<Route path="perros" element={<AllDogsPage />} />
 						<Route
-							path="agregarperro/:idUsuario/:nombre"
+							path="agregar-perro/:idUsuario/:nombre"
 							element={<LoadDogPage />}
 						/>
 						<Route
-							path="perrosusuario/:idUsuario/:nombre"
+							path="perros-usuario/:idUsuario/:nombre"
 							element={<UserDogsPage />}
 						/>
 						<Route path="*" element={<NotFoundPage />} />

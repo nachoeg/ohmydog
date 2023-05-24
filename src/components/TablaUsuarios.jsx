@@ -102,7 +102,7 @@ function TablaUsuarios() {
 				return (
 					<>
 						<NavLink
-							to={`/perrosusuario/${id}/${nombre}-${apellido}`}
+							to={`/perros-usuario/${id}/${nombre}-${apellido}`}
 							style={{
 								textDecoration: 'none',
 								display: 'flex',

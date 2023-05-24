@@ -44,7 +44,7 @@ function UserDogsPage() {
 			/>
 			<TablaPerros idUsuario={idUsuario} />
 			<NavLink
-				to={`/agregarperro/${idUsuario}/${nombreCompleto}`}
+				to={`/agregar-perro/${idUsuario}/${nombreCompleto}`}
 				style={{ textDecoration: 'none', width: '100%' }}
 			>
 				<Button

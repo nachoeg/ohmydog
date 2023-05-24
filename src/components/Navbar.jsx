@@ -201,7 +201,7 @@ function ResponsiveAppBar() {
 									{usuario.rol == 'cliente' && (
 										<NavLink
 											key={'Perros'}
-											to={'/misperros'}
+											to={'/mis-perros'}
 											style={{
 												textDecoration: 'none',
 												color: '#000',
