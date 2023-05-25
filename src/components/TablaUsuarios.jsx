@@ -98,7 +98,9 @@ function TablaUsuarios() {
 			headerName: '',
 			width: 150,
 			renderCell: (params) => {
-				const { id, nombre, apellido } = params.row;
+				let { id, nombre, apellido } = params.row;
+				apellido = apellido.replaceAll(' ', '-');
+				nombre = nombre.replaceAll(' ', '-');
 				return (
 					<>
 						<NavLink

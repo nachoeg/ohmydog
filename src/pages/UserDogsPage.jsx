@@ -10,9 +10,8 @@ function UserDogsPage() {
 	// Obtiene el id del usuario que se pasa como parametro en la url
 	const location = useLocation();
 	const idUsuario = location.pathname.split('/')[2];
-	const nombreCompleto = location.pathname.split('/')[3];
-	const nombre = nombreCompleto.split('-')[0];
-	const apellido = nombreCompleto.split('-')[1];
+	const url = location.pathname.split('/')[3];
+	const nombre = url.replaceAll('-', ' ');
 
 	return (
 		<Container
@@ -32,7 +31,7 @@ function UserDogsPage() {
 					</Avatar>
 				}
 				variant="outlined"
-				label={nombre + ' ' + apellido}
+				label={nombre}
 				sx={{
 					mb: 1,
 					fontSize: 20,
@@ -44,7 +43,7 @@ function UserDogsPage() {
 			/>
 			<TablaPerros idUsuario={idUsuario} />
 			<NavLink
-				to={`/agregar-perro/${idUsuario}/${nombreCompleto}`}
+				to={`/agregar-perro/${idUsuario}/${url}`}
 				style={{ textDecoration: 'none', width: '100%' }}
 			>
 				<Button
