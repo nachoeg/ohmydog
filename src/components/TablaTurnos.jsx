@@ -4,15 +4,26 @@ import { DataGrid } from '@mui/x-data-grid';
 import Snackbar from '@mui/material/Snackbar';
 import Alert from '@mui/material/Alert';
 import { GridOverlay } from '@mui/x-data-grid';
+import { GridActionsCellItem } from '@mui/x-data-grid';
+import {
+	Delete,
+	DoNotDisturb,
+	DoNotDisturbOn,
+	Pending,
+	Recommend,
+} from '@mui/icons-material';
 
 function TablaTurnos() {
 	const token = localStorage.getItem('jwt');
 	const [rows, setRows] = useState([]);
 
 	useEffect(() => {
-		obtenerTurnos().then((rows) => setRows(rows));
+		actualizarTabla();
 	}, []);
 
+	function actualizarTabla() {
+		obtenerTurnos().then((rows) => setRows(rows));
+	}
 	function obtenerTurnos() {
 		return fetch(url + 'turnos', {
 			method: 'GET',
@@ -54,6 +65,7 @@ function TablaTurnos() {
 				return [];
 			});
 	}
+
 	// const obtenerTurnos = async () => {
 	// 	const response = await fetch(url + 'turnos', {
 	// 		method: 'GET',
@@ -102,12 +114,12 @@ function TablaTurnos() {
 		{
 			field: 'idPerro',
 			headerName: 'ID Perro',
-			width: 100,
+			width: 70,
 		},
 		{
 			field: 'fecha',
 			headerName: 'Fecha',
-			width: 150,
+			width: 100,
 		},
 		{
 			field: 'motivo',
@@ -115,19 +127,77 @@ function TablaTurnos() {
 			// editable: true,
 			// type: 'singleSelect',
 			// valueOptions: motivoTurnos,
-			width: 150,
+			width: 180,
 		},
 		{
 			field: 'estado',
 			headerName: 'Estado',
 			type: 'singleSelect',
-			editable: true,
+			hide: true,
+			// editable: true,
 			valueOptions: [
 				{ value: 'Pendiente', label: 'Pendiente' },
 				{ value: 'Cancelado', label: 'Cancelado' },
 				{ value: 'Confirmado', label: 'Confirmado' },
 			],
-			width: 150,
+			width: 100,
+		},
+		{
+			field: 'estadoBotones',
+			headerName: '',
+			width: 100,
+			renderCell: (params) => {
+				const data = params.row;
+				return (
+					<>
+						<GridActionsCellItem
+							icon={<Recommend />}
+							key="confirmado"
+							label="Confirmado"
+							onClick={() => {
+								data.estado = 'Confirmado';
+								handleEstado(data);
+							}}
+							sx={{
+								'&:hover': {
+									color: 'green',
+								},
+								color: data.estado == 'Confirmado' ? 'green' : 'inherit',
+							}}
+						/>
+						<GridActionsCellItem
+							icon={<Pending />}
+							key="pendiente"
+							label="Pendiente"
+							onClick={() => {
+								data.estado = 'Pendiente';
+								handleEstado(data);
+							}}
+							sx={{
+								'&:hover': {
+									color: 'darkviolet',
+								},
+								color: data.estado == 'Pendiente' ? 'darkviolet' : 'inherit',
+							}}
+						/>
+						<GridActionsCellItem
+							icon={<DoNotDisturbOn />}
+							key="cancelado"
+							label="Cancelado"
+							onClick={() => {
+								data.estado = 'Cancelado';
+								handleEstado(data);
+							}}
+							sx={{
+								'&:hover': {
+									color: 'red',
+								},
+								color: data.estado == 'Cancelado' ? 'red' : 'inherit',
+							}}
+						/>
+					</>
+				);
+			},
 		},
 	];
 
@@ -135,18 +205,8 @@ function TablaTurnos() {
 
 	const handleCloseSnackbar = () => setSnackbar(null);
 
-	function validarDatos(datos) {
-		return datos.estado.trim() != '';
-	}
-
-	const processRowUpdate = useCallback(async (newRow, oldRow) => {
-		if (!validarDatos(newRow)) {
-			setSnackbar({
-				children: 'No puede ingresar un campo vacio',
-				severity: 'error',
-			});
-			return oldRow;
-		}
+	const handleEstado = async (newRow) => {
+		console.log(newRow);
 		const response = await fetch(url + 'turnos/modify/' + newRow.id, {
 			method: 'PUT',
 			credentials: 'include',
@@ -161,7 +221,7 @@ function TablaTurnos() {
 				children: 'Turno procesado con exito',
 				severity: 'success',
 			});
-			return newRow;
+			actualizarTabla();
 		}
 		if (response.status == 500) {
 			setSnackbar({
@@ -169,8 +229,44 @@ function TablaTurnos() {
 				severity: 'error',
 			});
 		}
-		return oldRow;
-	}, []);
+	};
+
+	// function validarDatos(datos) {
+	// 	return datos.estado.trim() != '';
+	// }
+
+	// const processRowUpdate = useCallback(async (newRow, oldRow) => {
+	// 	if (!validarDatos(newRow)) {
+	// 		setSnackbar({
+	// 			children: 'No puede ingresar un campo vacio',
+	// 			severity: 'error',
+	// 		});
+	// 		return oldRow;
+	// 	}
+	// 	const response = await fetch(url + 'turnos/modify/' + newRow.id, {
+	// 		method: 'PUT',
+	// 		credentials: 'include',
+	// 		headers: {
+	// 			'Content-Type': 'application/json',
+	// 			token: `${token}`,
+	// 		},
+	// 		body: JSON.stringify(newRow),
+	// 	});
+	// 	if (response.ok) {
+	// 		setSnackbar({
+	// 			children: 'Turno procesado con exito',
+	// 			severity: 'success',
+	// 		});
+	// 		return newRow;
+	// 	}
+	// 	if (response.status == 500) {
+	// 		setSnackbar({
+	// 			children: 'Error al conectar con la base de datos',
+	// 			severity: 'error',
+	// 		});
+	// 	}
+	// 	return oldRow;
+	// }, []);
 
 	const handleProcessRowUpdateError = useCallback((error) => {
 		setSnackbar({ children: error.message, severity: 'error' });
@@ -190,7 +286,7 @@ function TablaTurnos() {
 				editMode="row"
 				rows={rows}
 				columns={columns}
-				processRowUpdate={processRowUpdate}
+				// processRowUpdate={processRowUpdate}
 				onProcessRowUpdateError={handleProcessRowUpdateError}
 				initialState={{
 					pagination: {
