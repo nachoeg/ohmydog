@@ -13,14 +13,32 @@ import Container from '@mui/material/Container';
 import { Alert, MenuItem } from '@mui/material';
 import url from '../data/url';
 import { useState } from 'react';
+import emailjs from 'emailjs-com';
 
 export default function SignUp() {
 	const [snackbar, setSnackbar] = useState(null);
 
 	const handleCloseSnackbar = () => setSnackbar(null);
+	
+	// Funcion para enviar el email con la contraseña temporal
+	function sendEmail(e) {
+		e.preventDefault();
+		// Parametros: 1) ID del servicio. 2) ID del template. 3) Formulario (el destino es el campo con name "to_name")
+		// 4) ID public del usuario.
+		emailjs.sendForm('service_xg4z6nu', 'template_xjzci4t', e.target, 'kMhWmQA84AfcGvqNF')
+		  .then((result) => {
+			console.log(result.text);
+		  }, (error) => {
+			setSnackbar({
+				children: 'Error al enviar el email ' + error,
+				severity: 'error',
+			});
+		  });
+	}
 
 	const handleSubmit = (event) => {
-		event.preventDefault();
+		event.preventDefault(event);
+		sendEmail(event); // Envia la contraseña al email
 		const data = new FormData(event.currentTarget);
 		const token = localStorage.getItem('jwt');
 		fetch(url + 'usuarios/register', {
@@ -120,7 +138,7 @@ export default function SignUp() {
 								fullWidth
 								id="email"
 								label="Correo electrónico"
-								name="email"
+								name="to_name" // Le indica a la funcion enviar mail que este es el destino
 								autoComplete="email"
 							/>
 						</Grid>
