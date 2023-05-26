@@ -9,7 +9,7 @@ import Snackbar from '@mui/material/Snackbar';
 import Box from '@mui/material/Box';
 import LockOutlinedIcon from '@mui/icons-material/PersonAdd';
 import Typography from '@mui/material/Typography';
-import Container from '@mui/material/Container';
+import Container, { containerClasses } from '@mui/material/Container';
 import { Alert, MenuItem } from '@mui/material';
 import url from '../data/url';
 import { useState } from 'react';
@@ -19,26 +19,41 @@ export default function SignUp() {
 	const [snackbar, setSnackbar] = useState(null);
 
 	const handleCloseSnackbar = () => setSnackbar(null);
-	
+
 	// Funcion para enviar el email con la contraseña temporal
-	function sendEmail(e) {
+	function sendEmail(e, p) {
 		e.preventDefault();
-		// Parametros: 1) ID del servicio. 2) ID del template. 3) Formulario (el destino es el campo con name "to_name")
-		// 4) ID public del usuario.
+		e.target.elements.password.value = p; // Almacena la contraseña temporal en el formulario para enviarla
 		emailjs.sendForm('service_xg4z6nu', 'template_xjzci4t', e.target, 'kMhWmQA84AfcGvqNF')
 		  .then((result) => {
 			console.log(result.text);
 		  }, (error) => {
 			setSnackbar({
-				children: 'Error al enviar el email ' + error,
+				children: 'Error al conectar con la base de datos' + error,
 				severity: 'error',
 			});
 		  });
 	}
 
+	// Genera una constraseña aleatoria
+	const generarContraseña = () => {
+		const caracteres = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()';
+		const longitud = 10;
+		let contraseña = '';
+	
+		for (let i = 0; i < longitud; i++) {
+		  const indice = Math.floor(Math.random() * caracteres.length);
+		  contraseña += caracteres.charAt(indice);
+		}
+		console.log(contraseña);
+		return contraseña;
+	};
+	
+	// Aca estan las lineas que hay que descomentar y comentar, son 2 que hay que descomentar y 1 que comentar.
 	const handleSubmit = (event) => {
-		event.preventDefault(event);
-		sendEmail(event); // Envia la contraseña al email
+		event.preventDefault();
+		// DESCOMENTAR const temporalPassword = generarContraseña(); // Genera la contraseña aleatoria
+		const temporalPassword = 1; // COMENTAR
 		const data = new FormData(event.currentTarget);
 		const token = localStorage.getItem('jwt');
 		fetch(url + 'usuarios/register', {
@@ -51,7 +66,7 @@ export default function SignUp() {
 			mode: 'cors',
 			body: JSON.stringify({
 				email: data.get('email'),
-				password: data.get('password'),
+				password: temporalPassword,
 				nombre: data.get('nombre'),
 				apellido: data.get('apellido'),
 				dni: data.get('dni'),
@@ -63,6 +78,7 @@ export default function SignUp() {
 		})
 			.then((response) => {
 				if (response.ok) {
+					// DESCOMENTAR sendEmail(event, temporalPassword); // Envia al mail la contraseña temporal
 					setSnackbar({
 						children: 'Registro exitoso',
 						severity: 'success',
@@ -138,19 +154,8 @@ export default function SignUp() {
 								fullWidth
 								id="email"
 								label="Correo electrónico"
-								name="to_name" // Le indica a la funcion enviar mail que este es el destino
+								name="email"
 								autoComplete="email"
-							/>
-						</Grid>
-						<Grid item xs={12}>
-							<TextField
-								required
-								fullWidth
-								name="password"
-								label="Contraseña"
-								type="password"
-								id="password"
-								autoComplete="new-password"
 							/>
 						</Grid>
 						<Grid item xs={12}>
@@ -212,6 +217,15 @@ export default function SignUp() {
 									Veterinario
 								</MenuItem>
 							</TextField>
+						</Grid>
+						<Grid item xs={12} display='none'>
+							<TextField
+								fullWidth // Este campo se usa para enviar la contraseña temporal por email
+								type="password"
+								name="password"
+								label="password"
+								id="password"
+							/>
 						</Grid>
 					</Grid>
 					<Button
