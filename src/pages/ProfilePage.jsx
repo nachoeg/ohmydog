@@ -93,6 +93,7 @@ function ProfilePage() {
 				children: 'El email ingresado ya está en uso',
 				severity: 'error',
 			});
+			setEmail(usuario.email);
 			return;
 		}
 		setSnackbar({
