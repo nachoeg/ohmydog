@@ -13,8 +13,7 @@ import MyDogsPage from './pages/MyDogsPage';
 import LoadDogPage from './pages/LoadDogPage';
 import UserDogsPage from './pages/UserDogsPage';
 import AllDogsPage from './pages/AllDogsPage';
-import { purple } from '@mui/material/colors';
-import ChangePassword from './pages/ChangePassword';
+import ChangePassword from './pages/ChangePasswordPage';
 
 function App() {
 	const theme = createTheme({
