@@ -149,7 +149,7 @@ function ResponsiveAppBar() {
 													paddingInline: 1,
 												},
 												isActive && {
-													// '&:hover': { bgcolor: 'primary.darker' },
+													// '&:hover': { bgcolor: 'primary.dark' },
 													// bgcolor: 'primary.main',
 													color: 'white',
 												},

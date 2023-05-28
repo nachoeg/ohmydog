@@ -1,7 +1,6 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import CssBaseline from '@mui/material/CssBaseline';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import './App.css';
 import LogInPage from './pages/LogInPage';
 import HomePage from './pages/HomePage';
 import NotFoundPage from './pages/NotFoundPage';
@@ -14,6 +13,8 @@ import MyDogsPage from './pages/MyDogsPage';
 import LoadDogPage from './pages/LoadDogPage';
 import UserDogsPage from './pages/UserDogsPage';
 import AllDogsPage from './pages/AllDogsPage';
+import { purple } from '@mui/material/colors';
+import ChangePassword from './pages/ChangePassword';
 
 function App() {
 	const theme = createTheme({
@@ -23,14 +24,19 @@ function App() {
 		palette: {
 			primary: {
 				main: '#0197b2',
-				darker: '#00697c',
+				dark: '#00616d',
 			},
 			secondary: {
 				main: '#ff914d',
-				darker: '#b3561b',
+				dark: '#b3561b',
 			},
 			neutral: {
 				main: '#64748B',
+				contrastText: '#fff',
+			},
+			tertiary: {
+				main: '#b20197',
+				dark: '#840085',
 				contrastText: '#fff',
 			},
 		},
@@ -58,6 +64,7 @@ function App() {
 							path="perros-usuario/:idUsuario/:nombre"
 							element={<UserDogsPage />}
 						/>
+						<Route path="cambiar-contraseña" element={<ChangePassword />} />
 						<Route path="*" element={<NotFoundPage />} />
 					</Route>
 				</Routes>
