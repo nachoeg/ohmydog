@@ -17,11 +17,13 @@ import {
 } from '@mui/material';
 import EmailIcon from '@mui/icons-material/Email';
 import PhoneIcon from '@mui/icons-material/Phone';
+
 import MapIcon from '@mui/icons-material/Map';
 import MapsHomeWorkIcon from '@mui/icons-material/MapsHomeWork';
 import { useEffect, useState } from 'react';
-import { Close, Edit, Save } from '@mui/icons-material';
+import { Close, Edit, Password, Save } from '@mui/icons-material';
 import url from '../data/url';
+import { NavLink } from 'react-router-dom';
 function ProfilePage() {
 	const token = localStorage.getItem('jwt');
 	const [usuario, setUsuario] = useState(
@@ -268,6 +270,18 @@ function ProfilePage() {
 								</Grid>
 							</Grid>
 						)}
+					</ListItem>
+					<ListItem>
+						<NavLink style={{ width: '100%' }} to={'/cambiar-contraseña'}>
+							<Button
+								startIcon={<Password />}
+								fullWidth
+								variant="contained"
+								color="tertiary"
+							>
+								Cambiar contraseña
+							</Button>
+						</NavLink>
 					</ListItem>
 				</List>
 			</Card>
