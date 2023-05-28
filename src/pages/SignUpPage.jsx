@@ -9,7 +9,7 @@ import Snackbar from '@mui/material/Snackbar';
 import Box from '@mui/material/Box';
 import LockOutlinedIcon from '@mui/icons-material/PersonAdd';
 import Typography from '@mui/material/Typography';
-import Container, { containerClasses } from '@mui/material/Container';
+import Container from '@mui/material/Container';
 import { Alert, MenuItem } from '@mui/material';
 import url from '../data/url';
 import { useState } from 'react';
@@ -24,31 +24,41 @@ export default function SignUp() {
 	function sendEmail(e, p) {
 		e.preventDefault();
 		e.target.elements.password.value = p; // Almacena la contraseña temporal en el formulario para enviarla
-		emailjs.sendForm('service_xg4z6nu', 'template_xjzci4t', e.target, 'kMhWmQA84AfcGvqNF')
-		  .then((result) => {
-			console.log(result.text);
-		  }, (error) => {
-			setSnackbar({
-				children: 'Error al conectar con la base de datos' + error,
-				severity: 'error',
-			});
-		  });
+		emailjs
+			.sendForm(
+				'service_xg4z6nu',
+				'template_xjzci4t',
+				e.target,
+				'kMhWmQA84AfcGvqNF'
+			)
+			.then(
+				(result) => {
+					console.log(result.text);
+				},
+				(error) => {
+					setSnackbar({
+						children: 'Error al conectar con la base de datos' + error,
+						severity: 'error',
+					});
+				}
+			);
 	}
 
 	// Genera una constraseña aleatoria
 	const generarContraseña = () => {
-		const caracteres = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()';
+		const caracteres =
+			'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()';
 		const longitud = 10;
 		let contraseña = '';
-	
+
 		for (let i = 0; i < longitud; i++) {
-		  const indice = Math.floor(Math.random() * caracteres.length);
-		  contraseña += caracteres.charAt(indice);
+			const indice = Math.floor(Math.random() * caracteres.length);
+			contraseña += caracteres.charAt(indice);
 		}
 		console.log(contraseña);
 		return contraseña;
 	};
-	
+
 	// Aca estan las lineas que hay que descomentar y comentar, son 2 que hay que descomentar y 1 que comentar.
 	const handleSubmit = (event) => {
 		event.preventDefault();
@@ -218,7 +228,7 @@ export default function SignUp() {
 								</MenuItem>
 							</TextField>
 						</Grid>
-						<Grid item xs={12} display='none'>
+						<Grid item xs={12} display="none">
 							<TextField
 								fullWidth // Este campo se usa para enviar la contraseña temporal por email
 								type="password"
