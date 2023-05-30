@@ -299,8 +299,14 @@ function TablaTurnos() {
 					</DialogContentText>
 				</DialogContent>
 				<DialogActions>
-					<Button onClick={handleCloseConfirmar}>No</Button>
-					<Button onClick={handleConfirmarConfirmar} autoFocus>
+					<Button variant="outlined" onClick={handleCloseConfirmar}>
+						No
+					</Button>
+					<Button
+						variant="contained"
+						onClick={handleConfirmarConfirmar}
+						autoFocus
+					>
 						Si
 					</Button>
 				</DialogActions>
@@ -321,8 +327,14 @@ function TablaTurnos() {
 					</DialogContentText>
 				</DialogContent>
 				<DialogActions>
-					<Button onClick={handleCloseCancelar}>No</Button>
-					<Button onClick={handleConfirmarCancelar} autoFocus>
+					<Button variant="outlined" onClick={handleCloseCancelar}>
+						No
+					</Button>
+					<Button
+						variant="contained"
+						onClick={handleConfirmarCancelar}
+						autoFocus
+					>
 						Si
 					</Button>
 				</DialogActions>
