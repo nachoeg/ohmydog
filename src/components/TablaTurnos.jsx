@@ -5,17 +5,22 @@ import Snackbar from '@mui/material/Snackbar';
 import Alert from '@mui/material/Alert';
 import { GridOverlay } from '@mui/x-data-grid';
 import { GridActionsCellItem } from '@mui/x-data-grid';
+import { CheckCircle, DoNotDisturbOn } from '@mui/icons-material';
 import {
-	Delete,
-	DoNotDisturb,
-	DoNotDisturbOn,
-	Pending,
-	Recommend,
-} from '@mui/icons-material';
+	Button,
+	Dialog,
+	DialogActions,
+	DialogContent,
+	DialogContentText,
+	DialogTitle,
+} from '@mui/material';
 
 function TablaTurnos() {
 	const token = localStorage.getItem('jwt');
+
 	const [rows, setRows] = useState([]);
+
+	const [turno, setTurno] = useState(null);
 
 	useEffect(() => {
 		actualizarTabla();
@@ -24,6 +29,7 @@ function TablaTurnos() {
 	function actualizarTabla() {
 		obtenerTurnos().then((rows) => setRows(rows));
 	}
+
 	function obtenerTurnos() {
 		return fetch(url + 'turnos', {
 			method: 'GET',
@@ -124,22 +130,11 @@ function TablaTurnos() {
 		{
 			field: 'motivo',
 			headerName: 'Motivo',
-			// editable: true,
-			// type: 'singleSelect',
-			// valueOptions: motivoTurnos,
 			width: 180,
 		},
 		{
 			field: 'estado',
 			headerName: 'Estado',
-			type: 'singleSelect',
-			hide: true,
-			// editable: true,
-			valueOptions: [
-				{ value: 'Pendiente', label: 'Pendiente' },
-				{ value: 'Cancelado', label: 'Cancelado' },
-				{ value: 'Confirmado', label: 'Confirmado' },
-			],
 			width: 100,
 		},
 		{
@@ -150,62 +145,49 @@ function TablaTurnos() {
 				const data = params.row;
 				return (
 					<>
-						<GridActionsCellItem
-							icon={<Recommend />}
-							key="confirmado"
-							label="Confirmado"
-							onClick={() => {
-								data.estado = 'Confirmado';
-								handleEstado(data);
-							}}
-							sx={{
-								'&:hover': {
-									color: 'green',
-								},
-								color: data.estado == 'Confirmado' ? 'green' : 'inherit',
-							}}
-						/>
-						<GridActionsCellItem
-							icon={<Pending />}
-							key="pendiente"
-							label="Pendiente"
-							onClick={() => {
-								data.estado = 'Pendiente';
-								handleEstado(data);
-							}}
-							sx={{
-								'&:hover': {
-									color: 'darkviolet',
-								},
-								color: data.estado == 'Pendiente' ? 'darkviolet' : 'inherit',
-							}}
-						/>
-						<GridActionsCellItem
-							icon={<DoNotDisturbOn />}
-							key="cancelado"
-							label="Cancelado"
-							onClick={() => {
-								data.estado = 'Cancelado';
-								handleEstado(data);
-							}}
-							sx={{
-								'&:hover': {
-									color: 'red',
-								},
-								color: data.estado == 'Cancelado' ? 'red' : 'inherit',
-							}}
-						/>
+						{data.estado == 'Pendiente' && (
+							<>
+								<GridActionsCellItem
+									icon={<CheckCircle />}
+									key="confirmado"
+									label="Confirmado"
+									onClick={() => {
+										let nuevoTurno = { ...data };
+										nuevoTurno.estado = 'Confirmado';
+										handleClickOpenConfirmar();
+										setTurno(nuevoTurno);
+									}}
+									sx={{
+										'&:hover': {
+											color: 'green',
+										},
+									}}
+								/>
+								<GridActionsCellItem
+									icon={<DoNotDisturbOn />}
+									key="cancelado"
+									label="Cancelado"
+									onClick={() => {
+										let nuevoTurno = { ...data };
+										nuevoTurno.estado = 'Cancelado';
+										handleClickOpenCancelar();
+										setTurno(nuevoTurno);
+									}}
+									sx={{
+										'&:hover': {
+											color: 'red',
+										},
+									}}
+								/>
+							</>
+						)}
 					</>
 				);
 			},
 		},
 	];
 
-	const [snackbar, setSnackbar] = useState(null);
-
-	const handleCloseSnackbar = () => setSnackbar(null);
-
-	const handleEstado = async (newRow) => {
+	const handleCambiarEstado = async (newRow) => {
 		console.log(newRow);
 		const response = await fetch(url + 'turnos/modify/' + newRow.id, {
 			method: 'PUT',
@@ -231,42 +213,36 @@ function TablaTurnos() {
 		}
 	};
 
-	// function validarDatos(datos) {
-	// 	return datos.estado.trim() != '';
-	// }
+	const handleConfirmarConfirmar = () => {
+		handleCambiarEstado(turno);
+		handleCloseConfirmar();
+	};
+	const handleConfirmarCancelar = () => {
+		handleCambiarEstado(turno);
+		handleCloseCancelar();
+	};
+	const [openConfirmar, setOpenConfirmar] = useState(false);
+	const [openCancelar, setOpenCancelar] = useState(false);
 
-	// const processRowUpdate = useCallback(async (newRow, oldRow) => {
-	// 	if (!validarDatos(newRow)) {
-	// 		setSnackbar({
-	// 			children: 'No puede ingresar un campo vacio',
-	// 			severity: 'error',
-	// 		});
-	// 		return oldRow;
-	// 	}
-	// 	const response = await fetch(url + 'turnos/modify/' + newRow.id, {
-	// 		method: 'PUT',
-	// 		credentials: 'include',
-	// 		headers: {
-	// 			'Content-Type': 'application/json',
-	// 			token: `${token}`,
-	// 		},
-	// 		body: JSON.stringify(newRow),
-	// 	});
-	// 	if (response.ok) {
-	// 		setSnackbar({
-	// 			children: 'Turno procesado con exito',
-	// 			severity: 'success',
-	// 		});
-	// 		return newRow;
-	// 	}
-	// 	if (response.status == 500) {
-	// 		setSnackbar({
-	// 			children: 'Error al conectar con la base de datos',
-	// 			severity: 'error',
-	// 		});
-	// 	}
-	// 	return oldRow;
-	// }, []);
+	const handleClickOpenConfirmar = () => {
+		setOpenConfirmar(true);
+	};
+
+	const handleCloseConfirmar = () => {
+		setOpenConfirmar(false);
+	};
+
+	const handleClickOpenCancelar = () => {
+		setOpenCancelar(true);
+	};
+
+	const handleCloseCancelar = () => {
+		setOpenCancelar(false);
+	};
+
+	const [snackbar, setSnackbar] = useState(null);
+
+	const handleCloseSnackbar = () => setSnackbar(null);
 
 	const handleProcessRowUpdateError = useCallback((error) => {
 		setSnackbar({ children: error.message, severity: 'error' });
@@ -286,7 +262,6 @@ function TablaTurnos() {
 				editMode="row"
 				rows={rows}
 				columns={columns}
-				// processRowUpdate={processRowUpdate}
 				onProcessRowUpdateError={handleProcessRowUpdateError}
 				initialState={{
 					pagination: {
@@ -308,6 +283,50 @@ function TablaTurnos() {
 					<Alert {...snackbar} onClose={handleCloseSnackbar} />
 				</Snackbar>
 			)}
+			<Dialog
+				open={openConfirmar}
+				onClose={handleCloseConfirmar}
+				aria-labelledby="confirmar-title"
+				aria-describedby="confirmar-description"
+			>
+				<DialogTitle id="confirmar-title">
+					Estas seguro que deseas <b style={{ color: 'green' }}>confirmar</b> el
+					turno?
+				</DialogTitle>
+				<DialogContent>
+					<DialogContentText id="confirmar-description">
+						Recuerda que no podrás deshacer esta acción
+					</DialogContentText>
+				</DialogContent>
+				<DialogActions>
+					<Button onClick={handleCloseConfirmar}>No</Button>
+					<Button onClick={handleConfirmarConfirmar} autoFocus>
+						Si
+					</Button>
+				</DialogActions>
+			</Dialog>
+			<Dialog
+				open={openCancelar}
+				onClose={handleCloseCancelar}
+				aria-labelledby="cancelar-title"
+				aria-describedby="cancelar-description"
+			>
+				<DialogTitle id="cancelar-title">
+					Estas seguro que deseas <b style={{ color: 'red' }}>cancelar</b> el
+					turno?
+				</DialogTitle>
+				<DialogContent>
+					<DialogContentText id="cancelar-description">
+						Recuerda que no podrás deshacer esta acción
+					</DialogContentText>
+				</DialogContent>
+				<DialogActions>
+					<Button onClick={handleCloseCancelar}>No</Button>
+					<Button onClick={handleConfirmarCancelar} autoFocus>
+						Si
+					</Button>
+				</DialogActions>
+			</Dialog>
 		</div>
 	);
 }
