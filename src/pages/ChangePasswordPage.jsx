@@ -37,41 +37,49 @@ function ChangePassword() {
 		const data = new FormData(event.currentTarget);
 		console.log(data.get('oldPassword'));
 		console.log(data.get('newPassword'));
-		const response = await fetch(
-			url + 'usuarios/changePassword/' + usuario.id,
-			{
-				method: 'PUT',
-				credentials: 'include',
-				headers: {
-					'Content-Type': 'application/json',
-					token: `${token}`,
-				},
-				body: data,
+		console.log(data.get('confirmPassword'));
+		if (data.get('newPassword') == data.get('confirmPassword')) {
+			const response = await fetch(
+				url + 'usuarios/changePassword/' + usuario.id,
+				{
+					method: 'PUT',
+					credentials: 'include',
+					headers: {
+						'Content-Type': 'application/json',
+						token: `${token}`,
+					},
+					body: data,
+				}
+			);
+			if (response.ok) {
+				const nuevoUsuario = { ...usuario, password: data.get('newPassword') };
+				localStorage.setItem('usuario', JSON.stringify(nuevoUsuario));
+
+				setSnackbar({
+					children: 'Modificación realizada con éxito',
+					severity: 'success',
+				});
+
+				return;
 			}
-		);
-		if (response.ok) {
-			const nuevoUsuario = { ...usuario, password: data.get('newPassword') };
-			localStorage.setItem('usuario', JSON.stringify(nuevoUsuario));
-
+			// Falta personalizar las alertas
+			// if (response.status == 400) {
+			// 	setSnackbar({
+			// 		children: 'Dato invalido',
+			// 		severity: 'error',
+			// 	});
+			// 	return;
+			// }
 			setSnackbar({
-				children: 'Modificación realizada con éxito',
-				severity: 'success',
+				children: 'Error al conectar con la base de datos',
+				severity: 'error',
 			});
-
-			return;
+		} else {
+			setSnackbar({
+				children: 'Las contraseñas no coinciden',
+				severity: 'error',
+			});
 		}
-		// Falta personalizar las alertas
-		// if (response.status == 400) {
-		// 	setSnackbar({
-		// 		children: 'Dato invalido',
-		// 		severity: 'error',
-		// 	});
-		// 	return;
-		// }
-		setSnackbar({
-			children: 'Error al conectar con la base de datos',
-			severity: 'error',
-		});
 	};
 	return (
 		<Container component="main" maxWidth="xs">
@@ -97,16 +105,28 @@ function ChangePassword() {
 								required
 								fullWidth
 								id="oldPassword"
-								label="Contraseña actual"
+								label="Contraseña anterior"
+								autoFocus
+							/>
+						</Grid>
+						<Grid item xs={12}>
+							<TextField
+								name="newPassword"
+								required
+								fullWidth
+								id="newPassword"
+								label="Contraseña nueva"
 								autoFocus
 							/>
 						</Grid>
 						<Grid item xs={12}>
 							<FormControl required fullWidth variant="outlined">
-								<InputLabel htmlFor="newPassword">Contraseña nueva</InputLabel>
+								<InputLabel htmlFor="confirmPassword">
+									Confirmar contraseña
+								</InputLabel>
 								<OutlinedInput
-									id="newPassword"
-									name="newPassword"
+									id="confirmPassword"
+									name="confirmPassword"
 									type={showPassword ? 'text' : 'password'}
 									endAdornment={
 										<InputAdornment position="end">
@@ -120,7 +140,7 @@ function ChangePassword() {
 											</IconButton>
 										</InputAdornment>
 									}
-									label="Contraseña nueva"
+									label="Confirmar contraseña"
 								/>
 							</FormControl>
 						</Grid>
@@ -132,7 +152,7 @@ function ChangePassword() {
 						variant="contained"
 						sx={{ mt: 3, mb: 2 }}
 					>
-						Confirmar
+						Cambiar
 					</Button>
 					{!!snackbar && (
 						<Snackbar
