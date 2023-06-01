@@ -22,9 +22,12 @@ function ChangePassword() {
 	const [snackbar, setSnackbar] = useState(null);
 	const handleCloseSnackbar = () => setSnackbar(null);
 
-	const [showPassword, setShowPassword] = useState(false);
+	const [showPasswordNew, setShowPasswordNew] = useState(false);
+	const [showPasswordConfirm, setShowPasswordConfirm] = useState(false);
 
-	const handleClickShowPassword = () => setShowPassword((show) => !show);
+	const handleClickShowPasswordNew = () => setShowPasswordNew((show) => !show);
+	const handleClickShowPasswordConfirm = () =>
+		setShowPasswordConfirm((show) => !show);
 
 	const handleMouseDownPassword = (event) => {
 		event.preventDefault();
@@ -110,14 +113,27 @@ function ChangePassword() {
 							/>
 						</Grid>
 						<Grid item xs={12}>
-							<TextField
-								name="newPassword"
-								required
-								fullWidth
-								id="newPassword"
-								label="Contraseña nueva"
-								autoFocus
-							/>
+							<FormControl required fullWidth variant="outlined">
+								<InputLabel htmlFor="newPassword">Contraseña nueva</InputLabel>
+								<OutlinedInput
+									id="newPassword"
+									name="newPassword"
+									type={showPasswordNew ? 'text' : 'password'}
+									endAdornment={
+										<InputAdornment position="end">
+											<IconButton
+												aria-label="toggle password visibility"
+												onClick={handleClickShowPasswordNew}
+												onMouseDown={handleMouseDownPassword}
+												edge="end"
+											>
+												{showPasswordNew ? <VisibilityOff /> : <Visibility />}
+											</IconButton>
+										</InputAdornment>
+									}
+									label="Contraseña nueva"
+								/>
+							</FormControl>
 						</Grid>
 						<Grid item xs={12}>
 							<FormControl required fullWidth variant="outlined">
@@ -127,16 +143,20 @@ function ChangePassword() {
 								<OutlinedInput
 									id="confirmPassword"
 									name="confirmPassword"
-									type={showPassword ? 'text' : 'password'}
+									type={showPasswordConfirm ? 'text' : 'password'}
 									endAdornment={
 										<InputAdornment position="end">
 											<IconButton
 												aria-label="toggle password visibility"
-												onClick={handleClickShowPassword}
+												onClick={handleClickShowPasswordConfirm}
 												onMouseDown={handleMouseDownPassword}
 												edge="end"
 											>
-												{showPassword ? <VisibilityOff /> : <Visibility />}
+												{showPasswordConfirm ? (
+													<VisibilityOff />
+												) : (
+													<Visibility />
+												)}
 											</IconButton>
 										</InputAdornment>
 									}
