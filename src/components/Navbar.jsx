@@ -152,6 +152,7 @@ function ResponsiveAppBar() {
 													'&:hover': { bgcolor: 'secondary.main' },
 													bgcolor: 'secondary.main',
 													color: 'white',
+													fontWeight: 'bold',
 												},
 											]}
 											variant={isActive ? 'contained' : 'text'}
