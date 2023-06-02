@@ -30,46 +30,42 @@ function TablaTurnos() {
 		obtenerTurnos().then((rows) => setRows(rows));
 	}
 
-	function obtenerTurnos() {
-		return fetch(url + 'turnos', {
-			method: 'GET',
-			credentials: 'include',
-			headers: {
-				'Content-Type': 'application/json',
-				token: `${token}`,
-			},
-		})
-			.then((response) => {
-				if (response.ok) {
-					return response.json();
-				} else {
-					if (response.status == 401) {
-						setSnackbar({
-							children: 'No estas autorizado para ver los turnos',
-							severity: 'error',
-						});
-					}
-					return [];
-				}
-			})
-			.then((turnos) => {
-				if (turnos.length == 0) {
+	async function obtenerTurnos() {
+		try {
+			const response = await fetch(url + 'turnos', {
+				method: 'GET',
+				credentials: 'include',
+				headers: {
+					'Content-Type': 'application/json',
+					token: `${token}`,
+				},
+			});
+			if (!response.ok) {
+				if (response.status == 401) {
 					setSnackbar({
-						children: 'La lista de turnos se encuentra vacia',
-						severity: 'info',
+						children: 'No estas autorizado para ver los turnos',
+						severity: 'error',
 					});
 				}
-				return turnos;
-			})
-			.catch((error) => {
-				console.error('Error en el fetch: ' + error);
-
-				setSnackbar({
-					children: 'Error al conectar con la base de datos',
-					severity: 'error',
-				});
 				return [];
+			}
+			let turnos = await response.json();
+			if (turnos.length == 0) {
+				setSnackbar({
+					children: 'La lista de turnos se encuentra vacia',
+					severity: 'info',
+				});
+			}
+			return turnos;
+		} catch (error) {
+			console.error('Error en el fetch: ' + error);
+
+			setSnackbar({
+				children: 'Error al conectar con la base de datos',
+				severity: 'error',
 			});
+			return [];
+		}
 	}
 
 	// const obtenerTurnos = async () => {

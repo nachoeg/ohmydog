@@ -16,46 +16,42 @@ function TablaUsuarios() {
 		obtenerUsuarios().then((rows) => setRows(rows));
 	}, []);
 
-	function obtenerUsuarios() {
-		return fetch(url + 'usuarios', {
-			method: 'GET',
-			credentials: 'include',
-			headers: {
-				'Content-Type': 'application/json',
-				token: `${token}`,
-			},
-		})
-			.then((response) => {
-				if (response.ok) {
-					return response.json();
-				} else {
-					if (response.status == 401) {
-						setSnackbar({
-							children: 'No estas autorizado para ver los usuarios',
-							severity: 'error',
-						});
-					}
-					return [];
-				}
-			})
-			.then((usuarios) => {
-				if (usuarios.length == 0) {
+	async function obtenerUsuarios() {
+		try {
+			const response = await fetch(url + 'usuarios', {
+				method: 'GET',
+				credentials: 'include',
+				headers: {
+					'Content-Type': 'application/json',
+					token: `${token}`,
+				},
+			});
+			if (!response.ok) {
+				if (response.status == 401) {
 					setSnackbar({
-						children: 'La lista de usuarios clientes se encuentra vacia',
-						severity: 'info',
+						children: 'No estas autorizado para ver los usuarios',
+						severity: 'error',
 					});
 				}
-				return usuarios;
-			})
-			.catch((error) => {
-				console.error('Error en el fetch: ' + error);
-
-				setSnackbar({
-					children: 'Error al conectar con la base de datos',
-					severity: 'error',
-				});
 				return [];
+			}
+			let usuarios = await response.json();
+			if (usuarios.length == 0) {
+				setSnackbar({
+					children: 'La lista de usuarios clientes se encuentra vacia',
+					severity: 'info',
+				});
+			}
+			return usuarios;
+		} catch (error) {
+			console.error('Error en el fetch: ' + error);
+
+			setSnackbar({
+				children: 'Error al conectar con la base de datos',
+				severity: 'error',
 			});
+			return [];
+		}
 	}
 
 	const columns = [

@@ -58,46 +58,42 @@ function TablaPerros(props) {
 	};
 
 	// Obtiene los perros del usuario desde la BD.
-	function obtenerPerros() {
-		return fetch(url + 'perros/' + props.idUsuario, {
-			method: 'GET',
-			credentials: 'include',
-			headers: {
-				'Content-Type': 'application/json',
-				token: `${token}`,
-			},
-		})
-			.then((response) => {
-				if (response.ok) {
-					return response.json();
-				} else {
-					if (response.status == 401) {
-						setSnackbar({
-							children: 'No estas autorizado para ver los perros',
-							severity: 'error',
-						});
-					}
-					return [];
-				}
-			})
-			.then((perros) => {
-				if (perros.length == 0) {
+	async function obtenerPerros() {
+		try {
+			const response = await fetch(url + 'perros/' + props.idUsuario, {
+				method: 'GET',
+				credentials: 'include',
+				headers: {
+					'Content-Type': 'application/json',
+					token: `${token}`,
+				},
+			});
+			if (!response.ok) {
+				if (response.status == 401) {
 					setSnackbar({
-						children: 'La lista de perros se encuentra vacia',
-						severity: 'info',
+						children: 'No estas autorizado para ver los perros',
+						severity: 'error',
 					});
 				}
-				return perros;
-			})
-			.catch((error) => {
-				console.error('Error en el fetch: ' + error);
-
-				setSnackbar({
-					children: 'Error al conectar con la base de datos',
-					severity: 'error',
-				});
 				return [];
+			}
+			let perros = await response.json();
+			if (perros.length == 0) {
+				setSnackbar({
+					children: 'La lista de perros se encuentra vacia',
+					severity: 'info',
+				});
+			}
+			return perros;
+		} catch (error) {
+			console.error('Error en el fetch: ' + error);
+
+			setSnackbar({
+				children: 'Error al conectar con la base de datos',
+				severity: 'error',
 			});
+			return [];
+		}
 	}
 
 	// Establece las columnas a mostrar de la tabla de perros.
