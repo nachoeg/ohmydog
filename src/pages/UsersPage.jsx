@@ -17,7 +17,10 @@ function UsersPage() {
 			}}
 		>
 			<TablaUsuarios />
-			<NavLink to="/signup" style={{ textDecoration: 'none', width: '100%' }}>
+			<NavLink
+				to="/usuarios/registrar"
+				style={{ textDecoration: 'none', width: '100%' }}
+			>
 				<Button
 					startIcon={<AddIcon />}
 					sx={{ mt: 2, width: '100%' }}

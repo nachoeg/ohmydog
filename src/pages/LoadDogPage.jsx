@@ -60,7 +60,7 @@ function LoadDogPage() {
 					});
 					setTimeout(() => {
 						window.location.replace(
-							'/perros-usuario/' + idUsuario + '/' + nombre
+							'/perros/usuario/' + idUsuario + '/' + nombre
 						);
 					}, 1000);
 				} else {

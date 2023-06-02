@@ -14,6 +14,7 @@ import LoadDogPage from './pages/LoadDogPage';
 import UserDogsPage from './pages/UserDogsPage';
 import AllDogsPage from './pages/AllDogsPage';
 import ChangePassword from './pages/ChangePasswordPage';
+import AdoptPage from './pages/AdoptPage';
 
 function App() {
 	const theme = createTheme({
@@ -49,18 +50,19 @@ function App() {
 					<Route path="/" element={<Navbar />}>
 						<Route index element={<HomePage />} />
 						<Route path="login" element={<LogInPage />} />
-						<Route path="signup" element={<SignUpPage />} />
+						<Route path="usuarios/registrar" element={<SignUpPage />} />
 						<Route path="perfil" element={<ProfilePage />} />
 						<Route path="usuarios" element={<UsersPage />} />
 						<Route path="turnos" element={<TurnosPage />} />
 						<Route path="mis-perros" element={<MyDogsPage />} />
 						<Route path="perros" element={<AllDogsPage />} />
+						<Route path="adopcion" element={<AdoptPage />} />
 						<Route
 							path="agregar-perro/:idUsuario/:nombre"
 							element={<LoadDogPage />}
 						/>
 						<Route
-							path="perros-usuario/:idUsuario/:nombre"
+							path="perros/usuario/:idUsuario/:nombre"
 							element={<UserDogsPage />}
 						/>
 						<Route path="cambiar-contraseña" element={<ChangePassword />} />
