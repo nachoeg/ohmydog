@@ -81,16 +81,21 @@ export default function AddTurn() {
 			.then((response) => {
 				if (response.ok) {
 					setSnackbar({
-						children: 'Solicitud exitosa. Verifique el estado de su turno en el perfil del perrito a atender.',
+						children:
+							'Solicitud exitosa. Verifique el estado de su turno en el perfil del perrito a atender.',
 						severity: 'success',
 					});
+					setTimeout(() => {
+						location.replace('/mis-turnos');
+					}, 1000);
 				}
 				if (response.status == 400) {
-                    setSnackbar({
-                        children: 'El perro no cumple con los requisitos solicitados para vacunarse',
-                        severity: 'error',
-                    });
-                }
+					setSnackbar({
+						children:
+							'El perro no cumple con los requisitos solicitados para vacunarse',
+						severity: 'error',
+					});
+				}
 			})
 			.catch((error) => {
 				setSnackbar({
