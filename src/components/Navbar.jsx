@@ -22,6 +22,7 @@ import PetsIcon from '@mui/icons-material/Pets';
 import url from '../data/url';
 import { Context } from '../context/Context';
 import Copyright from './Copyright';
+import '../css/animaciones.css';
 
 function ResponsiveAppBar() {
 	const [routes, setRoutes] = useState([]);
@@ -140,6 +141,7 @@ function ResponsiveAppBar() {
 									{({ isActive }) => (
 										<Button
 											onClick={handleCloseNavMenu}
+											className={isActive ? 'grow' : ''}
 											sx={[
 												{
 													my: 2,

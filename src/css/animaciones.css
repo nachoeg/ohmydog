@@ -1,0 +1,46 @@
+.shake:hover > :first-child {
+	animation-name: shake;
+	animation-timing-function: ease-out;
+	animation-iteration-count: infinite;
+	animation-duration: 2s;
+	animation-fill-mode: forwards;
+}
+
+@keyframes shake {
+	25% {
+		transform: scale(110%);
+	}
+	30% {
+		transform: scale(110%) rotate(10deg);
+	}
+	35% {
+		transform: scale(110%) rotate(-10deg);
+	}
+	40% {
+		transform: scale(110%) rotate(10deg);
+	}
+	45% {
+		transform: scale(110%) rotate(-10deg);
+	}
+	50% {
+		transform: scale(110%) rotate(0);
+	}
+	100% {
+		transform: none;
+	}
+}
+
+.grow:hover {
+	backface-visibility: hidden;
+	-webkit-font-smoothing: subpixel-antialiased;
+	will-change: contents;
+	animation-name: grow;
+	animation-duration: 1s;
+	animation-timing-function: ease;
+	animation-iteration-count: infinite;
+}
+@keyframes grow {
+	50% {
+		transform: scale(102%);
+	}
+}

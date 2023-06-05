@@ -3,11 +3,13 @@ import Avatar from '@mui/material/Avatar';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import { NavLink } from 'react-router-dom';
+import '../css/animaciones.css';
 
 function Logotipo() {
 	return (
 		<NavLink
 			to="/"
+			className={'shake'}
 			style={{
 				textDecoration: 'none',
 				color: '#0197b2',
