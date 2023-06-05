@@ -15,7 +15,7 @@ import {
 	DialogTitle,
 } from '@mui/material';
 
-function TablaTurnos() {
+function TablaTurnos(props) {
 	const token = localStorage.getItem('jwt');
 
 	const [rows, setRows] = useState([]);
@@ -27,12 +27,19 @@ function TablaTurnos() {
 	}, []);
 
 	function actualizarTabla() {
-		obtenerTurnos().then((rows) => setRows(rows));
+		obtenerTurnos()
+			.then((rows) =>
+				rows.sort((a, b) => {
+					return new Date(b.fecha) - new Date(a.fecha);
+				})
+			)
+			.then((rows) => rows.sort((a) => (a.estado == 'Pendiente' ? -1 : 1)))
+			.then((rows) => setRows(rows));
 	}
 
 	async function obtenerTurnos() {
 		try {
-			const response = await fetch(url + 'turnos', {
+			const response = await fetch(url + 'turnos/' + props.idUsuario, {
 				method: 'GET',
 				credentials: 'include',
 				headers: {
