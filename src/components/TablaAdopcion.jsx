@@ -147,7 +147,7 @@ function TablaAdopcion() {
 				const data = params.row;
 				return (
 					<>
-						{data.idUsuario == usuario.id && (
+						{data.idUsuario == usuario.id && data.estado != 'Adoptado' && (
 							<GridActionsCellItem
 								icon={<CheckCircle />}
 								key="adoptado"
