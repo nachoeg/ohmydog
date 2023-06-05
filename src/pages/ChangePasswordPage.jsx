@@ -65,21 +65,20 @@ function ChangePassword() {
 
 				return;
 			}
-			// Falta personalizar las alertas
-			// if (response.status == 400) {
-			// 	setSnackbar({
-			// 		children: 'Dato invalido',
-			// 		severity: 'error',
-			// 	});
-			// 	return;
-			// }
+			if (response.status == 400) {
+				setSnackbar({
+					children: 'La contraseña ingresada es incorrecta. Intentalo de nuevo',
+					severity: 'error',
+				});
+				return;
+			}
 			setSnackbar({
 				children: 'Error al conectar con la base de datos',
 				severity: 'error',
 			});
 		} else {
 			setSnackbar({
-				children: 'Las contraseñas no coinciden',
+				children: 'Las contraseñas nuevas no coinciden',
 				severity: 'error',
 			});
 		}
