@@ -1,7 +1,7 @@
-.shake:hover > :first-child {
+.shake > * > :first-child {
 	animation-name: shake;
 	animation-timing-function: ease-out;
-	animation-iteration-count: infinite;
+	animation-iteration-count: 1;
 	animation-duration: 2s;
 	animation-fill-mode: forwards;
 }
