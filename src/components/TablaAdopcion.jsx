@@ -31,48 +31,80 @@ function TablaAdopcion() {
 		obtenerPerros().then((rows) => setRows(rows));
 	}
 
-	// esto deberia ser solo de los perros en adopcion (cambiar url)
 	async function obtenerPerros() {
-		try {
-			const response = await fetch(url + 'perros/', {
-				method: 'GET',
-				credentials: 'include',
-				headers: {
-					'Content-Type': 'application/json',
-					token: `${token}`,
-				},
-			});
-			if (!response.ok) {
-				if (response.status == 401) {
-					setSnackbar({
-						children: 'No estas autorizado para ver los perros',
-						severity: 'error',
-					});
-				}
-				return [];
+		//algoritmo para ordenar primero a los perros del usuario, y despues a los perros restantes
+		let filas = [
+			{ id: '1', idUsuario: '1', nombre: 'perro', estado: 'Pendiente' },
+			{ id: '2', idUsuario: '2', nombre: 'perro2', estado: 'Adoptado' },
+			{ id: '3', idUsuario: '3', nombre: 'perro3', estado: 'Adoptado' },
+			{ id: '4', idUsuario: '3', nombre: 'perro3', estado: 'Pendiente' },
+			{ id: '5', idUsuario: '2', nombre: 'perro', estado: 'Pendiente' },
+		];
+		//criterios de orden
+		//por id del perro
+		filas.sort((a, b) => a.id - b.id);
+		//primero los del usuario actual
+		filas.sort((a) => {
+			if (a.idUsuario == usuario.id) {
+				return 1;
 			}
-			let perros = await response.json();
-			if (perros.length == 0) {
-				setSnackbar({
-					children: 'La lista de perros se encuentra vacia',
-					severity: 'info',
-				});
+			return -1;
+		});
+		//ultimos los adoptados
+		filas.sort((a) => {
+			if (a.estado == 'Adoptado') {
+				return 1;
 			}
-			return perros;
-		} catch (error) {
-			console.error('Error en el fetch: ' + error);
-
-			setSnackbar({
-				children: 'Error al conectar con la base de datos',
-				severity: 'error',
-			});
-			return [];
-		}
+			if (a.estado == 'Pendiente') {
+				return -1;
+			}
+		});
+		return filas;
 	}
+
+	// // esto deberia ser solo de los perros en adopcion (cambiar url)
+	// async function obtenerPerros() {
+	// 	try {
+	// 		const response = await fetch(url + 'perros/', {
+	// 			method: 'GET',
+	// 			credentials: 'include',
+	// 			headers: {
+	// 				'Content-Type': 'application/json',
+	// 				token: `${token}`,
+	// 			},
+	// 		});
+	// 		if (!response.ok) {
+	// 			if (response.status == 401) {
+	// 				setSnackbar({
+	// 					children: 'No estas autorizado para ver los perros',
+	// 					severity: 'error',
+	// 				});
+	// 			}
+	// 			return [];
+	// 		}
+	// 		let perros = await response.json();
+	// 		if (perros.length == 0) {
+	// 			setSnackbar({
+	// 				children: 'La lista de perros se encuentra vacia',
+	// 				severity: 'info',
+	// 			});
+	// 		}
+	// 		return perros;
+	// 	} catch (error) {
+	// 		console.error('Error en el fetch: ' + error);
+
+	// 		setSnackbar({
+	// 			children: 'Error al conectar con la base de datos',
+	// 			severity: 'error',
+	// 		});
+	// 		return [];
+	// 	}
+	// }
 
 	const columns = [
 		// Datos de los perros: ID, nombre, raza, edad, enfermedad, sexo y caracteristicas
 		{ field: 'id', headerName: 'ID', width: 50, id: 'id' },
+		{ field: 'idUsuario', id: 'idUsuario' },
 		{ field: 'nombre', headerName: 'Nombre', width: 100 },
 		{
 			field: 'raza',
@@ -96,15 +128,18 @@ function TablaAdopcion() {
 		{
 			field: 'enfermedad',
 			headerName: 'Enfermedades',
-			width: 300,
+			width: 250,
 		},
 		{
 			//si esta adoptado o no
 			field: 'estado',
 			headerName: 'Estado',
-			width: 150,
+			width: 100,
 		},
-		{
+	];
+
+	if (usuario && usuario.rol == 'cliente') {
+		columns.push({
 			field: 'actions',
 			headerName: '',
 			width: 50,
@@ -112,7 +147,7 @@ function TablaAdopcion() {
 				const data = params.row;
 				return (
 					<>
-						{data.estado !== '' && (
+						{data.idUsuario == usuario.id && (
 							<GridActionsCellItem
 								icon={<CheckCircle />}
 								key="adoptado"
@@ -133,8 +168,9 @@ function TablaAdopcion() {
 					</>
 				);
 			},
-		},
-	];
+		});
+	}
+
 	const [openConfirmar, setOpenConfirmar] = useState(false);
 
 	const handleClickOpenConfirmar = () => {
@@ -192,6 +228,9 @@ function TablaAdopcion() {
 				editMode="row"
 				rows={rows}
 				columns={columns}
+				// columnVisibilityModel={{
+				// 	idUsuario: false,
+				// }}
 				onProcessRowUpdateError={handleProcessRowUpdateError}
 				initialState={{
 					pagination: {
