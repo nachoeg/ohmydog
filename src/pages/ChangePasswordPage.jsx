@@ -51,18 +51,20 @@ function ChangePassword() {
 						'Content-Type': 'application/json',
 						token: `${token}`,
 					},
-					body: data,
+					body: {
+						oldPassword: data.get('oldPassword'),
+						newPassword: data.get('newPassword'),
+						confirmPassword: data.get('confirmPassword'),
+					},
 				}
 			);
 			if (response.ok) {
 				const nuevoUsuario = { ...usuario, password: data.get('newPassword') };
 				localStorage.setItem('usuario', JSON.stringify(nuevoUsuario));
-
 				setSnackbar({
 					children: 'Modificación realizada con éxito',
 					severity: 'success',
 				});
-
 				return;
 			}
 			if (response.status == 400) {
