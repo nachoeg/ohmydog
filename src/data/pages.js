@@ -6,10 +6,11 @@ const pages = [
 	{ nombre: 'Servicios externos', url: '/servicios' },
 ];
 
-const pagesLoggedUsers = [...pages, { nombre: 'Turnos', url: '/turnos' }];
+const pagesLoggedUsers = [...pages, { nombre: 'Turnos', url: '/mis-turnos' }];
 
 const pagesAdminUsers = [
-	...pagesLoggedUsers,
+	...pages,
+	{ nombre: 'Turnos', url: '/turnos' },
 	{ nombre: 'Usuarios', url: '/usuarios' },
 	{ nombre: 'Perros', url: '/perros' },
 ];
