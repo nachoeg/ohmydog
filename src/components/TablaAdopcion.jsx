@@ -1,64 +1,85 @@
-import { Alert, Snackbar } from '@mui/material';
-import { DataGrid, GridOverlay } from '@mui/x-data-grid';
-import { useCallback, useEffect, useState } from 'react';
+import {
+	Alert,
+	Button,
+	Dialog,
+	DialogActions,
+	DialogContent,
+	DialogContentText,
+	DialogTitle,
+	Snackbar,
+} from '@mui/material';
+import { DataGrid, GridActionsCellItem, GridOverlay } from '@mui/x-data-grid';
+import { useCallback, useContext, useEffect, useState } from 'react';
 import { razas } from '../data/perros';
+import url from '../data/url';
+import { Context } from '../context/Context';
+import { CheckCircle } from '@mui/icons-material';
 
 function TablaAdopcion() {
+	const token = localStorage.getItem('jwt');
+	const { usuario } = useContext(Context);
+
 	const [rows, setRows] = useState([]);
 
-	// useEffect(() => {
-	// 	obtenerPerros().then((rows) => setRows(rows));
-	// }, []);
+	const [perro, setPerro] = useState({});
 
-	// async function obtenerPerros() {
-	// 	try {
-	// 		const response = await fetch(url + 'perros/' + props.idUsuario, {
-	// 			method: 'GET',
-	// 			credentials: 'include',
-	// 			headers: {
-	// 				'Content-Type': 'application/json',
-	// 				token: `${token}`,
-	// 			},
-	// 		});
-	// 		if (!response.ok) {
-	// 			if (response.status == 401) {
-	// 				setSnackbar({
-	// 					children: 'No estas autorizado para ver los perros',
-	// 					severity: 'error',
-	// 				});
-	// 			}
-	// 			return [];
-	// 		}
-	// 		let perros = await response.json();
-	// 		if (perros.length == 0) {
-	// 			setSnackbar({
-	// 				children: 'La lista de perros se encuentra vacia',
-	// 				severity: 'info',
-	// 			});
-	// 		}
-	// 		return perros;
-	// 	} catch (error) {
-	// 		console.error('Error en el fetch: ' + error);
+	useEffect(() => {
+		actualizarTabla();
+	}, []);
 
-	// 		setSnackbar({
-	// 			children: 'Error al conectar con la base de datos',
-	// 			severity: 'error',
-	// 		});
-	// 		return [];
-	// 	}
-	// }
+	function actualizarTabla() {
+		obtenerPerros().then((rows) => setRows(rows));
+	}
+
+	// esto deberia ser solo de los perros en adopcion (cambiar url)
+	async function obtenerPerros() {
+		try {
+			const response = await fetch(url + 'perros/', {
+				method: 'GET',
+				credentials: 'include',
+				headers: {
+					'Content-Type': 'application/json',
+					token: `${token}`,
+				},
+			});
+			if (!response.ok) {
+				if (response.status == 401) {
+					setSnackbar({
+						children: 'No estas autorizado para ver los perros',
+						severity: 'error',
+					});
+				}
+				return [];
+			}
+			let perros = await response.json();
+			if (perros.length == 0) {
+				setSnackbar({
+					children: 'La lista de perros se encuentra vacia',
+					severity: 'info',
+				});
+			}
+			return perros;
+		} catch (error) {
+			console.error('Error en el fetch: ' + error);
+
+			setSnackbar({
+				children: 'Error al conectar con la base de datos',
+				severity: 'error',
+			});
+			return [];
+		}
+	}
 
 	const columns = [
 		// Datos de los perros: ID, nombre, raza, edad, enfermedad, sexo y caracteristicas
 		{ field: 'id', headerName: 'ID', width: 50, id: 'id' },
-		{ field: 'nombre', headerName: 'Nombre', width: 100, editable: true },
+		{ field: 'nombre', headerName: 'Nombre', width: 100 },
 		{
 			field: 'raza',
 			headerName: 'Raza',
 			width: 150,
 			type: 'singleSelect',
 			valueOptions: razas,
-			editable: true,
 		},
 		{
 			field: 'sexo',
@@ -66,21 +87,89 @@ function TablaAdopcion() {
 			width: 100,
 			type: 'singleSelect',
 			valueOptions: ['Masculino', 'Femenino'],
-			editable: true,
 		},
 		{
 			field: 'caracteristicas',
 			headerName: 'Caracteristicas',
-			width: 300,
-			editable: true,
+			width: 250,
 		},
 		{
 			field: 'enfermedad',
 			headerName: 'Enfermedades',
-			width: 400,
-			editable: true,
+			width: 300,
+		},
+		{
+			//si esta adoptado o no
+			field: 'estado',
+			headerName: 'Estado',
+			width: 150,
+		},
+		{
+			field: 'actions',
+			headerName: '',
+			width: 50,
+			renderCell: (params) => {
+				const data = params.row;
+				return (
+					<>
+						{data.estado !== '' && (
+							<GridActionsCellItem
+								icon={<CheckCircle />}
+								key="adoptado"
+								label="Adoptado"
+								onClick={() => {
+									let perroAdoptar = { ...data };
+									perroAdoptar.estado = 'Adoptado';
+									handleClickOpenConfirmar();
+									setPerro(perroAdoptar);
+								}}
+								sx={{
+									'&:hover': {
+										color: 'green',
+									},
+								}}
+							/>
+						)}
+					</>
+				);
+			},
 		},
 	];
+	const [openConfirmar, setOpenConfirmar] = useState(false);
+
+	const handleClickOpenConfirmar = () => {
+		setOpenConfirmar(true);
+	};
+	const handleCloseConfirmar = () => {
+		setOpenConfirmar(false);
+	};
+
+	const handleConfirmarAdopcion = async (newRow) => {
+		console.log(newRow);
+		//cambiar url a la que sea para marcar al perro como adoptado
+		// const response = await fetch(url + 'perros/adopcion/modify/' + newRow.id, {
+		// 	method: 'PUT',
+		// 	credentials: 'include',
+		// 	headers: {
+		// 		'Content-Type': 'application/json',
+		// 		token: `${token}`,
+		// 	},
+		// 	body: JSON.stringify(newRow),
+		// });
+		// if (response.ok) {
+		// 	setSnackbar({
+		// 		children: 'Turno procesado con exito',
+		// 		severity: 'success',
+		// 	});
+		// 	actualizarTabla();
+		// }
+		// if (response.status == 500) {
+		// 	setSnackbar({
+		// 		children: 'Error al conectar con la base de datos',
+		// 		severity: 'error',
+		// 	});
+		// }
+	};
 
 	const [snackbar, setSnackbar] = useState(null);
 
@@ -114,6 +203,43 @@ function TablaAdopcion() {
 					NoRowsOverlay: CustomNoRowsOverlay,
 				}}
 			/>
+			<Dialog
+				open={openConfirmar}
+				onClose={handleCloseConfirmar}
+				aria-labelledby="confirmar-title"
+				aria-describedby="confirmar-description"
+			>
+				<DialogTitle id="confirmar-title">
+					Estas seguro/a de <b style={{ color: 'green' }}>confirmar</b> la
+					adopcion del perro?
+				</DialogTitle>
+				<DialogContent>
+					<DialogContentText id="confirmar-description">
+						Una vez que confirmes, se actualizará su estado y no se podrá
+						revertir
+					</DialogContentText>
+				</DialogContent>
+				<DialogActions>
+					<Button
+						color="success"
+						variant="outlined"
+						onClick={handleCloseConfirmar}
+					>
+						Cancelar
+					</Button>
+					<Button
+						variant="contained"
+						color="success"
+						onClick={() => {
+							handleConfirmarAdopcion(perro);
+							handleCloseConfirmar();
+						}}
+						autoFocus
+					>
+						Confirmar
+					</Button>
+				</DialogActions>
+			</Dialog>
 			{!!snackbar && (
 				<Snackbar
 					open

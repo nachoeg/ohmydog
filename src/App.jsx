@@ -15,6 +15,7 @@ import UserDogsPage from './pages/UserDogsPage';
 import AllDogsPage from './pages/AllDogsPage';
 import ChangePassword from './pages/ChangePasswordPage';
 import AdoptPage from './pages/AdoptPage';
+import AdoptRegisterPage from './pages/AdoptRegisterPage';
 
 function App() {
 	const theme = createTheme({
@@ -57,6 +58,7 @@ function App() {
 						<Route path="mis-perros" element={<MyDogsPage />} />
 						<Route path="perros" element={<AllDogsPage />} />
 						<Route path="adopcion" element={<AdoptPage />} />
+						<Route path="adopcion/registrar" element={<AdoptRegisterPage />} />
 						<Route
 							path="agregar-perro/:idUsuario/:nombre"
 							element={<LoadDogPage />}

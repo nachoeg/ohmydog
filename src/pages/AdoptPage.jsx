@@ -10,7 +10,7 @@ function AdoptPage() {
 	const [cliente, setCliente] = useState('');
 	useEffect(() => {
 		if (usuario) setCliente(usuario.rol == 'cliente');
-	});
+	}, [usuario]);
 
 	return (
 		<Container
