@@ -13,7 +13,7 @@ import { useCallback, useContext, useEffect, useState } from 'react';
 import { razas } from '../data/perros';
 import url from '../data/url';
 import { Context } from '../context/Context';
-import { CheckCircle } from '@mui/icons-material';
+import { CheckCircle, Pets } from '@mui/icons-material';
 
 function TablaAdopcion() {
 	const token = localStorage.getItem('jwt');
@@ -45,10 +45,12 @@ function TablaAdopcion() {
 		filas.sort((a, b) => a.id - b.id);
 		//primero los del usuario actual
 		filas.sort((a) => {
-			if (a.idUsuario == usuario.id) {
-				return 1;
+			if (usuario) {
+				if (a.idUsuario == usuario.id) {
+					return 1;
+				}
+				return -1;
 			}
-			return -1;
 		});
 		//ultimos los adoptados
 		filas.sort((a) => {
@@ -138,7 +140,7 @@ function TablaAdopcion() {
 		},
 	];
 
-	if (usuario && usuario.rol == 'cliente') {
+	if (!usuario || usuario.rol == 'cliente') {
 		columns.push({
 			field: 'actions',
 			headerName: '',
@@ -147,24 +149,45 @@ function TablaAdopcion() {
 				const data = params.row;
 				return (
 					<>
-						{data.idUsuario == usuario.id && data.estado != 'Adoptado' && (
-							<GridActionsCellItem
-								icon={<CheckCircle />}
-								key="adoptado"
-								label="Adoptado"
-								onClick={() => {
-									let perroAdoptar = { ...data };
-									perroAdoptar.estado = 'Adoptado';
-									handleClickOpenConfirmar();
-									setPerro(perroAdoptar);
-								}}
-								sx={{
-									'&:hover': {
-										color: 'green',
-									},
-								}}
-							/>
-						)}
+						{(!usuario || data.idUsuario != usuario.id) &&
+							data.estado != 'Adoptado' && (
+								<GridActionsCellItem
+									icon={<Pets />}
+									key="adoptado"
+									label="Adoptado"
+									onClick={() => {
+										let perroAdoptar = { ...data };
+										perroAdoptar.estado = 'Adoptado';
+										handleClickOpenConfirmar();
+										setPerro(perroAdoptar);
+									}}
+									sx={{
+										'&:hover': {
+											color: 'green',
+										},
+									}}
+								/>
+							)}
+						{!!usuario &&
+							data.idUsuario == usuario.id &&
+							data.estado != 'Adoptado' && (
+								<GridActionsCellItem
+									icon={<CheckCircle />}
+									key="adoptado"
+									label="Adoptado"
+									onClick={() => {
+										let perroAdoptar = { ...data };
+										perroAdoptar.estado = 'Adoptado';
+										handleClickOpenConfirmar();
+										setPerro(perroAdoptar);
+									}}
+									sx={{
+										'&:hover': {
+											color: 'green',
+										},
+									}}
+								/>
+							)}
 					</>
 				);
 			},
