@@ -251,9 +251,10 @@ function TablaAdopcion() {
 				editMode="row"
 				rows={rows}
 				columns={columns}
-				// columnVisibilityModel={{
-				// 	idUsuario: false,
-				// }}
+				columnVisibilityModel={{
+					id: false,
+					idUsuario: false,
+				}}
 				onProcessRowUpdateError={handleProcessRowUpdateError}
 				initialState={{
 					pagination: {
