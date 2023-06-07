@@ -12,6 +12,7 @@ import {
 	InputLabel,
 	OutlinedInput,
 	Snackbar,
+	TextField,
 	Typography,
 } from '@mui/material';
 import url from '../data/url';
@@ -21,11 +22,9 @@ function ChangePassword() {
 	const [snackbar, setSnackbar] = useState(null);
 	const handleCloseSnackbar = () => setSnackbar(null);
 
-	const [showPasswordOld, setShowPasswordOld] = useState(false);
 	const [showPasswordNew, setShowPasswordNew] = useState(false);
 	const [showPasswordConfirm, setShowPasswordConfirm] = useState(false);
 
-	const handleClickShowPasswordOld = () => setShowPasswordOld((show) => !show);
 	const handleClickShowPasswordNew = () => setShowPasswordNew((show) => !show);
 	const handleClickShowPasswordConfirm = () =>
 		setShowPasswordConfirm((show) => !show);
@@ -52,11 +51,11 @@ function ChangePassword() {
 						'Content-Type': 'application/json',
 						token: `${token}`,
 					},
-					body: JSON.stringify({
-						contrasenaVieja: data.get('oldPassword'),
-						contrasenaNueva: data.get('newPassword'),
-						contrasenaConfirmacion: data.get('confirmPassword'),
-					}),
+					body: {
+						oldPassword: data.get('oldPassword'),
+						newPassword: data.get('newPassword'),
+						confirmPassword: data.get('confirmPassword'),
+					},
 				}
 			);
 			if (response.ok) {
@@ -105,30 +104,14 @@ function ChangePassword() {
 				<Box component="form" onSubmit={handleSubmit} sx={{ mt: 3 }}>
 					<Grid container spacing={2}>
 						<Grid item xs={12}>
-							<FormControl required fullWidth variant="outlined">
-								<InputLabel htmlFor="oldPassword">
-									Contraseña anterior
-								</InputLabel>
-								<OutlinedInput
-									autoFocus
-									id="oldPassword"
-									name="oldPassword"
-									type={showPasswordOld ? 'text' : 'password'}
-									endAdornment={
-										<InputAdornment position="end">
-											<IconButton
-												aria-label="toggle password visibility"
-												onClick={handleClickShowPasswordOld}
-												onMouseDown={handleMouseDownPassword}
-												edge="end"
-											>
-												{showPasswordOld ? <VisibilityOff /> : <Visibility />}
-											</IconButton>
-										</InputAdornment>
-									}
-									label="Contraseña anterior"
-								/>
-							</FormControl>
+							<TextField
+								name="oldPassword"
+								required
+								fullWidth
+								id="oldPassword"
+								label="Contraseña anterior"
+								autoFocus
+							/>
 						</Grid>
 						<Grid item xs={12}>
 							<FormControl required fullWidth variant="outlined">
