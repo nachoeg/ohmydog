@@ -66,6 +66,9 @@ function ChangePassword() {
 					children: 'Modificación realizada con éxito',
 					severity: 'success',
 				});
+				setTimeout(() => {
+					location.replace('/perfil/' + usuario.id);
+				}, 1000);
 				return;
 			}
 			if (response.status == 400) {
