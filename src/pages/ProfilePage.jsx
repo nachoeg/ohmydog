@@ -14,30 +14,30 @@ import {
 	Button,
 	Snackbar,
 	Alert,
-} from "@mui/material";
-import EmailIcon from "@mui/icons-material/Email";
-import PhoneIcon from "@mui/icons-material/Phone";
+} from '@mui/material';
+import EmailIcon from '@mui/icons-material/Email';
+import PhoneIcon from '@mui/icons-material/Phone';
 
-import MapIcon from "@mui/icons-material/Map";
-import MapsHomeWorkIcon from "@mui/icons-material/MapsHomeWork";
-import { useEffect, useState } from "react";
-import { Close, Edit, Password, Save } from "@mui/icons-material";
-import url from "../data/url";
-import { NavLink } from "react-router-dom";
-import { useLocation } from "react-router-dom"; // Para obtener el parametro pasado por la url
+import MapIcon from '@mui/icons-material/Map';
+import MapsHomeWorkIcon from '@mui/icons-material/MapsHomeWork';
+import { useEffect, useState } from 'react';
+import { Close, Edit, Password, Save } from '@mui/icons-material';
+import url from '../data/url';
+import { NavLink } from 'react-router-dom';
+import { useLocation } from 'react-router-dom'; // Para obtener el parametro pasado por la url
 
 function ProfilePage() {
-	const token = localStorage.getItem("jwt");
+	const token = localStorage.getItem('jwt');
 	// Obtiene el id del usuario que se pasa como parametro en la url
 	const location = useLocation();
-	const idUsuario = location.pathname.split("/")[2];
+	const idUsuario = location.pathname.split('/')[2];
 
 	// Usuario del que se muestran los datos
 	const [usuario, setUsuario] = useState(obtenerUsuario);
 
 	// Usuario que tiene sesion activa, esto para chequear si es el "dueño del perfil"
 	// y poder determinar si mostrar o no el cambiar la contraseña
-	const usuarioSesion = JSON.parse(localStorage.getItem("usuario"));
+	const usuarioSesion = JSON.parse(localStorage.getItem('usuario'));
 
 	// Asigna al usuario el usuario obtenido de la BD.
 	useEffect(() => {
@@ -47,19 +47,19 @@ function ProfilePage() {
 	// Obtiene el usuario de la BD mediante su ID.
 	async function obtenerUsuario() {
 		try {
-			const response = await fetch(url + "usuarios/" + idUsuario, {
-				method: "GET",
-				credentials: "include",
+			const response = await fetch(url + 'usuarios/' + idUsuario, {
+				method: 'GET',
+				credentials: 'include',
 				headers: {
-					"Content-Type": "application/json",
+					'Content-Type': 'application/json',
 					token: `${token}`,
 				},
 			});
 			if (!response.ok) {
 				if (response.status == 401) {
 					setSnackbar({
-						children: "No estas autorizado para ver el usuario",
-						severity: "error",
+						children: 'No estas autorizado para ver el usuario',
+						severity: 'error',
 					});
 				}
 				return null;
@@ -67,27 +67,27 @@ function ProfilePage() {
 			let user = await response.json();
 			if (user == null) {
 				setSnackbar({
-					children: "No se encontro al usuario",
-					severity: "error",
+					children: 'No se encontro al usuario',
+					severity: 'error',
 				});
 			}
 			console.log(user);
 			return user;
 		} catch (error) {
-			console.error("Error en el fetch: " + error);
+			console.error('Error en el fetch: ' + error);
 
 			setSnackbar({
-				children: "Error al conectar con la base de datos",
-				severity: "error",
+				children: 'Error al conectar con la base de datos',
+				severity: 'error',
 			});
 			return null;
 		}
 	}
 
-	const [localidad, setLocalidad] = useState("");
-	const [direccion, setDireccion] = useState("");
-	const [telefono, setTelefono] = useState("");
-	const [email, setEmail] = useState("");
+	const [localidad, setLocalidad] = useState('');
+	const [direccion, setDireccion] = useState('');
+	const [telefono, setTelefono] = useState('');
+	const [email, setEmail] = useState('');
 
 	useEffect(() => {
 		setDireccion(usuario.direccion);
@@ -97,7 +97,7 @@ function ProfilePage() {
 	}, [usuario]);
 
 	if (usuario == null) {
-		location.replace("/login");
+		location.replace('/login');
 	}
 	const [editar, setEditar] = useState(false);
 	const handleEditarClick = () => {
@@ -108,16 +108,16 @@ function ProfilePage() {
 		const data = new FormData(event.currentTarget);
 		const user = {
 			...usuario,
-			email: data.get("email"),
-			localidad: data.get("localidad"),
-			direccion: data.get("direccion"),
-			telefono: data.get("telefono"),
+			email: data.get('email'),
+			localidad: data.get('localidad'),
+			direccion: data.get('direccion'),
+			telefono: data.get('telefono'),
 		};
-		const response = await fetch(url + "usuarios/modify/" + user.id, {
-			method: "PUT",
-			credentials: "include",
+		const response = await fetch(url + 'usuarios/modify/' + user.id, {
+			method: 'PUT',
+			credentials: 'include',
 			headers: {
-				"Content-Type": "application/json",
+				'Content-Type': 'application/json',
 				token: `${token}`,
 			},
 			body: JSON.stringify(user),
@@ -127,34 +127,34 @@ function ProfilePage() {
 			// Si el usuario que modifico, es el que tiene la sesion activa, se actualizan
 			// los datos de la sesion.
 			if (idUsuario == usuarioSesion.id) {
-				localStorage.setItem("usuario", JSON.stringify(user));
+				localStorage.setItem('usuario', JSON.stringify(user));
 			}
 
 			setSnackbar({
-				children: "Modificación realizada con éxito",
-				severity: "success",
+				children: 'Modificación realizada con éxito',
+				severity: 'success',
 			});
 			setEditar(false);
 			return;
 		}
 		if (response.status == 400) {
 			setSnackbar({
-				children: "Dato invalido",
-				severity: "error",
+				children: 'Dato invalido',
+				severity: 'error',
 			});
 			return;
 		}
 		if (response.status == 403) {
 			setSnackbar({
-				children: "El email ingresado ya está en uso",
-				severity: "error",
+				children: 'El email ingresado ya está en uso',
+				severity: 'error',
 			});
 			setEmail(usuario.email);
 			return;
 		}
 		setSnackbar({
-			children: "Error al conectar con la base de datos",
-			severity: "error",
+			children: 'Error al conectar con la base de datos',
+			severity: 'error',
 		});
 	};
 
@@ -170,7 +170,7 @@ function ProfilePage() {
 		<Button
 			startIcon={<Edit />}
 			fullWidth
-			variant='contained'
+			variant="contained"
 			onClick={handleEditarClick}
 		>
 			Editar
@@ -180,9 +180,9 @@ function ProfilePage() {
 		<Button
 			startIcon={<Save />}
 			fullWidth
-			color={"success"}
-			variant='contained'
-			type='submit'
+			color={'success'}
+			variant="contained"
+			type="submit"
 		>
 			Guardar
 		</Button>
@@ -191,8 +191,8 @@ function ProfilePage() {
 		<Button
 			startIcon={<Close />}
 			fullWidth
-			color={"error"}
-			variant='contained'
+			color={'error'}
+			variant="contained"
 			onClick={handleCancelarClick}
 		>
 			Cancelar
@@ -201,113 +201,113 @@ function ProfilePage() {
 	const [snackbar, setSnackbar] = useState(null);
 	const handleCloseSnackbar = () => setSnackbar(null);
 	return (
-		<Container component='main' maxWidth='sm'>
-			<Card sx={{ padding: "10px", marginTop: 4 }}>
-				<List component='form' onSubmit={handleSubmit}>
+		<Container component="main" maxWidth="sm">
+			<Card sx={{ padding: '10px', marginTop: 4 }}>
+				<List component="form" onSubmit={handleSubmit}>
 					<ListItem>
 						<ListItemAvatar>
-							<Avatar alt='Foto de perfil' />
+							<Avatar alt="Foto de perfil" />
 						</ListItemAvatar>
 						<ListItemText
 							primary={
-								<Typography variant='h5'>
-									{usuario.nombre + " " + usuario.apellido}
+								<Typography variant="h5">
+									{usuario.nombre + ' ' + usuario.apellido}
 								</Typography>
 							}
-							secondary={"DNI: " + usuario.dni}
+							secondary={'DNI: ' + usuario.dni}
 						/>
 					</ListItem>
 					<Divider />
 					<ListItem>
-						<ListItemIcon sx={{ mr: "20px", minWidth: 0 }}>
+						<ListItemIcon sx={{ mr: '20px', minWidth: 0 }}>
 							<EmailIcon />
 						</ListItemIcon>
 						<ListItemText>
 							<TextField
-								label='Correo Electrónico'
+								label="Correo Electrónico"
 								InputProps={{
 									readOnly: !editar,
 								}}
 								required
 								fullWidth
-								name='email'
-								id='email'
+								name="email"
+								id="email"
 								value={email}
 								onChange={(event) => {
 									setEmail(event.target.value);
 								}}
-								variant='outlined'
-								size='small'
+								variant="outlined"
+								size="small"
 							/>
 						</ListItemText>
 					</ListItem>
 					<ListItem>
-						<ListItemIcon sx={{ mr: "20px", minWidth: 0 }}>
+						<ListItemIcon sx={{ mr: '20px', minWidth: 0 }}>
 							<PhoneIcon />
 						</ListItemIcon>
 						<ListItemText>
 							<TextField
-								label='Telefono'
+								label="Telefono"
 								required
 								InputProps={{
 									readOnly: !editar,
 								}}
 								fullWidth
-								type='number'
-								id='telefono'
-								name='telefono'
+								type="number"
+								id="telefono"
+								name="telefono"
 								value={telefono}
 								onChange={(event) => {
 									setTelefono(event.target.value);
 								}}
-								variant='outlined'
-								size='small'
+								variant="outlined"
+								size="small"
 							/>
 						</ListItemText>
 					</ListItem>
 					<ListItem>
-						<ListItemIcon sx={{ mr: "20px", minWidth: 0 }}>
+						<ListItemIcon sx={{ mr: '20px', minWidth: 0 }}>
 							<MapIcon />
 						</ListItemIcon>
 						<ListItemText>
 							<TextField
-								label='Localidad'
+								label="Localidad"
 								InputProps={{
 									readOnly: !editar,
 								}}
 								fullWidth
 								required
-								name='localidad'
-								id='localidad'
+								name="localidad"
+								id="localidad"
 								value={localidad}
 								onChange={(event) => {
 									setLocalidad(event.target.value);
 								}}
-								variant='outlined'
-								size='small'
+								variant="outlined"
+								size="small"
 							/>
 						</ListItemText>
 					</ListItem>
 					<ListItem>
-						<ListItemIcon sx={{ mr: "20px", minWidth: 0 }}>
+						<ListItemIcon sx={{ mr: '20px', minWidth: 0 }}>
 							<MapsHomeWorkIcon />
 						</ListItemIcon>
 						<ListItemText>
 							<TextField
-								label='Direccion'
+								label="Direccion"
 								InputProps={{
 									readOnly: !editar,
 								}}
 								required
-								name='direccion'
+								name="direccion"
 								fullWidth
-								id='direccion'
+								id="direccion"
 								value={direccion}
 								onChange={(event) => {
 									setDireccion(event.target.value);
 								}}
-								variant='outlined'
-								size='small'
+								variant="outlined"
+								size="small"
 							/>
 						</ListItemText>
 					</ListItem>
@@ -327,12 +327,12 @@ function ProfilePage() {
 					</ListItem>
 					<ListItem>
 						{idUsuario == usuarioSesion.id ? (
-							<NavLink style={{ width: "100%" }} to={"/cambiar-contraseña"}>
+							<NavLink style={{ width: '100%' }} to={'/cambiar-contraseña'}>
 								<Button
 									startIcon={<Password />}
 									fullWidth
-									variant='contained'
-									color='tertiary'
+									variant="contained"
+									color="tertiary"
 								>
 									Cambiar contraseña
 								</Button>
@@ -344,7 +344,7 @@ function ProfilePage() {
 			{!!snackbar && (
 				<Snackbar
 					open
-					anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+					anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
 					onClose={handleCloseSnackbar}
 					autoHideDuration={6000}
 				>

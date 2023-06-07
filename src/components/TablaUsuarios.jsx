@@ -1,15 +1,15 @@
-import { useEffect, useState, useCallback } from "react";
-import url from "../data/url";
-import { DataGrid, GridActionsCellItem } from "@mui/x-data-grid";
-import Snackbar from "@mui/material/Snackbar";
-import Alert from "@mui/material/Alert";
-import Delete from "@mui/icons-material/DeleteForever";
-import Button from "@mui/material/Button";
-import { NavLink } from "react-router-dom";
-import { GridOverlay } from "@mui/x-data-grid";
+import { useEffect, useState, useCallback } from 'react';
+import url from '../data/url';
+import { DataGrid, GridActionsCellItem } from '@mui/x-data-grid';
+import Snackbar from '@mui/material/Snackbar';
+import Alert from '@mui/material/Alert';
+import Delete from '@mui/icons-material/DeleteForever';
+import Button from '@mui/material/Button';
+import { NavLink } from 'react-router-dom';
+import { GridOverlay } from '@mui/x-data-grid';
 
 function TablaUsuarios() {
-	const token = localStorage.getItem("jwt");
+	const token = localStorage.getItem('jwt');
 	const [rows, setRows] = useState([]);
 
 	useEffect(() => {
@@ -18,19 +18,19 @@ function TablaUsuarios() {
 
 	async function obtenerUsuarios() {
 		try {
-			const response = await fetch(url + "usuarios", {
-				method: "GET",
-				credentials: "include",
+			const response = await fetch(url + 'usuarios', {
+				method: 'GET',
+				credentials: 'include',
 				headers: {
-					"Content-Type": "application/json",
+					'Content-Type': 'application/json',
 					token: `${token}`,
 				},
 			});
 			if (!response.ok) {
 				if (response.status == 401) {
 					setSnackbar({
-						children: "No estas autorizado para ver los usuarios",
-						severity: "error",
+						children: 'No estas autorizado para ver los usuarios',
+						severity: 'error',
 					});
 				}
 				return [];
@@ -38,73 +38,73 @@ function TablaUsuarios() {
 			let usuarios = await response.json();
 			if (usuarios.length == 0) {
 				setSnackbar({
-					children: "La lista de usuarios clientes se encuentra vacia",
-					severity: "info",
+					children: 'La lista de usuarios clientes se encuentra vacia',
+					severity: 'info',
 				});
 			}
 			return usuarios;
 		} catch (error) {
-			console.error("Error en el fetch: " + error);
+			console.error('Error en el fetch: ' + error);
 
 			setSnackbar({
-				children: "Error al conectar con la base de datos",
-				severity: "error",
+				children: 'Error al conectar con la base de datos',
+				severity: 'error',
 			});
 			return [];
 		}
 	}
 
 	const columns = [
-		{ field: "id", headerName: "ID", width: 0, id: "id" },
+		{ field: 'id', headerName: 'ID', width: 0, id: 'id' },
 		{
-			field: "email",
-			headerName: "Email",
+			field: 'email',
+			headerName: 'Email',
 			width: 200,
 		},
-		{ field: "nombre", headerName: "Nombre", width: 100 },
-		{ field: "apellido", headerName: "Apellido", width: 100 },
+		{ field: 'nombre', headerName: 'Nombre', width: 100 },
+		{ field: 'apellido', headerName: 'Apellido', width: 100 },
 		{
-			field: "dni",
-			headerName: "DNI",
-			type: "number",
+			field: 'dni',
+			headerName: 'DNI',
+			type: 'number',
 			width: 100,
 		},
 		{
-			field: "telefono",
-			headerName: "Telefono",
-			type: "number",
+			field: 'telefono',
+			headerName: 'Telefono',
+			type: 'number',
 			width: 100,
 		},
 		{
-			field: "direccion",
-			headerName: "Direccion",
+			field: 'direccion',
+			headerName: 'Direccion',
 			width: 100,
 		},
 		{
-			field: "localidad",
-			headerName: "Localidad",
+			field: 'localidad',
+			headerName: 'Localidad',
 			width: 100,
 		},
 		{
-			field: "actions",
-			headerName: "",
+			field: 'actions',
+			headerName: '',
 			width: 300,
 			renderCell: (params) => {
 				let { id, nombre, apellido } = params.row;
-				apellido = apellido.replaceAll(" ", "-");
-				nombre = nombre.replaceAll(" ", "-");
+				apellido = apellido.replaceAll(' ', '-');
+				nombre = nombre.replaceAll(' ', '-');
 				return (
 					<>
 						<Button
 							component={NavLink}
 							to={`/perfil/${id}`}
 							style={{
-								textDecoration: "none",
-								display: "flex",
-								justifyContent: "center",
-								border: "none",
-								background: "none",
-								fontSize: "0.8em",
+								textDecoration: 'none',
+								display: 'flex',
+								justifyContent: 'center',
+								border: 'none',
+								background: 'none',
+								fontSize: '0.8em',
 							}}
 						>
 							Modificar
@@ -112,16 +112,16 @@ function TablaUsuarios() {
 						<NavLink
 							to={`/perros/usuario/${id}/${nombre}-${apellido}`}
 							style={{
-								textDecoration: "none",
-								display: "flex",
-								justifyContent: "center",
+								textDecoration: 'none',
+								display: 'flex',
+								justifyContent: 'center',
 							}}
 						>
 							<Button
 								style={{
-									border: "none",
-									background: "none",
-									fontSize: "0.8em",
+									border: 'none',
+									background: 'none',
+									fontSize: '0.8em',
 								}}
 							>
 								Ver perros
@@ -129,10 +129,10 @@ function TablaUsuarios() {
 						</NavLink>
 						<GridActionsCellItem
 							icon={<Delete />}
-							key='delete'
-							label='Delete'
+							key="delete"
+							label="Delete"
 							onClick={handleDeleteClick(id)}
-							color='inherit'
+							color="inherit"
 						/>
 					</>
 				);
@@ -145,25 +145,25 @@ function TablaUsuarios() {
 	const handleCloseSnackbar = () => setSnackbar(null);
 
 	const handleDeleteClick = (id) => async () => {
-		const response = await fetch(url + "usuarios/delete/" + id, {
-			method: "DELETE",
-			credentials: "include",
+		const response = await fetch(url + 'usuarios/delete/' + id, {
+			method: 'DELETE',
+			credentials: 'include',
 			headers: {
-				"Content-Type": "application/json",
+				'Content-Type': 'application/json',
 				token: `${token}`,
 			},
 		});
 		console.log(response);
 		if (response.ok) {
 			setSnackbar({
-				children: "Usuario eliminado con exito",
-				severity: "success",
+				children: 'Usuario eliminado con exito',
+				severity: 'success',
 			});
 			setRows(rows.filter((row) => row.id !== id));
 		} else {
 			setSnackbar({
-				children: "Error al conectar con la base de datos",
-				severity: "error",
+				children: 'Error al conectar con la base de datos',
+				severity: 'error',
 			});
 		}
 	};
@@ -232,9 +232,9 @@ function TablaUsuarios() {
 	};
 
 	return (
-		<div style={{ height: 400, width: "100%" }}>
+		<div style={{ height: 400, width: '100%' }}>
 			<DataGrid
-				editMode='row'
+				editMode="row"
 				rows={rows}
 				columns={columns}
 				// processRowUpdate={processRowUpdate}
@@ -252,7 +252,7 @@ function TablaUsuarios() {
 			{!!snackbar && (
 				<Snackbar
 					open
-					anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+					anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
 					onClose={handleCloseSnackbar}
 					autoHideDuration={6000}
 				>
