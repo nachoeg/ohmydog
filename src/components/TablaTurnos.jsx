@@ -15,7 +15,7 @@ import {
 	DialogTitle,
 } from '@mui/material';
 
-function TablaTurnos(props) {
+function TablaTurnos({ urlTurnos }) {
 	const token = localStorage.getItem('jwt');
 
 	const [rows, setRows] = useState([]);
@@ -39,7 +39,7 @@ function TablaTurnos(props) {
 
 	async function obtenerTurnos() {
 		try {
-			const response = await fetch(url + 'turnos/' + props.idUsuario, {
+			const response = await fetch(url + 'turnos/' + urlTurnos, {
 				method: 'GET',
 				credentials: 'include',
 				headers: {

@@ -1,7 +1,12 @@
 import { Container } from '@mui/material';
 import TablaTurnos from '../components/TablaTurnos';
+import { useLocation } from 'react-router-dom';
 
-function TurnosPage() {
+function DogsUsersTurnsPage() {
+	const location = useLocation();
+	const url =
+		location.pathname.split('/')[2] + '/' + location.pathname.split('/')[3];
+
 	return (
 		<>
 			<Container
@@ -14,10 +19,10 @@ function TurnosPage() {
 					mt: 4,
 				}}
 			>
-				<TablaTurnos idUsuario="" />
+				<TablaTurnos urlTurnos={url} />
 			</Container>
 		</>
 	);
 }
 
-export default TurnosPage;
+export default DogsUsersTurnsPage;

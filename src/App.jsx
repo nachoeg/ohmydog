@@ -6,7 +6,7 @@ import HomePage from './pages/HomePage';
 import NotFoundPage from './pages/NotFoundPage';
 import SignUpPage from './pages/SignUpPage';
 import UsersPage from './pages/UsersPage';
-import TurnosPage from './pages/TurnosPage';
+import AllTurnsPage from './pages/AllTurnsPage';
 import Navbar from './components/Navbar';
 import ProfilePage from './pages/ProfilePage';
 import MyDogsPage from './pages/MyDogsPage';
@@ -19,6 +19,7 @@ import AdoptRegisterPage from './pages/AdoptRegisterPage';
 import HistorialClinicoPage from './pages/HistorialClinicoPage';
 import MyTurnsPage from './pages/MyTurnsPage';
 import AddTurn from './pages/AddTurnPage';
+import DogsUsersTurnsPage from './pages/DogsUsersTurnsPage';
 
 function App() {
 	const theme = createTheme({
@@ -56,7 +57,9 @@ function App() {
 						<Route path="login" element={<LogInPage />} />
 						<Route path="usuarios/registrar" element={<SignUpPage />} />
 						<Route path="usuarios" element={<UsersPage />} />
-						<Route path="turnos" element={<TurnosPage />} />
+						<Route path="turnos" element={<AllTurnsPage />} />
+						<Route path="turnos/cliente/:id" element={<DogsUsersTurnsPage />} />
+						<Route path="turnos/perro/:id" element={<DogsUsersTurnsPage />} />
 						<Route path="mis-perros" element={<MyDogsPage />} />
 						<Route path="mis-turnos" element={<MyTurnsPage />} />
 						<Route path="mis-turnos/solicitar-turno" element={<AddTurn />} />

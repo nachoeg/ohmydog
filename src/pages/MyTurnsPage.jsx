@@ -20,7 +20,7 @@ function MyTurnsPage() {
 					mt: 4,
 				}}
 			>
-				<TablaTurnos idUsuario={usuario.id} />
+				<TablaTurnos urlTurnos={'cliente/' + usuario.id} />
 				<NavLink
 					to="/mis-turnos/solicitar-turno"
 					style={{ textDecoration: 'none', width: '100%' }}
