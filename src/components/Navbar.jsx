@@ -1,28 +1,28 @@
-import AppBar from '@mui/material/AppBar';
-import Box from '@mui/material/Box';
-import Toolbar from '@mui/material/Toolbar';
-import IconButton from '@mui/material/IconButton';
-import Typography from '@mui/material/Typography';
-import Menu from '@mui/material/Menu';
-import MenuIcon from '@mui/icons-material/Menu';
-import Container from '@mui/material/Container';
-import Avatar from '@mui/material/Avatar';
-import Button from '@mui/material/Button';
-import Tooltip from '@mui/material/Tooltip';
-import MenuItem from '@mui/material/MenuItem';
-import { Outlet, NavLink } from 'react-router-dom';
-import Logotipo from './Logotipo';
-import LoginButton from './LoginButton';
-import { pages, pagesLoggedUsers, pagesAdminUsers } from '../data/pages';
-import { useContext, useState } from 'react';
-import { useEffect } from 'react';
-import AccountIcon from '@mui/icons-material/AccountCircle';
-import LogoutIcon from '@mui/icons-material/Logout';
-import PetsIcon from '@mui/icons-material/Pets';
-import url from '../data/url';
-import { Context } from '../context/Context';
-import Copyright from './Copyright';
-import '../css/animaciones.css';
+import AppBar from "@mui/material/AppBar";
+import Box from "@mui/material/Box";
+import Toolbar from "@mui/material/Toolbar";
+import IconButton from "@mui/material/IconButton";
+import Typography from "@mui/material/Typography";
+import Menu from "@mui/material/Menu";
+import MenuIcon from "@mui/icons-material/Menu";
+import Container from "@mui/material/Container";
+import Avatar from "@mui/material/Avatar";
+import Button from "@mui/material/Button";
+import Tooltip from "@mui/material/Tooltip";
+import MenuItem from "@mui/material/MenuItem";
+import { Outlet, NavLink } from "react-router-dom";
+import Logotipo from "./Logotipo";
+import LoginButton from "./LoginButton";
+import { pages, pagesLoggedUsers, pagesAdminUsers } from "../data/pages";
+import { useContext, useState } from "react";
+import { useEffect } from "react";
+import AccountIcon from "@mui/icons-material/AccountCircle";
+import LogoutIcon from "@mui/icons-material/Logout";
+import PetsIcon from "@mui/icons-material/Pets";
+import url from "../data/url";
+import { Context } from "../context/Context";
+import Copyright from "./Copyright";
+import "../css/animaciones.css";
 
 function ResponsiveAppBar() {
 	const [routes, setRoutes] = useState([]);
@@ -32,7 +32,7 @@ function ResponsiveAppBar() {
 
 	useEffect(() => {
 		if (auth) {
-			if (usuario.rol == 'veterinario') {
+			if (usuario.rol == "veterinario") {
 				setRoutes(pagesAdminUsers);
 			} else {
 				setRoutes(pagesLoggedUsers);
@@ -41,24 +41,24 @@ function ResponsiveAppBar() {
 	}, [auth]);
 
 	const handleLogout = () => {
-		fetch(url + 'auth/logout', {
-			method: 'GET',
+		fetch(url + "auth/logout", {
+			method: "GET",
 			headers: {
-				'Content-Type': 'application/json',
-				token: localStorage.getItem('jwt'),
+				"Content-Type": "application/json",
+				token: localStorage.getItem("jwt"),
 			},
-			credentials: 'include',
+			credentials: "include",
 		})
 			.then((response) => {
 				console.log(response);
 			})
 			.catch((error) => {
-				console.error('Error en el fetch: ' + error);
+				console.error("Error en el fetch: " + error);
 			})
 			.finally(() => {
-				localStorage.clear('jwt');
-				localStorage.clear('usuarios');
-				location.replace('/login');
+				localStorage.clear("jwt");
+				localStorage.clear("usuarios");
+				location.replace("/login");
 			});
 	};
 
@@ -80,84 +80,84 @@ function ResponsiveAppBar() {
 
 	return (
 		<>
-			<AppBar sx={{ backgroundColor: 'white' }} position="static">
-				<Container maxWidth="xl">
+			<AppBar sx={{ backgroundColor: "white" }} position='static'>
+				<Container maxWidth='xl'>
 					<Toolbar disableGutters>
-						<Box sx={{ display: { xs: 'none', md: 'flex' } }}>
+						<Box sx={{ display: { xs: "none", md: "flex" } }}>
 							<Logotipo />
 						</Box>
-						<Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
+						<Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
 							<IconButton
-								size="large"
-								aria-label="account of current user"
-								aria-controls="menu-appbar"
-								aria-haspopup="true"
+								size='large'
+								aria-label='account of current user'
+								aria-controls='menu-appbar'
+								aria-haspopup='true'
 								onClick={handleOpenNavMenu}
-								color="inherit"
+								color='inherit'
 							>
-								<MenuIcon sx={{ color: 'primary.main' }} />
+								<MenuIcon sx={{ color: "primary.main" }} />
 							</IconButton>
 							<Menu
-								id="menu-appbar"
+								id='menu-appbar'
 								anchorEl={anchorElNav}
 								anchorOrigin={{
-									vertical: 'bottom',
-									horizontal: 'left',
+									vertical: "bottom",
+									horizontal: "left",
 								}}
 								keepMounted
 								transformOrigin={{
-									vertical: 'top',
-									horizontal: 'left',
+									vertical: "top",
+									horizontal: "left",
 								}}
 								open={Boolean(anchorElNav)}
 								onClose={handleCloseNavMenu}
 								sx={{
-									display: { xs: 'block', md: 'none' },
+									display: { xs: "block", md: "none" },
 								}}
 							>
 								{routes.map((page) => (
 									<NavLink
 										key={page.nombre}
 										to={page.url}
-										style={{ textDecoration: 'none', color: '#000' }}
+										style={{ textDecoration: "none", color: "#000" }}
 									>
 										<MenuItem onClick={handleCloseNavMenu}>
-											<Typography textAlign="center">{page.nombre}</Typography>
+											<Typography textAlign='center'>{page.nombre}</Typography>
 										</MenuItem>
 									</NavLink>
 								))}
 							</Menu>
 						</Box>
-						<Box sx={{ display: { xs: 'flex', md: 'none' }, flexGrow: 1 }}>
+						<Box sx={{ display: { xs: "flex", md: "none" }, flexGrow: 1 }}>
 							<Logotipo />
 						</Box>
-						<Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
+						<Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
 							{routes.map((page) => (
 								<NavLink
 									to={page.url}
 									key={page.nombre}
-									style={{ textDecoration: 'none' }}
+									style={{ textDecoration: "none" }}
 								>
 									{({ isActive }) => (
 										<Button
 											onClick={handleCloseNavMenu}
-											className={isActive ? 'grow' : ''}
+											className={isActive ? "grow" : ""}
 											sx={[
 												{
 													my: 2,
-													mx: '2px',
-													color: 'primary.main',
-													display: 'block',
+													mx: "2px",
+													color: "primary.main",
+													display: "block",
 													paddingInline: 1,
 												},
 												isActive && {
-													'&:hover': { bgcolor: 'secondary.main' },
-													bgcolor: 'secondary.main',
-													color: 'white',
-													fontWeight: 'bold',
+													"&:hover": { bgcolor: "secondary.main" },
+													bgcolor: "secondary.main",
+													color: "white",
+													fontWeight: "bold",
 												},
 											]}
-											variant={isActive ? 'contained' : 'text'}
+											variant={isActive ? "contained" : "text"}
 										>
 											{page.nombre}
 										</Button>
@@ -167,51 +167,51 @@ function ResponsiveAppBar() {
 						</Box>
 						{auth ? (
 							<Box sx={{ flexGrow: 0 }}>
-								<Tooltip title={usuario.nombre + ' ' + usuario.apellido}>
+								<Tooltip title={usuario.nombre + " " + usuario.apellido}>
 									<IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-										<Avatar alt="Foto perfil" src="" />
+										<Avatar alt='Foto perfil' src='' />
 									</IconButton>
 								</Tooltip>
 								<Menu
-									sx={{ mt: '45px' }}
-									id="menu-appbar"
+									sx={{ mt: "45px" }}
+									id='menu-appbar'
 									anchorEl={anchorElUser}
 									anchorOrigin={{
-										vertical: 'top',
-										horizontal: 'right',
+										vertical: "top",
+										horizontal: "right",
 									}}
 									keepMounted
 									transformOrigin={{
-										vertical: 'top',
-										horizontal: 'right',
+										vertical: "top",
+										horizontal: "right",
 									}}
 									open={Boolean(anchorElUser)}
 									onClose={handleCloseUserMenu}
 								>
 									<NavLink
-										key={'Perfil'}
-										to={'/perfil'}
+										key={"Perfil"}
+										to={`/perfil/${usuario.id}`}
 										style={{
-											textDecoration: 'none',
-											color: '#000',
+											textDecoration: "none",
+											color: "#000",
 										}}
 									>
 										<MenuItem onClick={handleCloseUserMenu}>
-											<AccountIcon sx={{ mr: '4px' }} />
+											<AccountIcon sx={{ mr: "4px" }} />
 											<Typography>Perfil</Typography>
 										</MenuItem>
 									</NavLink>
-									{usuario.rol == 'cliente' && (
+									{usuario.rol == "cliente" && (
 										<NavLink
-											key={'Perros'}
-											to={'/mis-perros'}
+											key={"Perros"}
+											to={"/mis-perros"}
 											style={{
-												textDecoration: 'none',
-												color: '#000',
+												textDecoration: "none",
+												color: "#000",
 											}}
 										>
 											<MenuItem onClick={handleCloseUserMenu}>
-												<PetsIcon sx={{ mr: '4px' }} />
+												<PetsIcon sx={{ mr: "4px" }} />
 												<Typography>Perros</Typography>
 											</MenuItem>
 										</NavLink>
@@ -222,8 +222,8 @@ function ResponsiveAppBar() {
 											handleLogout();
 										}}
 									>
-										<LogoutIcon sx={{ mr: '4px' }} />
-										<Typography>{'Cerrar Sesión'}</Typography>
+										<LogoutIcon sx={{ mr: "4px" }} />
+										<Typography>{"Cerrar Sesión"}</Typography>
 									</MenuItem>
 								</Menu>
 							</Box>
