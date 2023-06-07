@@ -39,9 +39,7 @@ function ChangePassword() {
 	const handleSubmit = async (event) => {
 		event.preventDefault();
 		const data = new FormData(event.currentTarget);
-		console.log(data.get('oldPassword'));
-		console.log(data.get('newPassword'));
-		console.log(data.get('confirmPassword'));
+
 		if (data.get('newPassword') != data.get('confirmPassword')) {
 			setSnackbar({
 				children: 'Las contraseñas nuevas no coinciden',
