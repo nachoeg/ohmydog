@@ -42,52 +42,59 @@ function ChangePassword() {
 		console.log(data.get('oldPassword'));
 		console.log(data.get('newPassword'));
 		console.log(data.get('confirmPassword'));
-		if (data.get('newPassword') == data.get('confirmPassword')) {
-			const response = await fetch(
-				url + 'usuarios/changePassword/' + usuario.id,
-				{
-					method: 'PUT',
-					credentials: 'include',
-					headers: {
-						'Content-Type': 'application/json',
-						token: `${token}`,
-					},
-					body: JSON.stringify({
-						contrasenaVieja: data.get('oldPassword'),
-						contrasenaNueva: data.get('newPassword'),
-						contrasenaConfirmacion: data.get('confirmPassword'),
-					}),
-				}
-			);
-			if (response.ok) {
-				const nuevoUsuario = { ...usuario, password: data.get('newPassword') };
-				localStorage.setItem('usuario', JSON.stringify(nuevoUsuario));
-				setSnackbar({
-					children: 'Modificación realizada con éxito',
-					severity: 'success',
-				});
-				setTimeout(() => {
-					location.replace('/perfil/' + usuario.id);
-				}, 1000);
-				return;
-			}
-			if (response.status == 400) {
-				setSnackbar({
-					children: 'La contraseña ingresada es incorrecta. Intentalo de nuevo',
-					severity: 'error',
-				});
-				return;
-			}
-			setSnackbar({
-				children: 'Error al conectar con la base de datos',
-				severity: 'error',
-			});
-		} else {
+		if (data.get('newPassword') != data.get('confirmPassword')) {
 			setSnackbar({
 				children: 'Las contraseñas nuevas no coinciden',
 				severity: 'error',
 			});
+			return;
 		}
+		if (data.get('oldPassword') == data.get('newPassword')) {
+			setSnackbar({
+				children: 'La contraseña nueva debe ser distinta a la anterior',
+				severity: 'error',
+			});
+			return;
+		}
+		const response = await fetch(
+			url + 'usuarios/changePassword/' + usuario.id,
+			{
+				method: 'PUT',
+				credentials: 'include',
+				headers: {
+					'Content-Type': 'application/json',
+					token: `${token}`,
+				},
+				body: JSON.stringify({
+					contrasenaVieja: data.get('oldPassword'),
+					contrasenaNueva: data.get('newPassword'),
+					contrasenaConfirmacion: data.get('confirmPassword'),
+				}),
+			}
+		);
+		if (response.ok) {
+			const nuevoUsuario = { ...usuario, password: data.get('newPassword') };
+			localStorage.setItem('usuario', JSON.stringify(nuevoUsuario));
+			setSnackbar({
+				children: 'Modificación realizada con éxito',
+				severity: 'success',
+			});
+			setTimeout(() => {
+				location.replace('/perfil/' + usuario.id);
+			}, 1000);
+			return;
+		}
+		if (response.status == 400) {
+			setSnackbar({
+				children: 'La contraseña ingresada es incorrecta. Intentalo de nuevo',
+				severity: 'error',
+			});
+			return;
+		}
+		setSnackbar({
+			children: 'Error al conectar con la base de datos',
+			severity: 'error',
+		});
 	};
 	return (
 		<Container component="main" maxWidth="xs">
