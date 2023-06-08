@@ -8,6 +8,15 @@ import Delete from '@mui/icons-material/DeleteForever';
 import { razas } from '../data/perros';
 import Button from '@mui/material/Button';
 import { NavLink } from 'react-router-dom';
+import { AssignmentOutlined, CalendarMonth } from '@mui/icons-material';
+import { Tooltip } from '@mui/material';
+import {
+	Dialog,
+	DialogActions,
+	DialogContent,
+	DialogContentText,
+	DialogTitle,
+} from '@mui/material';
 
 // La tabla de perros recibe en props el id del usuario que va a mostrar los perros
 function TablaPerros(props) {
@@ -35,7 +44,7 @@ function TablaPerros(props) {
 	}, []);
 
 	// Manejador del borrado de los perros
-	const handleDeleteClick = (id) => async () => {
+	async function eliminarPerro(id) {
 		const response = await fetch(url + 'perros/delete/' + id, {
 			method: 'DELETE',
 			credentials: 'include',
@@ -57,7 +66,7 @@ function TablaPerros(props) {
 				severity: 'error',
 			});
 		}
-	};
+	}
 
 	// Obtiene los perros del usuario desde la BD.
 	async function obtenerPerros() {
@@ -195,23 +204,19 @@ function TablaPerros(props) {
 			const actions = [
 				<Button
 					key="turnos"
-					variant="contained"
-					color="primary"
+					startIcon={<CalendarMonth />}
 					component={NavLink}
 					to={`/turnos/perro/${id}`}
-					size="small"
-					style={{ fontSize: '10px', marginRight: '7px' }}
+					sx={{ mr: 1, fontSize: 11 }}
 				>
 					Turnos
 				</Button>,
 				<Button
 					key="historial"
-					variant="contained"
-					color="primary"
+					startIcon={<AssignmentOutlined />}
 					component={NavLink}
 					to={`/historial-clinico/${id}`}
-					size="small"
-					style={{ fontSize: '10px', marginRight: '7px' }}
+					sx={{ fontSize: 11 }}
 				>
 					Historial clínico
 				</Button>,
@@ -219,19 +224,36 @@ function TablaPerros(props) {
 
 			if (esVeterinario) {
 				actions.push(
-					<GridActionsCellItem
-						icon={<Delete />}
-						key="delete"
-						label="Delete"
-						onClick={handleDeleteClick(id)}
-						color="inherit"
-					/>
+					<Tooltip key="delete" title="Eliminar" placement="right">
+						<GridActionsCellItem
+							icon={<Delete />}
+							label="Delete"
+							onClick={() => {
+								setPerroBorrar(id);
+								handleClickOpenConfirmar();
+							}}
+							color="primary"
+							// sx={{ '&:hover': { color: 'red' } }}
+						/>
+					</Tooltip>
 				);
 			}
 
 			return <>{actions}</>;
 		},
 	});
+
+	const [openConfirmar, setOpenConfirmar] = useState(false);
+
+	const [perroBorrar, setPerroBorrar] = useState();
+
+	const handleClickOpenConfirmar = () => {
+		setOpenConfirmar(true);
+	};
+
+	const handleCloseConfirmar = () => {
+		setOpenConfirmar(false);
+	};
 
 	// Para cambiar el mensaje que muestra si no hay perros
 	const CustomNoRowsOverlay = () => {
@@ -260,7 +282,42 @@ function TablaPerros(props) {
 					NoRowsOverlay: CustomNoRowsOverlay,
 				}}
 			/>
-
+			<Dialog
+				open={openConfirmar}
+				onClose={handleCloseConfirmar}
+				aria-labelledby="confirmar-title"
+				aria-describedby="confirmar-description"
+			>
+				<DialogTitle id="confirmar-title">
+					Estas seguro/a de <b style={{ color: 'red' }}>eliminar</b> al perro?
+				</DialogTitle>
+				<DialogContent>
+					<DialogContentText id="confirmar-description">
+						Una vez que confirmes, también se eliminarán todos los turnos
+						asociados al perro.
+					</DialogContentText>
+				</DialogContent>
+				<DialogActions>
+					<Button
+						color="error"
+						variant="outlined"
+						onClick={handleCloseConfirmar}
+					>
+						Cancelar
+					</Button>
+					<Button
+						variant="contained"
+						color="error"
+						onClick={() => {
+							eliminarPerro(perroBorrar);
+							handleCloseConfirmar();
+						}}
+						autoFocus
+					>
+						Confirmar
+					</Button>
+				</DialogActions>
+			</Dialog>
 			{!!snackbar && (
 				// Declaracion de propiedades de la snackbar
 				<Snackbar
