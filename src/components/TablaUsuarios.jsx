@@ -7,6 +7,15 @@ import Delete from '@mui/icons-material/DeleteForever';
 import Button from '@mui/material/Button';
 import { NavLink } from 'react-router-dom';
 import { GridOverlay } from '@mui/x-data-grid';
+import {
+	Dialog,
+	DialogActions,
+	DialogContent,
+	DialogContentText,
+	DialogTitle,
+	Tooltip,
+} from '@mui/material';
+import { Edit, Pets } from '@mui/icons-material';
 
 function TablaUsuarios() {
 	const token = localStorage.getItem('jwt');
@@ -96,55 +105,57 @@ function TablaUsuarios() {
 				return (
 					<>
 						<Button
+							key="modificar"
 							component={NavLink}
+							startIcon={<Edit />}
 							to={`/perfil/${id}`}
-							style={{
-								textDecoration: 'none',
-								display: 'flex',
-								justifyContent: 'center',
-								border: 'none',
-								background: 'none',
-								fontSize: '0.8em',
-							}}
+							sx={{ fontSize: 11, mr: 1 }}
 						>
 							Modificar
 						</Button>
-						<NavLink
+						<Button
+							key="perros"
+							startIcon={<Pets />}
 							to={`/perros/usuario/${id}/${nombre}-${apellido}`}
-							style={{
-								textDecoration: 'none',
-								display: 'flex',
-								justifyContent: 'center',
-							}}
+							component={NavLink}
+							sx={{ fontSize: 11 }}
 						>
-							<Button
-								style={{
-									border: 'none',
-									background: 'none',
-									fontSize: '0.8em',
+							Perros
+						</Button>
+						<Tooltip key="delete" title="Eliminar" placement="right">
+							<GridActionsCellItem
+								icon={<Delete />}
+								label="Delete"
+								onClick={() => {
+									setUsuarioBorrar(id);
+									handleClickOpenConfirmar();
 								}}
-							>
-								Ver perros
-							</Button>
-						</NavLink>
-						<GridActionsCellItem
-							icon={<Delete />}
-							key="delete"
-							label="Delete"
-							onClick={handleDeleteClick(id)}
-							color="inherit"
-						/>
+								color="primary"
+							/>
+						</Tooltip>
 					</>
 				);
 			},
 		},
 	];
 
+	const [openConfirmar, setOpenConfirmar] = useState(false);
+
+	const [usuarioBorrar, setUsuarioBorrar] = useState();
+
+	const handleClickOpenConfirmar = () => {
+		setOpenConfirmar(true);
+	};
+
+	const handleCloseConfirmar = () => {
+		setOpenConfirmar(false);
+	};
+
 	const [snackbar, setSnackbar] = useState(null);
 
 	const handleCloseSnackbar = () => setSnackbar(null);
 
-	const handleDeleteClick = (id) => async () => {
+	async function eliminarUsuario(id) {
 		const response = await fetch(url + 'usuarios/delete/' + id, {
 			method: 'DELETE',
 			credentials: 'include',
@@ -166,7 +177,7 @@ function TablaUsuarios() {
 				severity: 'error',
 			});
 		}
-	};
+	}
 
 	// Funcionalidad deprecada, ya no se modifica un usuario directamente desde la tabla.
 	// Se hace desde un boton.
@@ -249,6 +260,42 @@ function TablaUsuarios() {
 					NoRowsOverlay: CustomNoRowsOverlay,
 				}}
 			/>
+			<Dialog
+				open={openConfirmar}
+				onClose={handleCloseConfirmar}
+				aria-labelledby="confirmar-title"
+				aria-describedby="confirmar-description"
+			>
+				<DialogTitle id="confirmar-title">
+					Estas seguro/a de <b style={{ color: 'red' }}>eliminar</b> al usuario?
+				</DialogTitle>
+				<DialogContent>
+					<DialogContentText id="confirmar-description">
+						Una vez que confirmes, también se eliminarán todos los perros, y
+						turnos asociados al usuario.
+					</DialogContentText>
+				</DialogContent>
+				<DialogActions>
+					<Button
+						color="error"
+						variant="outlined"
+						onClick={handleCloseConfirmar}
+					>
+						Cancelar
+					</Button>
+					<Button
+						variant="contained"
+						color="error"
+						onClick={() => {
+							eliminarUsuario(usuarioBorrar);
+							handleCloseConfirmar();
+						}}
+						autoFocus
+					>
+						Confirmar
+					</Button>
+				</DialogActions>
+			</Dialog>
 			{!!snackbar && (
 				<Snackbar
 					open
