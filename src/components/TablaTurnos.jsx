@@ -1,4 +1,4 @@
-import { useEffect, useState, useCallback } from 'react';
+import { useEffect, useState, useCallback, useContext } from 'react';
 import url from '../data/url';
 import { DataGrid } from '@mui/x-data-grid';
 import Snackbar from '@mui/material/Snackbar';
@@ -14,6 +14,7 @@ import {
 	DialogContentText,
 	DialogTitle,
 } from '@mui/material';
+import { Context } from '../context/Context';
 
 function TablaTurnos({ urlTurnos }) {
 	const token = localStorage.getItem('jwt');
@@ -21,6 +22,8 @@ function TablaTurnos({ urlTurnos }) {
 	const [rows, setRows] = useState([]);
 
 	const [turno, setTurno] = useState(null);
+
+	const { usuario } = useContext(Context);
 
 	useEffect(() => {
 		actualizarTabla();
@@ -45,6 +48,7 @@ function TablaTurnos({ urlTurnos }) {
 				headers: {
 					'Content-Type': 'application/json',
 					token: `${token}`,
+					idCliente: `${usuario.id}`,
 				},
 			});
 			if (!response.ok) {
