@@ -23,6 +23,7 @@ import url from '../data/url';
 import { Context } from '../context/Context';
 import Copyright from './Copyright';
 import '../css/animaciones.css';
+import { styled } from '@mui/material';
 
 function ResponsiveAppBar() {
 	const [routes, setRoutes] = useState([]);
@@ -78,9 +79,11 @@ function ResponsiveAppBar() {
 		setAnchorElUser(null);
 	};
 
+	const Offset = styled('div')(({ theme }) => theme.mixins.toolbar);
+
 	return (
 		<>
-			<AppBar sx={{ backgroundColor: 'white' }} position="static">
+			<AppBar sx={{ backgroundColor: 'white' }} position="fixed">
 				<Container maxWidth="xl">
 					<Toolbar disableGutters>
 						<Box sx={{ display: { xs: 'none', md: 'flex' } }}>
@@ -233,7 +236,7 @@ function ResponsiveAppBar() {
 					</Toolbar>
 				</Container>
 			</AppBar>
-
+			<Offset />
 			<Outlet />
 			<Copyright sx={{ mt: 5 }} />
 		</>
