@@ -42,6 +42,7 @@ function ProfilePage() {
 	// Asigna al usuario el usuario obtenido de la BD.
 	useEffect(() => {
 		obtenerUsuario().then((usuario) => setUsuario(usuario));
+		setEditar(false);
 	}, [idUsuario]);
 
 	// Obtiene el usuario de la BD mediante su ID.
