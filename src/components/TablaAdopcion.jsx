@@ -94,7 +94,7 @@ function TablaAdopcion() {
 		// Datos de los perros: ID, nombre, raza, edad, enfermedad, sexo y caracteristicas
 		{ field: 'id', id: 'id' },
 		{ field: 'idUsuario', id: 'idUsuario' },
-		{ field: 'nombre', headerName: 'Nombre', width: 150 },
+		{ field: 'nombre', headerName: 'Nombre', width: 100 },
 		{
 			field: 'raza',
 			headerName: 'Raza',
@@ -108,7 +108,12 @@ function TablaAdopcion() {
 		{
 			field: 'caracteristicas',
 			headerName: 'Caracteristicas',
-			width: 200,
+			width: 160,
+		},
+		{
+			field: 'enfermedades',
+			headerName: 'Enfermedades',
+			width: 300,
 		},
 		{
 			field: 'telefono',
@@ -118,12 +123,7 @@ function TablaAdopcion() {
 		{
 			field: 'email',
 			headerName: 'Email',
-			width: 250,
-		},
-		{
-			field: 'enfermedades',
-			headerName: 'Enfermedades',
-			width: 400,
+			width: 200,
 		},
 		{
 			//si esta adoptado o no
