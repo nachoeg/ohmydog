@@ -14,7 +14,7 @@ import { DataGrid, GridActionsCellItem, GridOverlay } from '@mui/x-data-grid';
 import { useCallback, useContext, useEffect, useState } from 'react';
 import url from '../data/url';
 import { Context } from '../context/Context';
-import { CheckCircle, Done, Email, Send } from '@mui/icons-material';
+import { CheckCircle, Delete, Done, Email, Send } from '@mui/icons-material';
 
 function TablaAdopcion() {
 	const token = localStorage.getItem('jwt');
@@ -24,6 +24,7 @@ function TablaAdopcion() {
 
 	const [perroSolicitado, setPerroSolicitado] = useState({});
 	const [perroAdoptado, setPerroAdoptado] = useState({});
+	const [perroEliminar, setPerroEliminar] = useState({});
 
 	useEffect(() => {
 		actualizarTabla();
@@ -115,7 +116,7 @@ function TablaAdopcion() {
 		{
 			field: 'enfermedades',
 			headerName: 'Enfermedades',
-			width: 300,
+			width: 250,
 		},
 		{
 			field: 'telefono',
@@ -138,7 +139,7 @@ function TablaAdopcion() {
 	columns.push({
 		field: 'actions',
 		headerName: '',
-		width: 50,
+		width: 100,
 		renderCell: (params) => {
 			const data = params.row;
 			return (
@@ -169,24 +170,43 @@ function TablaAdopcion() {
 					{!!usuario &&
 						(usuario.rol == 'veterinario' || data.idUsuario == usuario.id) &&
 						data.estado != 'Adoptado' && (
-							<Tooltip title="Confirmar adopción">
-								<GridActionsCellItem
-									icon={<CheckCircle />}
-									key="adoptado"
-									label="Adoptado"
-									onClick={() => {
-										let perroAdoptado = { ...data };
-										// perroAdoptado.estado = 'Adoptado';
-										handleClickOpenConfirmarAdopcion();
-										setPerroAdoptado(perroAdoptado);
-									}}
-									sx={{
-										'&:hover': {
-											color: 'green',
-										},
-									}}
-								/>
-							</Tooltip>
+							<>
+								<Tooltip title="Confirmar adopción">
+									<GridActionsCellItem
+										icon={<CheckCircle />}
+										key="adoptado"
+										label="Adoptado"
+										onClick={() => {
+											let perroAdoptado = { ...data };
+											// perroAdoptado.estado = 'Adoptado';
+											handleClickOpenConfirmarAdopcion();
+											setPerroAdoptado(perroAdoptado);
+										}}
+										sx={{
+											'&:hover': {
+												color: 'green',
+											},
+										}}
+									/>
+								</Tooltip>
+								<Tooltip title="Eliminar perro">
+									<GridActionsCellItem
+										icon={<Delete />}
+										key="eliminar"
+										label="Eliminar"
+										onClick={() => {
+											let perroEliminar = { ...data };
+											handleClickOpenConfirmarEliminar();
+											setPerroEliminar(perroEliminar);
+										}}
+										sx={{
+											'&:hover': {
+												color: 'red',
+											},
+										}}
+									/>
+								</Tooltip>
+							</>
 						)}
 				</>
 			);
@@ -195,6 +215,7 @@ function TablaAdopcion() {
 
 	const [openConfirmarSolicitar, setOpenConfirmarSolicitar] = useState(false);
 	const [openConfirmarAdopcion, setOpenConfirmarAdopcion] = useState(false);
+	const [openConfirmarEliminar, setOpenConfirmarEliminar] = useState(false);
 
 	const handleClickOpenConfirmarSolicitar = () => {
 		setOpenConfirmarSolicitar(true);
@@ -202,11 +223,17 @@ function TablaAdopcion() {
 	const handleClickOpenConfirmarAdopcion = () => {
 		setOpenConfirmarAdopcion(true);
 	};
+	const handleClickOpenConfirmarEliminar = () => {
+		setOpenConfirmarEliminar(true);
+	};
 	const handleCloseConfirmarSolicitar = () => {
 		setOpenConfirmarSolicitar(false);
 	};
 	const handleCloseConfirmarAdopcion = () => {
 		setOpenConfirmarAdopcion(false);
+	};
+	const handleCloseConfirmarEliminar = () => {
+		setOpenConfirmarEliminar(false);
 	};
 
 	const handleConfirmarSolicitar = (perro) => {
@@ -215,6 +242,35 @@ function TablaAdopcion() {
 	};
 
 	const handleConfirmarAdopcion = async (perro) => {
+		console.log(perro);
+		const response = await fetch(url + 'adopciones/modify/' + perro.id, {
+			method: 'put',
+			credentials: 'include',
+			headers: {
+				'Content-Type': 'application/json',
+				token: `${token}`,
+			},
+		});
+		if (response.ok) {
+			setTimeout(
+				() =>
+					setSnackbar({
+						children: 'Perro marcado como adoptado con exito',
+						severity: 'success',
+					}),
+				1000
+			);
+			actualizarTabla();
+		}
+		if (response.status == 500) {
+			setSnackbar({
+				children: 'Error al conectar con la base de datos',
+				severity: 'error',
+			});
+		}
+	};
+
+	const handleConfirmarEliminar = async (perro) => {
 		console.log(perro);
 		const response = await fetch(url + 'adopciones/delete/' + perro.id, {
 			method: 'delete',
@@ -227,7 +283,7 @@ function TablaAdopcion() {
 		if (response.ok) {
 			setTimeout(() => {
 				setSnackbar({
-					children: 'Perro marcado como adoptado con exito',
+					children: 'Perro eliminado con exito',
 					severity: 'success',
 				});
 			}, 1000);
@@ -363,6 +419,53 @@ function TablaAdopcion() {
 						autoFocus
 					>
 						Solicitar
+					</Button>
+				</DialogActions>
+			</Dialog>
+			<Dialog
+				open={openConfirmarEliminar}
+				onClose={handleCloseConfirmarEliminar}
+				aria-labelledby="confirmar-title"
+				aria-describedby="confirmar-description"
+			>
+				<DialogTitle id="confirmar-title">
+					Estas seguro/a de{' '}
+					<Typography
+						component={'span'}
+						sx={{
+							fontWeight: 'bold',
+							fontSize: 'inherit',
+							color: 'red',
+						}}
+					>
+						eliminar
+					</Typography>{' '}
+					el perro?
+				</DialogTitle>
+				<DialogContent>
+					<DialogContentText id="confirmar-description">
+						Una vez que confirmes, no podrás deshacer esta acción
+					</DialogContentText>
+				</DialogContent>
+				<DialogActions>
+					<Button
+						color="error"
+						variant="outlined"
+						onClick={handleCloseConfirmarEliminar}
+					>
+						Cancelar
+					</Button>
+					<Button
+						variant="contained"
+						color="error"
+						startIcon={<Delete />}
+						onClick={() => {
+							handleConfirmarEliminar(perroEliminar);
+							handleCloseConfirmarEliminar();
+						}}
+						autoFocus
+					>
+						Eliminar
 					</Button>
 				</DialogActions>
 			</Dialog>
