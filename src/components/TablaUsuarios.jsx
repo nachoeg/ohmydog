@@ -81,7 +81,6 @@ function TablaUsuarios() {
 		{
 			field: 'telefono',
 			headerName: 'Telefono',
-			type: 'number',
 			width: 100,
 		},
 		{
