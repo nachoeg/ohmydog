@@ -7,9 +7,10 @@ import { useContext, useEffect, useState } from 'react';
 
 function AdoptPage() {
 	const { usuario } = useContext(Context);
-	const [cliente, setCliente] = useState('');
+	const [noVeterinario, setNoVeterinario] = useState('');
 	useEffect(() => {
-		if (usuario) setCliente(usuario.rol == 'cliente');
+		if (usuario) setNoVeterinario(usuario.rol != 'veterinario');
+		else setNoVeterinario(true);
 	}, [usuario]);
 
 	return (
@@ -24,7 +25,7 @@ function AdoptPage() {
 			}}
 		>
 			<TablaAdopcion />
-			{cliente && (
+			{noVeterinario && (
 				<NavLink
 					to="/adopcion/registrar"
 					style={{ textDecoration: 'none', width: '100%' }}

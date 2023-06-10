@@ -41,15 +41,15 @@ function AdoptRegisterPage() {
 			credentials: 'include',
 			mode: 'cors',
 			body: JSON.stringify({
-				idUsuario: usuario.id,
+				idUsuario: usuario ? usuario.id : 1,
 				nombre: data.get('nombre'),
 				raza: data.get('raza'),
 				edad: data.get('edad'),
 				sexo: data.get('sexo'),
 				caracteristicas: data.get('caracteristicas'),
 				enfermedades: enf.toString().replaceAll(',', ', '),
-				email: usuario.email,
-				telefono: usuario.telefono,
+				email: usuario ? usuario.email : data.get('email'),
+				telefono: usuario ? usuario.telefono : data.get('telefono'),
 			}),
 		})
 			.then((response) => {
@@ -181,6 +181,29 @@ function AdoptRegisterPage() {
 								id="caracteristicas"
 							/>
 						</Grid>
+						{!usuario && (
+							<>
+								<Grid item xs={12}>
+									<TextField
+										fullWidth
+										required
+										name="email"
+										label="Email"
+										id="email"
+									/>
+								</Grid>
+								<Grid item xs={12}>
+									<TextField
+										required
+										fullWidth
+										type="number"
+										name="telefono"
+										label="Telefono"
+										id="telefono"
+									/>
+								</Grid>
+							</>
+						)}
 					</Grid>
 
 					<Button
