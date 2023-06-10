@@ -211,28 +211,29 @@ function TablaAdopcion() {
 	const handleConfirmarAdopcion = async (perro) => {
 		console.log(perro);
 		//cambiar url a la que sea para marcar al perro como adoptado
-		// const response = await fetch(url + 'perros/adopcion/modify/' + perro.id, {
-		// 	method: 'PUT',
-		// 	credentials: 'include',
-		// 	headers: {
-		// 		'Content-Type': 'application/json',
-		// 		token: `${token}`,
-		// 	},
-		// 	body: JSON.stringify(perro),
-		// });
-		// if (response.ok) {
-		// 	setSnackbar({
-		// 		children: 'Turno procesado con exito',
-		// 		severity: 'success',
-		// 	});
-		// 	actualizarTabla();
-		// }
-		// if (response.status == 500) {
-		// 	setSnackbar({
-		// 		children: 'Error al conectar con la base de datos',
-		// 		severity: 'error',
-		// 	});
-		// }
+		const response = await fetch(url + 'adopciones/delete/' + perro.id, {
+			method: 'delete',
+			credentials: 'include',
+			headers: {
+				'Content-Type': 'application/json',
+				token: `${token}`,
+			},
+		});
+		if (response.ok) {
+			setTimeout(() => {
+				setSnackbar({
+					children: 'Perro marcado como adoptado con exito',
+					severity: 'success',
+				});
+			}, 1000);
+			actualizarTabla();
+		}
+		if (response.status == 500) {
+			setSnackbar({
+				children: 'Error al conectar con la base de datos',
+				severity: 'error',
+			});
+		}
 	};
 
 	const [snackbar, setSnackbar] = useState(null);
