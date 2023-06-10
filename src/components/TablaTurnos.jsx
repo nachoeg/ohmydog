@@ -152,7 +152,7 @@ function TablaTurnos({ urlTurnos }) {
 				const data = params.row;
 				return (
 					<>
-						{data.estado == 'Pendiente' && (
+						{data.estado == 'Pendiente' && usuario.rol == 'veterinario' && (
 							<>
 								<GridActionsCellItem
 									icon={<CheckCircle />}
