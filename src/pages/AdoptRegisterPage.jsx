@@ -32,7 +32,7 @@ function AdoptRegisterPage() {
 		// Se realiza el fetch con la BD y se manda en el cuerpo del mensaje los datos del formulario
 		// Datos de los perros: ID del usuario, nombre, raza, edad, enfermedad, sexo y caracteristicas
 
-		fetch(url + 'perros/register', {
+		fetch(url + 'adopciones/register', {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json',
@@ -45,9 +45,11 @@ function AdoptRegisterPage() {
 				nombre: data.get('nombre'),
 				raza: data.get('raza'),
 				edad: data.get('edad'),
-				enfermedad: enf.toString(),
 				sexo: data.get('sexo'),
 				caracteristicas: data.get('caracteristicas'),
+				enfermedades: enf.toString().replaceAll(',', ', '),
+				email: usuario.email,
+				telefono: usuario.telefono,
 			}),
 		})
 			.then((response) => {
@@ -157,7 +159,7 @@ function AdoptRegisterPage() {
 						<Grid item xs={12}>
 							<Autocomplete
 								multiple
-								id="enfermedad"
+								id="enfermedades"
 								value={enf}
 								onChange={(event, newValue) => {
 									setEnf(newValue);

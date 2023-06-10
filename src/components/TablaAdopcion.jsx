@@ -32,105 +32,98 @@ function TablaAdopcion() {
 	}
 
 	async function obtenerPerros() {
-		//algoritmo para ordenar primero a los perros del usuario, y despues a los perros restantes
-		let filas = [
-			{ id: '1', idUsuario: '1', nombre: 'perro', estado: 'Pendiente' },
-			{ id: '2', idUsuario: '2', nombre: 'perro2', estado: 'Adoptado' },
-			{ id: '3', idUsuario: '3', nombre: 'perro3', estado: 'Adoptado' },
-			{ id: '4', idUsuario: '3', nombre: 'perro3', estado: 'Pendiente' },
-			{ id: '5', idUsuario: '2', nombre: 'perro', estado: 'Pendiente' },
-		];
-		//criterios de orden
-		//por id del perro
-		filas.sort((a, b) => a.id - b.id);
-		//primero los del usuario actual
-		filas.sort((a) => {
-			if (usuario) {
-				if (a.idUsuario == usuario.id) {
-					return 1;
-				}
-				return -1;
+		try {
+			const response = await fetch(url + 'adopciones/', {
+				method: 'GET',
+				credentials: 'include',
+				headers: {
+					'Content-Type': 'application/json',
+					token: `${token}`,
+				},
+			});
+			if (!response.ok) {
+				setSnackbar({
+					children:
+						'Ocurrió un error al intentar cargar la lista de perros en adopción',
+					severity: 'error',
+				});
+				return [];
 			}
-		});
-		//ultimos los adoptados
-		filas.sort((a) => {
-			if (a.estado == 'Adoptado') {
-				return 1;
+			let perros = await response.json();
+			if (perros.length == 0) {
+				setSnackbar({
+					children: 'La lista de perros en adopción se encuentra vacía',
+					severity: 'info',
+				});
 			}
-			if (a.estado == 'Pendiente') {
-				return -1;
-			}
-		});
-		return filas;
+			return (
+				perros
+					//orden por id del perro
+					.sort((a, b) => a.id - b.id)
+					//orden primero los del usuario actual
+					.sort((a) => {
+						if (usuario) {
+							if (a.idUsuario == usuario.id) {
+								return 1;
+							}
+							return -1;
+						}
+					})
+					//orden ultimos los adoptados
+					.sort((a) => {
+						if (a.estado == 'Adoptado') {
+							return 1;
+						}
+						if (a.estado == 'Pendiente') {
+							return -1;
+						}
+					})
+			);
+		} catch (error) {
+			console.error('Error en el fetch: ' + error);
+
+			setSnackbar({
+				children: 'Error al conectar con la base de datos',
+				severity: 'error',
+			});
+			return [];
+		}
 	}
-
-	// // esto deberia ser solo de los perros en adopcion (cambiar url)
-	// async function obtenerPerros() {
-	// 	try {
-	// 		const response = await fetch(url + 'perros/', {
-	// 			method: 'GET',
-	// 			credentials: 'include',
-	// 			headers: {
-	// 				'Content-Type': 'application/json',
-	// 				token: `${token}`,
-	// 			},
-	// 		});
-	// 		if (!response.ok) {
-	// 			if (response.status == 401) {
-	// 				setSnackbar({
-	// 					children: 'No estas autorizado para ver los perros',
-	// 					severity: 'error',
-	// 				});
-	// 			}
-	// 			return [];
-	// 		}
-	// 		let perros = await response.json();
-	// 		if (perros.length == 0) {
-	// 			setSnackbar({
-	// 				children: 'La lista de perros se encuentra vacia',
-	// 				severity: 'info',
-	// 			});
-	// 		}
-	// 		return perros;
-	// 	} catch (error) {
-	// 		console.error('Error en el fetch: ' + error);
-
-	// 		setSnackbar({
-	// 			children: 'Error al conectar con la base de datos',
-	// 			severity: 'error',
-	// 		});
-	// 		return [];
-	// 	}
-	// }
 
 	const columns = [
 		// Datos de los perros: ID, nombre, raza, edad, enfermedad, sexo y caracteristicas
-		{ field: 'id', headerName: 'ID', width: 50, id: 'id' },
+		{ field: 'id', id: 'id' },
 		{ field: 'idUsuario', id: 'idUsuario' },
-		{ field: 'nombre', headerName: 'Nombre', width: 100 },
+		{ field: 'nombre', headerName: 'Nombre', width: 150 },
 		{
 			field: 'raza',
 			headerName: 'Raza',
-			width: 150,
-			type: 'singleSelect',
-			valueOptions: razas,
+			width: 200,
 		},
 		{
 			field: 'sexo',
 			headerName: 'Sexo',
 			width: 100,
-			type: 'singleSelect',
-			valueOptions: ['Masculino', 'Femenino'],
 		},
 		{
 			field: 'caracteristicas',
 			headerName: 'Caracteristicas',
+			width: 200,
+		},
+		{
+			field: 'telefono',
+			headerName: 'Teléfono',
+			width: 100,
+		},
+		{
+			field: 'email',
+			headerName: 'Email',
 			width: 250,
 		},
 		{
-			field: 'enfermedad',
+			field: 'enfermedades',
 			headerName: 'Enfermedades',
-			width: 250,
+			width: 400,
 		},
 		{
 			//si esta adoptado o no
