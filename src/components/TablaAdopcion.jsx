@@ -7,13 +7,13 @@ import {
 	DialogContentText,
 	DialogTitle,
 	Snackbar,
+	Typography,
 } from '@mui/material';
 import { DataGrid, GridActionsCellItem, GridOverlay } from '@mui/x-data-grid';
 import { useCallback, useContext, useEffect, useState } from 'react';
-import { razas } from '../data/perros';
 import url from '../data/url';
 import { Context } from '../context/Context';
-import { CheckCircle, Pets } from '@mui/icons-material';
+import { CheckCircle, Done, Email, Send } from '@mui/icons-material';
 
 function TablaAdopcion() {
 	const token = localStorage.getItem('jwt');
@@ -21,7 +21,8 @@ function TablaAdopcion() {
 
 	const [rows, setRows] = useState([]);
 
-	const [perro, setPerro] = useState({});
+	const [perroSolicitado, setPerroSolicitado] = useState({});
+	const [perroAdoptado, setPerroAdoptado] = useState({});
 
 	useEffect(() => {
 		actualizarTabla();
@@ -133,80 +134,91 @@ function TablaAdopcion() {
 		},
 	];
 
-	if (!usuario || usuario.rol == 'cliente') {
-		columns.push({
-			field: 'actions',
-			headerName: '',
-			width: 50,
-			renderCell: (params) => {
-				const data = params.row;
-				return (
-					<>
-						{(!usuario || data.idUsuario != usuario.id) &&
-							data.estado != 'Adoptado' && (
-								<GridActionsCellItem
-									icon={<Pets />}
-									key="adoptado"
-									label="Adoptado"
-									onClick={() => {
-										let perroAdoptar = { ...data };
-										perroAdoptar.estado = 'Adoptado';
-										handleClickOpenConfirmar();
-										setPerro(perroAdoptar);
-									}}
-									sx={{
-										'&:hover': {
-											color: 'green',
-										},
-									}}
-								/>
-							)}
-						{!!usuario &&
-							data.idUsuario == usuario.id &&
-							data.estado != 'Adoptado' && (
-								<GridActionsCellItem
-									icon={<CheckCircle />}
-									key="adoptado"
-									label="Adoptado"
-									onClick={() => {
-										let perroAdoptar = { ...data };
-										perroAdoptar.estado = 'Adoptado';
-										handleClickOpenConfirmar();
-										setPerro(perroAdoptar);
-									}}
-									sx={{
-										'&:hover': {
-											color: 'green',
-										},
-									}}
-								/>
-							)}
-					</>
-				);
-			},
-		});
-	}
+	columns.push({
+		field: 'actions',
+		headerName: '',
+		width: 50,
+		renderCell: (params) => {
+			const data = params.row;
+			return (
+				<>
+					{(!usuario ||
+						(data.idUsuario != usuario.id && usuario.rol != 'veterinario')) &&
+						data.estado != 'Adoptado' && (
+							<GridActionsCellItem
+								icon={<Email />}
+								key="solicitar"
+								label="Solicitar"
+								onClick={() => {
+									let perroSolicitado = { ...data };
+									perroSolicitado.estado = 'Adoptado';
+									handleClickOpenConfirmarSolicitar();
+									setPerroSolicitado(perroSolicitado);
+								}}
+								sx={{
+									'&:hover': {
+										color: 'primary.main',
+									},
+								}}
+							/>
+						)}
+					{!!usuario &&
+						(usuario.rol == 'veterinario' || data.idUsuario == usuario.id) &&
+						data.estado != 'Adoptado' && (
+							<GridActionsCellItem
+								icon={<CheckCircle />}
+								key="adoptado"
+								label="Adoptado"
+								onClick={() => {
+									let perroAdoptado = { ...data };
+									perroAdoptado.estado = 'Adoptado';
+									handleClickOpenConfirmarAdopcion();
+									setPerroAdoptado(perroAdoptado);
+								}}
+								sx={{
+									'&:hover': {
+										color: 'green',
+									},
+								}}
+							/>
+						)}
+				</>
+			);
+		},
+	});
 
-	const [openConfirmar, setOpenConfirmar] = useState(false);
+	const [openConfirmarSolicitar, setOpenConfirmarSolicitar] = useState(false);
+	const [openConfirmarAdopcion, setOpenConfirmarAdopcion] = useState(false);
 
-	const handleClickOpenConfirmar = () => {
-		setOpenConfirmar(true);
+	const handleClickOpenConfirmarSolicitar = () => {
+		setOpenConfirmarSolicitar(true);
 	};
-	const handleCloseConfirmar = () => {
-		setOpenConfirmar(false);
+	const handleClickOpenConfirmarAdopcion = () => {
+		setOpenConfirmarAdopcion(true);
+	};
+	const handleCloseConfirmarSolicitar = () => {
+		setOpenConfirmarSolicitar(false);
+	};
+	const handleCloseConfirmarAdopcion = () => {
+		setOpenConfirmarAdopcion(false);
 	};
 
-	const handleConfirmarAdopcion = async (newRow) => {
-		console.log(newRow);
+	const handleConfirmarSolicitar = (perro) => {
+		//enviar mail
+		console.log(perro);
+	};
+
+	const handleConfirmarAdopcion = async (perro) => {
+		console.log(perro);
 		//cambiar url a la que sea para marcar al perro como adoptado
-		// const response = await fetch(url + 'perros/adopcion/modify/' + newRow.id, {
+		// const response = await fetch(url + 'perros/adopcion/modify/' + perro.id, {
 		// 	method: 'PUT',
 		// 	credentials: 'include',
 		// 	headers: {
 		// 		'Content-Type': 'application/json',
 		// 		token: `${token}`,
 		// 	},
-		// 	body: JSON.stringify(newRow),
+		// 	body: JSON.stringify(perro),
 		// });
 		// if (response.ok) {
 		// 	setSnackbar({
@@ -247,6 +259,9 @@ function TablaAdopcion() {
 				columnVisibilityModel={{
 					id: false,
 					idUsuario: false,
+					//deberia poder verse el email y el telefono?
+					// email: false,
+					// telefono: false,
 				}}
 				onProcessRowUpdateError={handleProcessRowUpdateError}
 				initialState={{
@@ -260,14 +275,14 @@ function TablaAdopcion() {
 				}}
 			/>
 			<Dialog
-				open={openConfirmar}
-				onClose={handleCloseConfirmar}
+				open={openConfirmarAdopcion}
+				onClose={handleCloseConfirmarAdopcion}
 				aria-labelledby="confirmar-title"
 				aria-describedby="confirmar-description"
 			>
 				<DialogTitle id="confirmar-title">
-					Estas seguro/a de <b style={{ color: 'green' }}>confirmar</b> la
-					adopcion del perro?
+					Estas seguro/a de <b style={{ color: 'green' }}>confirmar</b> que el
+					perro fue adoptado?
 				</DialogTitle>
 				<DialogContent>
 					<DialogContentText id="confirmar-description">
@@ -279,20 +294,69 @@ function TablaAdopcion() {
 					<Button
 						color="success"
 						variant="outlined"
-						onClick={handleCloseConfirmar}
+						onClick={handleCloseConfirmarAdopcion}
 					>
 						Cancelar
 					</Button>
 					<Button
 						variant="contained"
 						color="success"
+						startIcon={<Done />}
 						onClick={() => {
-							handleConfirmarAdopcion(perro);
-							handleCloseConfirmar();
+							handleConfirmarAdopcion(perroAdoptado);
+							handleCloseConfirmarAdopcion();
 						}}
 						autoFocus
 					>
 						Confirmar
+					</Button>
+				</DialogActions>
+			</Dialog>
+			<Dialog
+				open={openConfirmarSolicitar}
+				onClose={handleCloseConfirmarSolicitar}
+				aria-labelledby="confirmar-title"
+				aria-describedby="confirmar-description"
+			>
+				<DialogTitle id="confirmar-title">
+					Estas seguro/a de{' '}
+					<Typography
+						component={'span'}
+						sx={{
+							fontWeight: 'bold',
+							fontSize: 'inherit',
+							color: 'primary.main',
+						}}
+					>
+						solicitar
+					</Typography>{' '}
+					la adopción del perro?
+				</DialogTitle>
+				<DialogContent>
+					<DialogContentText id="confirmar-description">
+						Una vez que confirmes, se le enviará un mail al dueño del perro con
+						tu solicitud y tus datos, para que puedan contactarse.
+					</DialogContentText>
+				</DialogContent>
+				<DialogActions>
+					<Button
+						color="primary"
+						variant="outlined"
+						onClick={handleCloseConfirmarSolicitar}
+					>
+						Cancelar
+					</Button>
+					<Button
+						variant="contained"
+						color="primary"
+						startIcon={<Send />}
+						onClick={() => {
+							handleConfirmarSolicitar(perroSolicitado);
+							handleCloseConfirmarSolicitar();
+						}}
+						autoFocus
+					>
+						Solicitar
 					</Button>
 				</DialogActions>
 			</Dialog>
