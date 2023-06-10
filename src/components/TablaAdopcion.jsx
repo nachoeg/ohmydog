@@ -210,7 +210,6 @@ function TablaAdopcion() {
 
 	const handleConfirmarAdopcion = async (perro) => {
 		console.log(perro);
-		//cambiar url a la que sea para marcar al perro como adoptado
 		const response = await fetch(url + 'adopciones/delete/' + perro.id, {
 			method: 'delete',
 			credentials: 'include',
