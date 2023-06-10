@@ -7,6 +7,7 @@ import {
 	DialogContentText,
 	DialogTitle,
 	Snackbar,
+	Tooltip,
 	Typography,
 } from '@mui/material';
 import { DataGrid, GridActionsCellItem, GridOverlay } from '@mui/x-data-grid';
@@ -145,42 +146,47 @@ function TablaAdopcion() {
 					{(!usuario ||
 						(data.idUsuario != usuario.id && usuario.rol != 'veterinario')) &&
 						data.estado != 'Adoptado' && (
-							<GridActionsCellItem
-								icon={<Email />}
-								key="solicitar"
-								label="Solicitar"
-								onClick={() => {
-									let perroSolicitado = { ...data };
-									perroSolicitado.estado = 'Adoptado';
-									handleClickOpenConfirmarSolicitar();
-									setPerroSolicitado(perroSolicitado);
-								}}
-								sx={{
-									'&:hover': {
-										color: 'primary.main',
-									},
-								}}
-							/>
+							<Tooltip title="Solicitar adopción">
+								<GridActionsCellItem
+									icon={<Email />}
+									key="solicitar"
+									label="Solicitar"
+									onClick={() => {
+										let perroSolicitado = { ...data };
+										// perroSolicitado.estado = 'Solicitado';
+										handleClickOpenConfirmarSolicitar();
+										setPerroSolicitado(perroSolicitado);
+									}}
+									sx={{
+										'&:hover': {
+											color: 'primary.main',
+										},
+									}}
+								/>
+							</Tooltip>
 						)}
+
 					{!!usuario &&
 						(usuario.rol == 'veterinario' || data.idUsuario == usuario.id) &&
 						data.estado != 'Adoptado' && (
-							<GridActionsCellItem
-								icon={<CheckCircle />}
-								key="adoptado"
-								label="Adoptado"
-								onClick={() => {
-									let perroAdoptado = { ...data };
-									perroAdoptado.estado = 'Adoptado';
-									handleClickOpenConfirmarAdopcion();
-									setPerroAdoptado(perroAdoptado);
-								}}
-								sx={{
-									'&:hover': {
-										color: 'green',
-									},
-								}}
-							/>
+							<Tooltip title="Confirmar adopción">
+								<GridActionsCellItem
+									icon={<CheckCircle />}
+									key="adoptado"
+									label="Adoptado"
+									onClick={() => {
+										let perroAdoptado = { ...data };
+										// perroAdoptado.estado = 'Adoptado';
+										handleClickOpenConfirmarAdopcion();
+										setPerroAdoptado(perroAdoptado);
+									}}
+									sx={{
+										'&:hover': {
+											color: 'green',
+										},
+									}}
+								/>
+							</Tooltip>
 						)}
 				</>
 			);
