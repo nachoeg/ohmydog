@@ -41,7 +41,7 @@ function AdoptRegisterPage() {
 			credentials: 'include',
 			mode: 'cors',
 			body: JSON.stringify({
-				idUsuario: usuario ? usuario.id : 1,
+				idUsuario: usuario ? usuario.id : -1,
 				nombre: data.get('nombre'),
 				raza: data.get('raza'),
 				edad: data.get('edad'),
