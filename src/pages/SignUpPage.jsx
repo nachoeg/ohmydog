@@ -59,12 +59,32 @@ export default function SignUp() {
 		return contraseña;
 	};
 
+	function validarDatos(datos) {
+		return (
+			datos.get('nombre').trim() !== '' &&
+			datos.get('apellido').toString().trim() !== '' &&
+			datos.get('email').toString().trim() !== '' &&
+			datos.get('dni').trim() !== '' &&
+			datos.get('direccion').trim() !== '' &&
+			datos.get('telefono').trim() !== '' &&
+			datos.get('rol').trim() !== '' &&
+			datos.get('localidad').trim() !== ''
+		);
+	}
+
 	// Aca estan las lineas que hay que descomentar y comentar, son 2 que hay que descomentar y 1 que comentar.
 	const handleSubmit = (event) => {
 		event.preventDefault();
+		const data = new FormData(event.currentTarget);
+		if (!validarDatos(data)) {
+			setSnackbar({
+				children: 'No puede ingresar un campo vacio.',
+				severity: 'error',
+			});
+			return;
+		}
 		// DESCOMENTAR const temporalPassword = generarContraseña(); // Genera la contraseña aleatoria
 		const temporalPassword = 1; // COMENTAR
-		const data = new FormData(event.currentTarget);
 		const token = localStorage.getItem('jwt');
 		fetch(url + 'usuarios/register', {
 			method: 'POST',
