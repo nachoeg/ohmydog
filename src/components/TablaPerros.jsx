@@ -119,6 +119,14 @@ function TablaPerros(props) {
 			editable: true,
 		},
 		{
+			field: 'edad',
+			headerName: 'Edad',
+			width: 100,
+			id: 'edad',
+			type: 'number',
+			editable: true,
+		},
+		{
 			field: 'raza',
 			headerName: 'Raza',
 			width: 150,
