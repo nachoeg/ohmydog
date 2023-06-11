@@ -36,6 +36,14 @@ function ChangePassword() {
 
 	const token = localStorage.getItem('jwt');
 	const usuario = JSON.parse(localStorage.getItem('usuario'));
+
+	function validarDatos(datos) {
+		return (
+			datos.get('newPassword').toString().trim() != '' &&
+			datos.get('oldPassword').toString().trim() != '' &&
+			datos.get('confirmPassword').toString().trim() != ''
+		);
+	}
 	const handleSubmit = async (event) => {
 		event.preventDefault();
 		const data = new FormData(event.currentTarget);
@@ -50,6 +58,13 @@ function ChangePassword() {
 		if (data.get('oldPassword') == data.get('newPassword')) {
 			setSnackbar({
 				children: 'La contraseña nueva debe ser distinta a la anterior',
+				severity: 'error',
+			});
+			return;
+		}
+		if (!validarDatos(data)) {
+			setSnackbar({
+				children: 'No puede ingresar una contraseña vacia.',
 				severity: 'error',
 			});
 			return;
