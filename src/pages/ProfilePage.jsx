@@ -104,9 +104,37 @@ function ProfilePage() {
 	const handleEditarClick = () => {
 		setEditar(true);
 	};
+
+	function validarDatos(datos) {
+		if (datos.get('email').toString().trim() == '') {
+			setEmail(usuario.email);
+			return false;
+		}
+		if (datos.get('direccion').trim() == '') {
+			setDireccion(usuario.direccion);
+			return false;
+		}
+		if (datos.get('telefono').trim() == '') {
+			setTelefono(usuario.telefono);
+			return false;
+		}
+		if (datos.get('localidad').trim() == '') {
+			setLocalidad(usuario.localidad);
+			return false;
+		}
+		return true;
+	}
+
 	const handleSubmit = async (event) => {
 		event.preventDefault();
 		const data = new FormData(event.currentTarget);
+		if (!validarDatos(data)) {
+			setSnackbar({
+				children: 'No puede ingresar un campo vacio.',
+				severity: 'error',
+			});
+			return;
+		}
 		const user = {
 			...usuario,
 			email: data.get('email'),
