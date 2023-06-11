@@ -114,7 +114,7 @@ function TablaPerros(props) {
 		{
 			field: 'nombre',
 			headerName: 'Nombre',
-			width: 100,
+			width: 150,
 			id: 'nombre',
 			editable: true,
 		},
@@ -278,6 +278,9 @@ function TablaPerros(props) {
 				editMode="row"
 				rows={rows}
 				columns={columns}
+				columnVisibilityModel={{
+					id: usuario.rol == 'veterinario',
+				}}
 				processRowUpdate={processRowUpdate}
 				onProcessRowUpdateError={handleProcessRowUpdateError}
 				initialState={{
