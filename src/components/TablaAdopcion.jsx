@@ -15,6 +15,7 @@ import { useCallback, useContext, useEffect, useState } from 'react';
 import url from '../data/url';
 import { Context } from '../context/Context';
 import { CheckCircle, Delete, Done, Email, Send } from '@mui/icons-material';
+import emailjs from 'emailjs-com';
 
 function TablaAdopcion() {
 	const token = localStorage.getItem('jwt');
@@ -238,11 +239,33 @@ function TablaAdopcion() {
 
 	const handleConfirmarSolicitar = (perro) => {
 		//enviar mail
-		console.log(perro);
+		sendEmail(event, perro);
 	};
 
+	function sendEmail(e, p) {
+		e.preventDefault();
+		e.target.elements.password.value = p; // habria que mandar los detalles del perro?
+		emailjs
+			.sendForm(
+				'service_xg4z6nu',
+				'template_xjzci4t',
+				e.target,
+				'kMhWmQA84AfcGvqNF'
+			)
+			.then(
+				(result) => {
+					console.log(result.text);
+				},
+				(error) => {
+					setSnackbar({
+						children: 'Error al conectar con la base de datos' + error,
+						severity: 'error',
+					});
+				}
+			);
+	}
+
 	const handleConfirmarAdopcion = async (perro) => {
-		console.log(perro);
 		const response = await fetch(url + 'adopciones/modify/' + perro.id, {
 			method: 'put',
 			credentials: 'include',
