@@ -13,6 +13,7 @@ import {
 	DialogContent,
 	DialogContentText,
 	DialogTitle,
+	Tooltip,
 } from '@mui/material';
 import { Context } from '../context/Context';
 
@@ -154,38 +155,42 @@ function TablaTurnos({ urlTurnos }) {
 					<>
 						{data.estado == 'Pendiente' && usuario.rol == 'veterinario' && (
 							<>
-								<GridActionsCellItem
-									icon={<CheckCircle />}
-									key="confirmado"
-									label="Confirmado"
-									onClick={() => {
-										let nuevoTurno = { ...data };
-										nuevoTurno.estado = 'Confirmado';
-										handleClickOpenConfirmar();
-										setTurno(nuevoTurno);
-									}}
-									sx={{
-										'&:hover': {
-											color: 'green',
-										},
-									}}
-								/>
-								<GridActionsCellItem
-									icon={<DoNotDisturbOn />}
-									key="cancelado"
-									label="Cancelado"
-									onClick={() => {
-										let nuevoTurno = { ...data };
-										nuevoTurno.estado = 'Cancelado';
-										handleClickOpenCancelar();
-										setTurno(nuevoTurno);
-									}}
-									sx={{
-										'&:hover': {
-											color: 'red',
-										},
-									}}
-								/>
+								<Tooltip title="Aceptar">
+									<GridActionsCellItem
+										icon={<CheckCircle />}
+										key="aceptado"
+										label="Aceptado"
+										onClick={() => {
+											let nuevoTurno = { ...data };
+											nuevoTurno.estado = 'Aceptado';
+											handleClickOpenAceptar();
+											setTurno(nuevoTurno);
+										}}
+										sx={{
+											'&:hover': {
+												color: 'green',
+											},
+										}}
+									/>
+								</Tooltip>
+								<Tooltip title="Rechazar">
+									<GridActionsCellItem
+										icon={<DoNotDisturbOn />}
+										key="rechazado"
+										label="Rechazado"
+										onClick={() => {
+											let nuevoTurno = { ...data };
+											nuevoTurno.estado = 'Rechazado';
+											handleClickOpenRechazar();
+											setTurno(nuevoTurno);
+										}}
+										sx={{
+											'&:hover': {
+												color: 'red',
+											},
+										}}
+									/>
+								</Tooltip>
 							</>
 						)}
 					</>
@@ -220,31 +225,31 @@ function TablaTurnos({ urlTurnos }) {
 		}
 	};
 
-	const handleConfirmarConfirmar = () => {
+	const handleConfirmarAceptar = () => {
 		handleCambiarEstado(turno);
-		handleCloseConfirmar();
+		handleCloseAceptar();
 	};
-	const handleConfirmarCancelar = () => {
+	const handleConfirmarRechazar = () => {
 		handleCambiarEstado(turno);
-		handleCloseCancelar();
+		handleCloseRechazar();
 	};
-	const [openConfirmar, setOpenConfirmar] = useState(false);
-	const [openCancelar, setOpenCancelar] = useState(false);
+	const [openAceptar, setOpenAceptar] = useState(false);
+	const [openRechazar, setOpenRechazar] = useState(false);
 
-	const handleClickOpenConfirmar = () => {
-		setOpenConfirmar(true);
-	};
-
-	const handleCloseConfirmar = () => {
-		setOpenConfirmar(false);
+	const handleClickOpenAceptar = () => {
+		setOpenAceptar(true);
 	};
 
-	const handleClickOpenCancelar = () => {
-		setOpenCancelar(true);
+	const handleCloseAceptar = () => {
+		setOpenAceptar(false);
 	};
 
-	const handleCloseCancelar = () => {
-		setOpenCancelar(false);
+	const handleClickOpenRechazar = () => {
+		setOpenRechazar(true);
+	};
+
+	const handleCloseRechazar = () => {
+		setOpenRechazar(false);
 	};
 
 	const [snackbar, setSnackbar] = useState(null);
@@ -291,17 +296,17 @@ function TablaTurnos({ urlTurnos }) {
 				</Snackbar>
 			)}
 			<Dialog
-				open={openConfirmar}
-				onClose={handleCloseConfirmar}
-				aria-labelledby="confirmar-title"
-				aria-describedby="confirmar-description"
+				open={openAceptar}
+				onClose={handleCloseAceptar}
+				aria-labelledby="aceptar-title"
+				aria-describedby="aceptar-description"
 			>
-				<DialogTitle id="confirmar-title">
-					Estas seguro que deseas <b style={{ color: 'green' }}>confirmar</b> el
+				<DialogTitle id="aceptar-title">
+					Estas seguro que deseas <b style={{ color: 'green' }}>aceptar</b> el
 					turno?
 				</DialogTitle>
 				<DialogContent>
-					<DialogContentText id="confirmar-description">
+					<DialogContentText id="aceptar-description">
 						Recuerda que no podrás deshacer esta acción
 					</DialogContentText>
 				</DialogContent>
@@ -309,32 +314,32 @@ function TablaTurnos({ urlTurnos }) {
 					<Button
 						color="success"
 						variant="outlined"
-						onClick={handleCloseConfirmar}
+						onClick={handleCloseAceptar}
 					>
-						No
+						Cancelar
 					</Button>
 					<Button
 						variant="contained"
 						color="success"
-						onClick={handleConfirmarConfirmar}
+						onClick={handleConfirmarAceptar}
 						autoFocus
 					>
-						Si
+						Aceptar
 					</Button>
 				</DialogActions>
 			</Dialog>
 			<Dialog
-				open={openCancelar}
-				onClose={handleCloseCancelar}
-				aria-labelledby="cancelar-title"
-				aria-describedby="cancelar-description"
+				open={openRechazar}
+				onClose={handleCloseRechazar}
+				aria-labelledby="rechazar-title"
+				aria-describedby="rechazar-description"
 			>
-				<DialogTitle id="cancelar-title">
-					Estas seguro que deseas <b style={{ color: 'red' }}>cancelar</b> el
+				<DialogTitle id="rechazar-title">
+					Estas seguro que deseas <b style={{ color: 'red' }}>rechazar</b> el
 					turno?
 				</DialogTitle>
 				<DialogContent>
-					<DialogContentText id="cancelar-description">
+					<DialogContentText id="rechazar-description">
 						Recuerda que no podrás deshacer esta acción
 					</DialogContentText>
 				</DialogContent>
@@ -342,17 +347,17 @@ function TablaTurnos({ urlTurnos }) {
 					<Button
 						color="error"
 						variant="outlined"
-						onClick={handleCloseCancelar}
+						onClick={handleCloseRechazar}
 					>
-						No
+						Cancelar
 					</Button>
 					<Button
 						variant="contained"
 						color="error"
-						onClick={handleConfirmarCancelar}
+						onClick={handleConfirmarRechazar}
 						autoFocus
 					>
-						Si
+						Rechazar
 					</Button>
 				</DialogActions>
 			</Dialog>
