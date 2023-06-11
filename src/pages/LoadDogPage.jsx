@@ -25,6 +25,17 @@ function LoadDogPage() {
 
 	const [enf, setEnf] = useState([]);
 
+	function validarDatos(datos) {
+		return (
+			datos.get('nombre').trim() !== '' &&
+			datos.get('edad').toString().trim() !== '' &&
+			datos.get('raza').trim() !== '' &&
+			// datos.get('caracteristicas').trim() !== '' &&
+			// datos.get('enfermedad').trim() !== '' &&
+			datos.get('sexo').trim() !== ''
+		);
+	}
+
 	// Manejador del boton submit del formulario
 	const handleSubmit = (event) => {
 		event.preventDefault(); // Se elimina las acciones default del formulario
@@ -33,7 +44,13 @@ function LoadDogPage() {
 
 		// Se realiza el fetch con la BD y se manda en el cuerpo del mensaje los datos del formulario
 		// Datos de los perros: ID del usuario, nombre, raza, edad, enfermedad, sexo y caracteristicas
-
+		if (!validarDatos(data)) {
+			setSnackbar({
+				children: 'No puede ingresar un campo vacio.',
+				severity: 'error',
+			});
+			return;
+		}
 		fetch(url + 'perros/register', {
 			method: 'POST',
 			headers: {
