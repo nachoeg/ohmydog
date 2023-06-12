@@ -96,7 +96,7 @@ function TablaUsuarios() {
 		{
 			field: 'actions',
 			headerName: '',
-			width: 300,
+			width: 350,
 			renderCell: (params) => {
 				let { id, nombre, apellido } = params.row;
 				apellido = apellido.replaceAll(' ', '-');

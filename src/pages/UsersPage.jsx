@@ -8,7 +8,7 @@ function UsersPage() {
 	return (
 		<Container
 			component="main"
-			maxWidth="lg"
+			maxWidth="xl"
 			sx={{
 				display: 'flex',
 				alignItems: 'center',
