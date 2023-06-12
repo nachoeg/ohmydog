@@ -98,36 +98,42 @@ function TablaAdopcion() {
 		// Datos de los perros: ID, nombre, raza, edad, enfermedad, sexo y caracteristicas
 		{ field: 'id', id: 'id' },
 		{ field: 'idUsuario', id: 'idUsuario' },
-		{ field: 'nombre', headerName: 'Nombre', width: 100 },
+		{ field: 'nombre', headerName: 'Nombre', width: 100, editable: true },
 		{
 			field: 'raza',
 			headerName: 'Raza',
 			width: 200,
+			editable: true,
 		},
 		{
 			field: 'sexo',
 			headerName: 'Sexo',
 			width: 100,
+			editable: true,
 		},
 		{
 			field: 'caracteristicas',
 			headerName: 'Caracteristicas',
 			width: 160,
+			editable: true,
 		},
 		{
 			field: 'enfermedades',
 			headerName: 'Enfermedades',
 			width: 250,
+			editable: true,
 		},
 		{
 			field: 'telefono',
 			headerName: 'Teléfono',
 			width: 100,
+			editable: true,
 		},
 		{
 			field: 'email',
 			headerName: 'Email',
 			width: 200,
+			editable: true,
 		},
 		{
 			//si esta adoptado o no
@@ -341,6 +347,12 @@ function TablaAdopcion() {
 				editMode="row"
 				rows={rows}
 				columns={columns}
+				isCellEditable={(params) => {
+					return (
+						usuario &&
+						(params.row.idUsuario == usuario.id || usuario.rol == 'veterinario')
+					);
+				}}
 				columnVisibilityModel={{
 					id: false,
 					idUsuario: false,
