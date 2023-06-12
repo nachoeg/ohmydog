@@ -207,14 +207,14 @@ function TablaPerros(props) {
 		headerName: '',
 		width: 300,
 		renderCell: (params) => {
-			const { id } = params.row;
+			const { id, nombre } = params.row;
 
 			const actions = [
 				<Button
 					key="turnos"
 					startIcon={<CalendarMonth />}
 					component={NavLink}
-					to={`/turnos/perro/${id}`}
+					to={`/turnos/perro/${id}/${nombre}`}
 					sx={{ mr: 1, fontSize: 11 }}
 				>
 					Turnos

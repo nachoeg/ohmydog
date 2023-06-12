@@ -15,7 +15,7 @@ import {
 	DialogTitle,
 	Tooltip,
 } from '@mui/material';
-import { Edit, Pets } from '@mui/icons-material';
+import { CalendarMonth, Edit, Pets } from '@mui/icons-material';
 
 function TablaUsuarios() {
 	const token = localStorage.getItem('jwt');
@@ -117,9 +117,18 @@ function TablaUsuarios() {
 							startIcon={<Pets />}
 							to={`/perros/usuario/${id}/${nombre}-${apellido}`}
 							component={NavLink}
-							sx={{ fontSize: 11 }}
+							sx={{ fontSize: 11, mr: 1 }}
 						>
 							Perros
+						</Button>
+						<Button
+							key="turnos"
+							startIcon={<CalendarMonth />}
+							to={`/turnos/cliente/${id}/${nombre}-${apellido}`}
+							component={NavLink}
+							sx={{ fontSize: 11 }}
+						>
+							Turnos
 						</Button>
 						<Tooltip key="delete" title="Eliminar" placement="right">
 							<GridActionsCellItem

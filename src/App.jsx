@@ -58,8 +58,14 @@ function App() {
 						<Route path="usuarios/registrar" element={<SignUpPage />} />
 						<Route path="usuarios" element={<UsersPage />} />
 						<Route path="turnos" element={<AllTurnsPage />} />
-						<Route path="turnos/cliente/:id" element={<DogsUsersTurnsPage />} />
-						<Route path="turnos/perro/:id" element={<DogsUsersTurnsPage />} />
+						<Route
+							path="turnos/cliente/:id/:nombre"
+							element={<DogsUsersTurnsPage />}
+						/>
+						<Route
+							path="turnos/perro/:id/:nombre"
+							element={<DogsUsersTurnsPage />}
+						/>
 						<Route path="mis-perros" element={<MyDogsPage />} />
 						<Route path="mis-turnos" element={<MyTurnsPage />} />
 						<Route path="mis-turnos/solicitar-turno" element={<AddTurn />} />
