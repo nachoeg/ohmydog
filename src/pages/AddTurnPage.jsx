@@ -60,10 +60,24 @@ export default function AddTurn() {
 			});
 	}
 
+	function validarFecha(data) {
+		let fecha = new Date(data.get('fecha'));
+		let hoy = new Date();
+		fecha.setDate(fecha.getDate() + 1);
+		return fecha >= hoy;
+	}
+
 	const handleSubmit = (event) => {
 		event.preventDefault();
 		const data = new FormData(event.currentTarget);
 		const token = localStorage.getItem('jwt');
+		if (!validarFecha(data)) {
+			setSnackbar({
+				children: 'No puede sacar turno para una fecha pasada',
+				severity: 'error',
+			});
+			return;
+		}
 		fetch(url + 'turnos/register', {
 			method: 'POST',
 			headers: {
