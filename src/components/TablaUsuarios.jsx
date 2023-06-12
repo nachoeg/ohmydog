@@ -91,7 +91,7 @@ function TablaUsuarios() {
 		{
 			field: 'localidad',
 			headerName: 'Localidad',
-			width: 100,
+			width: 215,
 		},
 		{
 			field: 'actions',
