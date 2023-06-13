@@ -91,27 +91,20 @@ function TablaUsuarios() {
 		{
 			field: 'localidad',
 			headerName: 'Localidad',
-			width: 215,
+			width: 100,
 		},
 		{
 			field: 'actions',
 			headerName: '',
 			width: 350,
+			flex: 1,
+			align: 'right',
 			renderCell: (params) => {
 				let { id, nombre, apellido } = params.row;
 				apellido = apellido.replaceAll(' ', '-');
 				nombre = nombre.replaceAll(' ', '-');
 				return (
 					<>
-						<Button
-							key="modificar"
-							component={NavLink}
-							startIcon={<Edit />}
-							to={`/perfil/${id}`}
-							sx={{ fontSize: 11, mr: 1 }}
-						>
-							Modificar
-						</Button>
 						<Button
 							key="perros"
 							startIcon={<Pets />}
@@ -130,7 +123,15 @@ function TablaUsuarios() {
 						>
 							Turnos
 						</Button>
-						<Tooltip key="delete" title="Eliminar" placement="right">
+						<Tooltip key="modificar" title="Modificar">
+							<GridActionsCellItem
+								component={NavLink}
+								icon={<Edit />}
+								color="primary"
+								to={`/perfil/${id}`}
+							></GridActionsCellItem>
+						</Tooltip>
+						<Tooltip key="delete" title="Eliminar">
 							<GridActionsCellItem
 								icon={<Delete />}
 								label="Delete"
