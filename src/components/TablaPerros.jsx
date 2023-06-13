@@ -1,14 +1,25 @@
 import { Context } from '../context/Context';
 import { useEffect, useState, useCallback, useContext } from 'react';
 import url from '../data/url';
-import { DataGrid, GridActionsCellItem, GridOverlay } from '@mui/x-data-grid';
+import {
+	DataGrid,
+	GridActionsCellItem,
+	GridOverlay,
+	GridRowModes,
+} from '@mui/x-data-grid';
 import Snackbar from '@mui/material/Snackbar';
 import Alert from '@mui/material/Alert';
 import Delete from '@mui/icons-material/DeleteForever';
 import { razas } from '../data/perros';
 import Button from '@mui/material/Button';
 import { NavLink } from 'react-router-dom';
-import { AssignmentOutlined, CalendarMonth } from '@mui/icons-material';
+import {
+	AssignmentOutlined,
+	CalendarMonth,
+	Cancel,
+	Edit,
+	Save,
+} from '@mui/icons-material';
 import { Tooltip } from '@mui/material';
 import {
 	Dialog,
@@ -20,6 +31,40 @@ import {
 
 // La tabla de perros recibe en props el id del usuario que va a mostrar los perros
 function TablaPerros(props) {
+	//configuracion para editar la tabla
+	const [rowModesModel, setRowModesModel] = useState({});
+
+	const handleRowEditStart = (params, event) => {
+		event.defaultMuiPrevented = true;
+	};
+
+	const handleRowEditStop = (params, event) => {
+		event.defaultMuiPrevented = true;
+	};
+
+	const handleEditClick = (id) => () => {
+		setRowModesModel({ ...rowModesModel, [id]: { mode: GridRowModes.Edit } });
+	};
+
+	const handleSaveClick = (id) => () => {
+		setRowModesModel({ ...rowModesModel, [id]: { mode: GridRowModes.View } });
+	};
+	const handleCancelClick = (id) => () => {
+		setRowModesModel({
+			...rowModesModel,
+			[id]: { mode: GridRowModes.View, ignoreModifications: true },
+		});
+
+		const editedRow = rows.find((row) => row.id === id);
+		if (editedRow.isNew) {
+			setRows(rows.filter((row) => row.id !== id));
+		}
+	};
+
+	const handleRowModesModelChange = (newRowModesModel) => {
+		setRowModesModel(newRowModesModel);
+	};
+
 	const { usuario } = useContext(Context); // Usuario con sesion activa del que se muestran los perros
 	const token = localStorage.getItem('jwt');
 
@@ -145,7 +190,7 @@ function TablaPerros(props) {
 		{
 			field: 'caracteristicas',
 			headerName: 'Caracteristicas',
-			width: 300,
+			width: 250,
 			editable: true,
 		},
 	];
@@ -205,10 +250,34 @@ function TablaPerros(props) {
 	columns.push({
 		field: 'actions',
 		headerName: '',
-		width: 300,
+		minWidth: 300,
+		align: 'right',
+		flex: 1,
 		renderCell: (params) => {
 			const { id, nombre } = params.row;
+			const isInEditMode = rowModesModel[id]?.mode === GridRowModes.Edit;
 
+			if (isInEditMode) {
+				return [
+					<Tooltip title="Guardar" key="save">
+						<GridActionsCellItem
+							icon={<Save />}
+							label="Save"
+							color="primary"
+							onClick={handleSaveClick(id)}
+						/>
+					</Tooltip>,
+					<Tooltip title="Cancelar" key="cancel">
+						<GridActionsCellItem
+							icon={<Cancel />}
+							label="Cancel"
+							className="textPrimary"
+							onClick={handleCancelClick(id)}
+							color="primary"
+						/>
+					</Tooltip>,
+				];
+			}
 			const actions = [
 				<Button
 					key="turnos"
@@ -230,9 +299,20 @@ function TablaPerros(props) {
 				</Button>,
 			];
 
+			actions.push(
+				<Tooltip key="edit" title="Editar">
+					<GridActionsCellItem
+						icon={<Edit />}
+						label="Edit"
+						className="textPrimary"
+						onClick={handleEditClick(id)}
+						color="primary"
+					/>
+				</Tooltip>
+			);
 			if (esVeterinario) {
 				actions.push(
-					<Tooltip key="delete" title="Eliminar" placement="right">
+					<Tooltip key="delete" title="Eliminar">
 						<GridActionsCellItem
 							icon={<Delete />}
 							label="Delete"
@@ -275,12 +355,16 @@ function TablaPerros(props) {
 	return (
 		<div style={{ height: 400, width: '100%' }}>
 			<DataGrid
-				editMode="row"
 				rows={rows}
 				columns={columns}
+				editMode="row"
 				columnVisibilityModel={{
 					id: usuario.rol == 'veterinario',
 				}}
+				rowModesModel={rowModesModel}
+				onRowModesModelChange={handleRowModesModelChange}
+				onRowEditStart={handleRowEditStart}
+				onRowEditStop={handleRowEditStop}
 				processRowUpdate={processRowUpdate}
 				onProcessRowUpdateError={handleProcessRowUpdateError}
 				initialState={{
