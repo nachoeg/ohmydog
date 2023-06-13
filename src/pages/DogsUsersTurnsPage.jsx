@@ -2,12 +2,15 @@ import { Avatar, Box, Chip, Container, IconButton } from '@mui/material';
 import TablaTurnos from '../components/TablaTurnos';
 import { NavLink, useLocation } from 'react-router-dom';
 import { CalendarMonth, Cancel } from '@mui/icons-material';
+import { useContext } from 'react';
+import { Context } from '../context/Context';
 
 function DogsUsersTurnsPage() {
 	const location = useLocation();
 	const url =
 		location.pathname.split('/')[2] + '/' + location.pathname.split('/')[3];
 	const nombre = location.pathname.split('/')[4].replaceAll('-', ' ');
+	const { usuario } = useContext(Context);
 
 	return (
 		<>
@@ -38,7 +41,7 @@ function DogsUsersTurnsPage() {
 							borderRadius: 100,
 						}}
 					/>
-					<NavLink to={'/turnos'}>
+					<NavLink to={usuario.rol == 'cliente' ? '/mis-turnos' : '/turnos'}>
 						<IconButton aria-label="cancelar">
 							<Cancel />
 						</IconButton>
