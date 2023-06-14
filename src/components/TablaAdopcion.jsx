@@ -153,7 +153,6 @@ function TablaAdopcion() {
 			field: 'telefono',
 			headerName: 'Teléfono',
 			width: 100,
-			type: 'number', //no deberia poner "."
 			editable: true,
 		},
 		{
@@ -368,13 +367,7 @@ function TablaAdopcion() {
 			// Si es un usuario logueado (solo en ese caso debe ejecutarse sendEmail)
 
 			sendEmail(); // DESCOMENTAR
-			setSnackbar({
-				children: 'Solicitud enviada con exito.',
-				severity: 'success',
-			});
-			setTimeout(() => {
-				window.location.replace('/adopcion');
-			}, 1000);
+			handleCloseConfirmarSolicitar();
 		}
 	};
 
@@ -437,6 +430,10 @@ function TablaAdopcion() {
 			.then(
 				(result) => {
 					console.log(result.text);
+					setSnackbar({
+						children: 'Solicitud enviada con exito.',
+						severity: 'success',
+					});
 				},
 				(error) => {
 					setSnackbar({
