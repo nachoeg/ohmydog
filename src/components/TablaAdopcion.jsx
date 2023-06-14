@@ -9,16 +9,16 @@ import {
 	Snackbar,
 	Tooltip,
 	Typography,
-} from "@mui/material";
+} from '@mui/material';
 import {
 	DataGrid,
 	GridActionsCellItem,
 	GridOverlay,
 	GridRowModes,
-} from "@mui/x-data-grid";
-import { useCallback, useContext, useEffect, useState } from "react";
-import url from "../data/url";
-import { Context } from "../context/Context";
+} from '@mui/x-data-grid';
+import { useCallback, useContext, useEffect, useState } from 'react';
+import url from '../data/url';
+import { Context } from '../context/Context';
 import {
 	Cancel,
 	CheckCircle,
@@ -28,12 +28,12 @@ import {
 	Email,
 	Save,
 	Send,
-} from "@mui/icons-material";
-import emailjs from "emailjs-com";
-import { razas } from "../data/perros";
+} from '@mui/icons-material';
+import emailjs from 'emailjs-com';
+import { razas } from '../data/perros';
 
 function TablaAdopcion() {
-	const token = localStorage.getItem("jwt");
+	const token = localStorage.getItem('jwt');
 	const { usuario } = useContext(Context);
 
 	const [rows, setRows] = useState([]);
@@ -52,27 +52,27 @@ function TablaAdopcion() {
 
 	async function obtenerPerros() {
 		try {
-			const response = await fetch(url + "adopciones/", {
-				method: "GET",
-				credentials: "include",
+			const response = await fetch(url + 'adopciones/', {
+				method: 'GET',
+				credentials: 'include',
 				headers: {
-					"Content-Type": "application/json",
+					'Content-Type': 'application/json',
 					token: `${token}`,
 				},
 			});
 			if (!response.ok) {
 				setSnackbar({
 					children:
-						"Ocurrió un error al intentar cargar la lista de perros en adopción",
-					severity: "error",
+						'Ocurrió un error al intentar cargar la lista de perros en adopción',
+					severity: 'error',
 				});
 				return [];
 			}
 			let perros = await response.json();
 			if (perros.length == 0) {
 				setSnackbar({
-					children: "La lista de perros en adopción se encuentra vacía",
-					severity: "info",
+					children: 'La lista de perros en adopción se encuentra vacía',
+					severity: 'info',
 				});
 			}
 			return (
@@ -90,20 +90,20 @@ function TablaAdopcion() {
 					})
 					//orden ultimos los adoptados
 					.sort((a) => {
-						if (a.estado == "Adoptado") {
+						if (a.estado == 'Adoptado') {
 							return 1;
 						}
-						if (a.estado == "Pendiente") {
+						if (a.estado == 'Pendiente') {
 							return -1;
 						}
 					})
 			);
 		} catch (error) {
-			console.error("Error en el fetch: " + error);
+			console.error('Error en el fetch: ' + error);
 
 			setSnackbar({
-				children: "Error al conectar con la base de datos",
-				severity: "error",
+				children: 'Error al conectar con la base de datos',
+				severity: 'error',
 			});
 			return [];
 		}
@@ -111,84 +111,84 @@ function TablaAdopcion() {
 
 	const columns = [
 		// Datos de los perros: ID, nombre, raza, edad, enfermedad, sexo y caracteristicas
-		{ field: "id", id: "id" },
-		{ field: "idUsuario", id: "idUsuario" },
-		{ field: "nombre", headerName: "Nombre", width: 100, editable: true },
+		{ field: 'id', id: 'id' },
+		{ field: 'idUsuario', id: 'idUsuario' },
+		{ field: 'nombre', headerName: 'Nombre', width: 100, editable: true },
 		{
-			field: "edad",
-			headerName: "Edad",
-			type: "number",
+			field: 'edad',
+			headerName: 'Edad',
+			type: 'number',
 			width: 100,
 			editable: true,
 		},
 		{
-			field: "raza",
-			headerName: "Raza",
+			field: 'raza',
+			headerName: 'Raza',
 			width: 200,
-			type: "singleSelect",
+			type: 'singleSelect',
 			valueOptions: razas,
 			editable: true,
 		},
 		{
-			field: "sexo",
-			headerName: "Sexo",
+			field: 'sexo',
+			headerName: 'Sexo',
 			width: 100,
-			type: "singleSelect",
-			valueOptions: ["Masculino", "Femenino"],
+			type: 'singleSelect',
+			valueOptions: ['Masculino', 'Femenino'],
 			editable: true,
 		},
 		{
-			field: "caracteristicas",
-			headerName: "Caracteristicas",
+			field: 'caracteristicas',
+			headerName: 'Caracteristicas',
 			width: 160,
 			editable: true,
 		},
 		{
-			field: "enfermedades",
-			headerName: "Enfermedades",
+			field: 'enfermedades',
+			headerName: 'Enfermedades',
 			width: 150,
 			editable: true,
 		},
 		{
-			field: "telefono",
-			headerName: "Teléfono",
+			field: 'telefono',
+			headerName: 'Teléfono',
 			width: 100,
-			type: "number", //no deberia poner "."
+			type: 'number', //no deberia poner "."
 			editable: true,
 		},
 		{
-			field: "email",
-			headerName: "Email",
+			field: 'email',
+			headerName: 'Email',
 			width: 200,
 			editable: true,
 		},
 		{
 			//si esta adoptado o no
-			field: "estado",
-			headerName: "Estado",
+			field: 'estado',
+			headerName: 'Estado',
 			width: 100,
 		},
 	];
 
 	columns.push({
-		field: "actions",
-		headerName: "",
+		field: 'actions',
+		headerName: '',
 		minWidth: 100,
 		flex: 1,
-		align: "right",
+		align: 'right',
 		renderCell: (params) => {
 			const data = params.row;
 			if (
 				(!usuario ||
-					(data.idUsuario != usuario.id && usuario.rol != "veterinario")) &&
-				data.estado != "Adoptado"
+					(data.idUsuario != usuario.id && usuario.rol != 'veterinario')) &&
+				data.estado != 'Adoptado'
 			) {
 				return (
-					<Tooltip title='Solicitar adopción'>
+					<Tooltip title="Solicitar adopción">
 						<GridActionsCellItem
 							icon={<Email />}
-							key='solicitar'
-							label='Solicitar'
+							key="solicitar"
+							label="Solicitar"
 							onClick={() => {
 								let perroSolicitado = { ...data };
 								// perroSolicitado.estado = 'Solicitado';
@@ -196,8 +196,8 @@ function TablaAdopcion() {
 								setPerroSolicitado(perroSolicitado);
 							}}
 							sx={{
-								"&:hover": {
-									color: "primary.main",
+								'&:hover': {
+									color: 'primary.main',
 								},
 							}}
 						/>
@@ -209,27 +209,27 @@ function TablaAdopcion() {
 
 			if (isInEditMode) {
 				return [
-					<Tooltip title='Guardar' key='save'>
+					<Tooltip title="Guardar" key="save">
 						<GridActionsCellItem
 							icon={<Save />}
-							label='Save'
+							label="Save"
 							onClick={handleSaveClick(data.id)}
 							sx={{
-								"&:hover": {
-									color: "primary.main",
+								'&:hover': {
+									color: 'primary.main',
 								},
 							}}
 						/>
 					</Tooltip>,
-					<Tooltip title='Cancelar' key='cancel'>
+					<Tooltip title="Cancelar" key="cancel">
 						<GridActionsCellItem
 							icon={<Cancel />}
-							label='Cancel'
-							className='textPrimary'
+							label="Cancel"
+							className="textPrimary"
 							onClick={handleCancelClick(data.id)}
 							sx={{
-								"&:hover": {
-									color: "red",
+								'&:hover': {
+									color: 'red',
 								},
 							}}
 						/>
@@ -238,16 +238,16 @@ function TablaAdopcion() {
 			}
 			if (
 				usuario &&
-				(usuario.rol == "veterinario" || data.idUsuario == usuario.id) &&
-				data.estado != "Adoptado"
+				(usuario.rol == 'veterinario' || data.idUsuario == usuario.id) &&
+				data.estado != 'Adoptado'
 			) {
 				return (
 					<>
-						<Tooltip title='Confirmar adopción'>
+						<Tooltip title="Confirmar adopción">
 							<GridActionsCellItem
 								icon={<CheckCircle />}
-								key='adoptado'
-								label='Adoptado'
+								key="adoptado"
+								label="Adoptado"
 								onClick={() => {
 									let perroAdoptado = { ...data };
 									// perroAdoptado.estado = 'Adoptado';
@@ -255,38 +255,38 @@ function TablaAdopcion() {
 									setPerroAdoptado(perroAdoptado);
 								}}
 								sx={{
-									"&:hover": {
-										color: "green",
+									'&:hover': {
+										color: 'green',
 									},
 								}}
 							/>
 						</Tooltip>
-						<Tooltip key='edit' title='Editar'>
+						<Tooltip key="edit" title="Editar">
 							<GridActionsCellItem
 								icon={<Edit />}
-								label='Edit'
-								className='textPrimary'
+								label="Edit"
+								className="textPrimary"
 								onClick={handleEditClick(data.id)}
 								sx={{
-									"&:hover": {
-										color: "primary.main",
+									'&:hover': {
+										color: 'primary.main',
 									},
 								}}
 							/>
 						</Tooltip>
-						<Tooltip title='Eliminar perro'>
+						<Tooltip title="Eliminar perro">
 							<GridActionsCellItem
 								icon={<DeleteForever />}
-								key='eliminar'
-								label='Eliminar'
+								key="eliminar"
+								label="Eliminar"
 								onClick={() => {
 									let perroEliminar = { ...data };
 									handleClickOpenConfirmarEliminar();
 									setPerroEliminar(perroEliminar);
 								}}
 								sx={{
-									"&:hover": {
-										color: "red",
+									'&:hover': {
+										color: 'red',
 									},
 								}}
 							/>
@@ -369,11 +369,11 @@ function TablaAdopcion() {
 
 			sendEmail(); // DESCOMENTAR
 			setSnackbar({
-				children: "Solicitud enviada con exito.",
-				severity: "success",
+				children: 'Solicitud enviada con exito.',
+				severity: 'success',
 			});
 			setTimeout(() => {
-				window.location.replace("/adopcion");
+				window.location.replace('/adopcion');
 			}, 1000);
 		}
 	};
@@ -382,7 +382,7 @@ function TablaAdopcion() {
 		// "Crea" un formulario ya que la API necesita que los datos se envien en uno
 		const e = {
 			preventDefault: () => {},
-			target: document.createElement("form"),
+			target: document.createElement('form'),
 		};
 
 		// Agrega campos al formulario recien creado
@@ -392,47 +392,47 @@ function TablaAdopcion() {
 		// Y tambien nombrePerro y mail del perro a adoptar. (el mail es al que le llega el email)
 
 		// Datos de quien presiona adoptar:
-		const nombrePersonaInput = document.createElement("input");
-		nombrePersonaInput.name = "nombrePersona";
+		const nombrePersonaInput = document.createElement('input');
+		nombrePersonaInput.name = 'nombrePersona';
 		nombrePersonaInput.value = usuario.nombre;
 		e.target.appendChild(nombrePersonaInput);
 
-		const apellidoPersonaInput = document.createElement("input");
-		apellidoPersonaInput.name = "apellidoPersona";
+		const apellidoPersonaInput = document.createElement('input');
+		apellidoPersonaInput.name = 'apellidoPersona';
 		apellidoPersonaInput.value = usuario.apellido;
 		e.target.appendChild(apellidoPersonaInput);
 
-		const telefonoPersonaInput = document.createElement("input");
-		telefonoPersonaInput.name = "telefonoPersona";
+		const telefonoPersonaInput = document.createElement('input');
+		telefonoPersonaInput.name = 'telefonoPersona';
 		telefonoPersonaInput.value = usuario.telefono;
 		e.target.appendChild(telefonoPersonaInput);
 
 		// Datos del perro que esta siendo adoptado:
-		const nombrePerroInput = document.createElement("input");
-		nombrePerroInput.name = "nombrePerro";
+		const nombrePerroInput = document.createElement('input');
+		nombrePerroInput.name = 'nombrePerro';
 		nombrePerroInput.value = perroSolicitado.nombre;
 		e.target.appendChild(nombrePerroInput);
 
 		// Email al que llega el correo
-		const direccionEmail = document.createElement("input");
-		direccionEmail.name = "email";
+		const direccionEmail = document.createElement('input');
+		direccionEmail.name = 'email';
 		direccionEmail.value = perroSolicitado.email;
 		e.target.appendChild(direccionEmail);
 
 		// URL para confirmar la adopcion
-		const urlConfirmar = document.createElement("input");
-		urlConfirmar.name = "urlConfirmar";
+		const urlConfirmar = document.createElement('input');
+		urlConfirmar.name = 'urlConfirmar';
 		urlConfirmar.value =
-			"http://localhost:5173/confirmar-adopcion/" + perroSolicitado.id;
-		urlConfirmar.style.display = "none"; // Ocultar el campo de entrada
+			'http://localhost:5173/confirmar-adopcion/' + perroSolicitado.id;
+		urlConfirmar.style.display = 'none'; // Ocultar el campo de entrada
 		e.target.appendChild(urlConfirmar);
 
 		emailjs
 			.sendForm(
-				"service_t777hj8",
-				"template_cfj9d0o",
+				'service_t777hj8',
+				'template_cfj9d0o',
 				e.target,
-				"kMhWmQA84AfcGvqNF"
+				'kMhWmQA84AfcGvqNF'
 			)
 			.then(
 				(result) => {
@@ -440,19 +440,19 @@ function TablaAdopcion() {
 				},
 				(error) => {
 					setSnackbar({
-						children: "Error al enviar el email" + error,
-						severity: "error",
+						children: 'Error al enviar el email' + error,
+						severity: 'error',
 					});
 				}
 			);
 	}
 
 	const handleConfirmarAdopcion = async (perro) => {
-		const response = await fetch(url + "adopciones/adoptar/" + perro.id, {
-			method: "put",
-			credentials: "include",
+		const response = await fetch(url + 'adopciones/adoptar/' + perro.id, {
+			method: 'put',
+			credentials: 'include',
 			headers: {
-				"Content-Type": "application/json",
+				'Content-Type': 'application/json',
 				token: `${token}`,
 			},
 		});
@@ -460,8 +460,8 @@ function TablaAdopcion() {
 			setTimeout(
 				() =>
 					setSnackbar({
-						children: "Perro marcado como adoptado con exito",
-						severity: "success",
+						children: 'Perro marcado como adoptado con exito',
+						severity: 'success',
 					}),
 				1000
 			);
@@ -469,35 +469,35 @@ function TablaAdopcion() {
 		}
 		if (response.status == 500) {
 			setSnackbar({
-				children: "Error al conectar con la base de datos",
-				severity: "error",
+				children: 'Error al conectar con la base de datos',
+				severity: 'error',
 			});
 		}
 	};
 
 	const handleConfirmarEliminar = async (perro) => {
 		console.log(perro);
-		const response = await fetch(url + "adopciones/delete/" + perro.id, {
-			method: "delete",
-			credentials: "include",
+		const response = await fetch(url + 'adopciones/delete/' + perro.id, {
+			method: 'delete',
+			credentials: 'include',
 			headers: {
-				"Content-Type": "application/json",
+				'Content-Type': 'application/json',
 				token: `${token}`,
 			},
 		});
 		if (response.ok) {
 			setTimeout(() => {
 				setSnackbar({
-					children: "Perro eliminado con exito",
-					severity: "success",
+					children: 'Perro eliminado con exito',
+					severity: 'success',
 				});
 			}, 1000);
 			actualizarTabla();
 		}
 		if (response.status == 500) {
 			setSnackbar({
-				children: "Error al conectar con la base de datos",
-				severity: "error",
+				children: 'Error al conectar con la base de datos',
+				severity: 'error',
 			});
 		}
 	};
@@ -510,14 +510,14 @@ function TablaAdopcion() {
 	function validarDatos(datos) {
 		console.log(datos);
 		return (
-			datos.nombre.trim() !== "" &&
-			datos.edad.toString().trim() !== "" &&
-			datos.raza.trim() !== "" &&
+			datos.nombre.trim() !== '' &&
+			datos.edad.toString().trim() !== '' &&
+			datos.raza.trim() !== '' &&
 			// datos.caracteristicas.trim() !== '' &&
 			// datos.enfermedad.trim() !== '' &&
-			datos.sexo.trim() !== "" &&
-			datos.telefono.toString().trim() !== "" &&
-			datos.email.trim() !== ""
+			datos.sexo.trim() !== '' &&
+			datos.telefono.toString().trim() !== '' &&
+			datos.email.trim() !== ''
 		);
 	}
 
@@ -525,38 +525,38 @@ function TablaAdopcion() {
 	const processRowUpdate = useCallback(async (newRow, oldRow) => {
 		if (!validarDatos(newRow)) {
 			setSnackbar({
-				children: "No puede ingresar un campo vacio.",
-				severity: "error",
+				children: 'No puede ingresar un campo vacio.',
+				severity: 'error',
 			});
 			return oldRow;
 		}
-		const response = await fetch(url + "adopciones/modify/" + newRow.id, {
-			method: "PUT",
-			credentials: "include",
+		const response = await fetch(url + 'adopciones/modify/' + newRow.id, {
+			method: 'PUT',
+			credentials: 'include',
 			headers: {
-				"Content-Type": "application/json",
+				'Content-Type': 'application/json',
 				token: `${token}`,
 			},
 			body: JSON.stringify(newRow),
 		});
 		if (response.ok) {
 			setSnackbar({
-				children: "Perro modificado con exito",
-				severity: "success",
+				children: 'Perro modificado con exito',
+				severity: 'success',
 			});
 			return newRow;
 		}
 		if (response.status == 500) {
 			setSnackbar({
-				children: "Error al conectar con la base de datos",
-				severity: "error",
+				children: 'Error al conectar con la base de datos',
+				severity: 'error',
 			});
 		}
 		return oldRow;
 	}, []);
 
 	const handleProcessRowUpdateError = useCallback((error) => {
-		setSnackbar({ children: error.message, severity: "error" });
+		setSnackbar({ children: error.message, severity: 'error' });
 	}, []);
 
 	const CustomNoRowsOverlay = () => {
@@ -567,11 +567,11 @@ function TablaAdopcion() {
 		);
 	};
 	return (
-		<div style={{ height: 400, width: "100%" }}>
+		<div style={{ height: 400, width: '100%' }}>
 			<DataGrid
 				rows={rows}
 				columns={columns}
-				editMode='row'
+				editMode="row"
 				// isCellEditable={(params) => {
 				// 	return (
 				// 		usuario &&
@@ -604,30 +604,30 @@ function TablaAdopcion() {
 			<Dialog
 				open={openConfirmarAdopcion}
 				onClose={handleCloseConfirmarAdopcion}
-				aria-labelledby='confirmar-title'
-				aria-describedby='confirmar-description'
+				aria-labelledby="confirmar-title"
+				aria-describedby="confirmar-description"
 			>
-				<DialogTitle id='confirmar-title'>
-					Estas seguro/a de <b style={{ color: "green" }}>confirmar</b> que el
+				<DialogTitle id="confirmar-title">
+					Estas seguro/a de <b style={{ color: 'green' }}>confirmar</b> que el
 					perro fue adoptado?
 				</DialogTitle>
 				<DialogContent>
-					<DialogContentText id='confirmar-description'>
+					<DialogContentText id="confirmar-description">
 						Una vez que confirmes, se actualizará su estado y no se podrá
 						revertir
 					</DialogContentText>
 				</DialogContent>
 				<DialogActions>
 					<Button
-						color='success'
-						variant='outlined'
+						color="success"
+						variant="outlined"
 						onClick={handleCloseConfirmarAdopcion}
 					>
 						Cancelar
 					</Button>
 					<Button
-						variant='contained'
-						color='success'
+						variant="contained"
+						color="success"
 						startIcon={<Done />}
 						onClick={() => {
 							handleConfirmarAdopcion(perroAdoptado);
@@ -642,40 +642,40 @@ function TablaAdopcion() {
 			<Dialog
 				open={openConfirmarSolicitar}
 				onClose={handleCloseConfirmarSolicitar}
-				aria-labelledby='confirmar-title'
-				aria-describedby='confirmar-description'
+				aria-labelledby="confirmar-title"
+				aria-describedby="confirmar-description"
 			>
-				<DialogTitle id='confirmar-title'>
-					Estas seguro/a de{" "}
+				<DialogTitle id="confirmar-title">
+					Estas seguro/a de{' '}
 					<Typography
-						component={"span"}
+						component={'span'}
 						sx={{
-							fontWeight: "bold",
-							fontSize: "inherit",
-							color: "primary.main",
+							fontWeight: 'bold',
+							fontSize: 'inherit',
+							color: 'primary.main',
 						}}
 					>
 						solicitar
-					</Typography>{" "}
+					</Typography>{' '}
 					la adopción del perro?
 				</DialogTitle>
 				<DialogContent>
-					<DialogContentText id='confirmar-description'>
+					<DialogContentText id="confirmar-description">
 						Una vez que confirmes, se le enviará un mail al dueño del perro con
 						tu solicitud y tus datos, para que puedan contactarse.
 					</DialogContentText>
 				</DialogContent>
 				<DialogActions>
 					<Button
-						color='primary'
-						variant='outlined'
+						color="primary"
+						variant="outlined"
 						onClick={handleCloseConfirmarSolicitar}
 					>
 						Cancelar
 					</Button>
 					<Button
-						variant='contained'
-						color='primary'
+						variant="contained"
+						color="primary"
 						startIcon={<Send />}
 						onClick={() => {
 							handleConfirmarSolicitar(perroSolicitado);
@@ -690,39 +690,39 @@ function TablaAdopcion() {
 			<Dialog
 				open={openConfirmarEliminar}
 				onClose={handleCloseConfirmarEliminar}
-				aria-labelledby='confirmar-title'
-				aria-describedby='confirmar-description'
+				aria-labelledby="confirmar-title"
+				aria-describedby="confirmar-description"
 			>
-				<DialogTitle id='confirmar-title'>
-					Estas seguro/a de{" "}
+				<DialogTitle id="confirmar-title">
+					Estas seguro/a de{' '}
 					<Typography
-						component={"span"}
+						component={'span'}
 						sx={{
-							fontWeight: "bold",
-							fontSize: "inherit",
-							color: "red",
+							fontWeight: 'bold',
+							fontSize: 'inherit',
+							color: 'red',
 						}}
 					>
 						eliminar
-					</Typography>{" "}
+					</Typography>{' '}
 					el perro?
 				</DialogTitle>
 				<DialogContent>
-					<DialogContentText id='confirmar-description'>
+					<DialogContentText id="confirmar-description">
 						Una vez que confirmes, no podrás deshacer esta acción
 					</DialogContentText>
 				</DialogContent>
 				<DialogActions>
 					<Button
-						color='error'
-						variant='outlined'
+						color="error"
+						variant="outlined"
 						onClick={handleCloseConfirmarEliminar}
 					>
 						Cancelar
 					</Button>
 					<Button
-						variant='contained'
-						color='error'
+						variant="contained"
+						color="error"
 						startIcon={<DeleteForever />}
 						onClick={() => {
 							handleConfirmarEliminar(perroEliminar);
@@ -737,7 +737,7 @@ function TablaAdopcion() {
 			{!!snackbar && (
 				<Snackbar
 					open
-					anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+					anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
 					onClose={handleCloseSnackbar}
 					autoHideDuration={6000}
 				>
