@@ -131,6 +131,11 @@ function TablaTurnos({ urlTurnos }) {
 			width: 70,
 		},
 		{
+			field: 'nombre',
+			headerName: 'Nombre',
+			width: 100,
+		},
+		{
 			field: 'fecha',
 			headerName: 'Fecha',
 			width: 100,
@@ -138,7 +143,8 @@ function TablaTurnos({ urlTurnos }) {
 		{
 			field: 'motivo',
 			headerName: 'Motivo',
-			width: 180,
+			minWidth: 150,
+			flex: 1,
 		},
 		{
 			field: 'estado',
@@ -275,6 +281,11 @@ function TablaTurnos({ urlTurnos }) {
 				rows={rows}
 				columns={columns}
 				onProcessRowUpdateError={handleProcessRowUpdateError}
+				columnVisibilityModel={{
+					idPerro: usuario.rol == 'veterinario',
+					nombre: usuario.rol == 'cliente',
+					estadoBotones: usuario.rol == 'veterinario',
+				}}
 				initialState={{
 					pagination: {
 						paginationModel: { page: 0, pageSize: 5 },
