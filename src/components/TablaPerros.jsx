@@ -1,33 +1,33 @@
-import { Context } from '../context/Context';
-import { useEffect, useState, useCallback, useContext } from 'react';
-import url from '../data/url';
+import { Context } from "../context/Context";
+import { useEffect, useState, useCallback, useContext } from "react";
+import url from "../data/url";
 import {
 	DataGrid,
 	GridActionsCellItem,
 	GridOverlay,
 	GridRowModes,
-} from '@mui/x-data-grid';
-import Snackbar from '@mui/material/Snackbar';
-import Alert from '@mui/material/Alert';
-import Delete from '@mui/icons-material/DeleteForever';
-import { razas } from '../data/perros';
-import Button from '@mui/material/Button';
-import { NavLink } from 'react-router-dom';
+} from "@mui/x-data-grid";
+import Snackbar from "@mui/material/Snackbar";
+import Alert from "@mui/material/Alert";
+import Delete from "@mui/icons-material/DeleteForever";
+import { razas } from "../data/perros";
+import Button from "@mui/material/Button";
+import { NavLink } from "react-router-dom";
 import {
 	AssignmentOutlined,
 	CalendarMonth,
 	Cancel,
 	Edit,
 	Save,
-} from '@mui/icons-material';
-import { Tooltip } from '@mui/material';
+} from "@mui/icons-material";
+import { Tooltip } from "@mui/material";
 import {
 	Dialog,
 	DialogActions,
 	DialogContent,
 	DialogContentText,
 	DialogTitle,
-} from '@mui/material';
+} from "@mui/material";
 
 // La tabla de perros recibe en props el id del usuario que va a mostrar los perros
 function TablaPerros(props) {
@@ -66,13 +66,13 @@ function TablaPerros(props) {
 	};
 
 	const { usuario } = useContext(Context); // Usuario con sesion activa del que se muestran los perros
-	const token = localStorage.getItem('jwt');
+	const token = localStorage.getItem("jwt");
 
 	const [esVeterinario, setEsVeterinario] = useState(false); // Para ocultar o mostrar funciones de veterinarios
 
 	//Habilita/muestra opciones en funcion de si entra un veterinario.
 	useEffect(() => {
-		if (usuario != null && usuario.rol === 'veterinario') {
+		if (usuario != null && usuario.rol === "veterinario") {
 			setEsVeterinario(true);
 		}
 	}, [usuario]);
@@ -90,25 +90,25 @@ function TablaPerros(props) {
 
 	// Manejador del borrado de los perros
 	async function eliminarPerro(id) {
-		const response = await fetch(url + 'perros/delete/' + id, {
-			method: 'DELETE',
-			credentials: 'include',
+		const response = await fetch(url + "perros/delete/" + id, {
+			method: "DELETE",
+			credentials: "include",
 			headers: {
-				'Content-Type': 'application/json',
+				"Content-Type": "application/json",
 				token: `${token}`,
 			},
 		});
 		console.log(response);
 		if (response.ok) {
 			setSnackbar({
-				children: 'Perro eliminado con exito',
-				severity: 'success',
+				children: "Perro eliminado con exito",
+				severity: "success",
 			});
 			setRows(rows.filter((row) => row.id !== id));
 		} else {
 			setSnackbar({
-				children: 'Error al conectar con la base de datos',
-				severity: 'error',
+				children: "Error al conectar con la base de datos",
+				severity: "error",
 			});
 		}
 	}
@@ -116,19 +116,19 @@ function TablaPerros(props) {
 	// Obtiene los perros del usuario desde la BD.
 	async function obtenerPerros() {
 		try {
-			const response = await fetch(url + 'perros/' + props.idUsuario, {
-				method: 'GET',
-				credentials: 'include',
+			const response = await fetch(url + "perros/" + props.idUsuario, {
+				method: "GET",
+				credentials: "include",
 				headers: {
-					'Content-Type': 'application/json',
+					"Content-Type": "application/json",
 					token: `${token}`,
 				},
 			});
 			if (!response.ok) {
 				if (response.status == 401) {
 					setSnackbar({
-						children: 'No estas autorizado para ver los perros',
-						severity: 'error',
+						children: "No estas autorizado para ver los perros",
+						severity: "error",
 					});
 				}
 				return [];
@@ -136,17 +136,17 @@ function TablaPerros(props) {
 			let perros = await response.json();
 			if (perros.length == 0) {
 				setSnackbar({
-					children: 'La lista de perros se encuentra vacia',
-					severity: 'info',
+					children: "La lista de perros se encuentra vacia",
+					severity: "info",
 				});
 			}
 			return perros;
 		} catch (error) {
-			console.error('Error en el fetch: ' + error);
+			console.error("Error en el fetch: " + error);
 
 			setSnackbar({
-				children: 'Error al conectar con la base de datos',
-				severity: 'error',
+				children: "Error al conectar con la base de datos",
+				severity: "error",
 			});
 			return [];
 		}
@@ -155,41 +155,48 @@ function TablaPerros(props) {
 	// Establece las columnas a mostrar de la tabla de perros.
 	const columns = [
 		// Datos de los perros: ID, nombre, raza, edad, enfermedad, sexo y caracteristicas
-		{ field: 'id', headerName: 'ID', width: 50, id: 'id' },
+		{ field: "id", headerName: "ID", width: 50, id: "id" },
 		{
-			field: 'nombre',
-			headerName: 'Nombre',
-			width: 150,
-			id: 'nombre',
+			field: "usuarioNombreyApellido",
+			headerName: "Dueño",
+			width: 120,
+			id: "usuarioNombreyApellido",
 			editable: true,
 		},
 		{
-			field: 'edad',
-			headerName: 'Edad',
+			field: "nombre",
+			headerName: "Nombre",
 			width: 100,
-			id: 'edad',
-			type: 'number',
+			id: "nombre",
 			editable: true,
 		},
 		{
-			field: 'raza',
-			headerName: 'Raza',
-			width: 150,
-			type: 'singleSelect',
+			field: "edad",
+			headerName: "Edad (meses)",
+			width: 100,
+			id: "edad",
+			type: "number",
+			editable: true,
+		},
+		{
+			field: "raza",
+			headerName: "Raza",
+			width: 100,
+			type: "singleSelect",
 			valueOptions: razas,
 			editable: true,
 		},
 		{
-			field: 'sexo',
-			headerName: 'Sexo',
+			field: "sexo",
+			headerName: "Sexo",
 			width: 100,
-			type: 'singleSelect',
-			valueOptions: ['Masculino', 'Femenino'],
+			type: "singleSelect",
+			valueOptions: ["Masculino", "Femenino"],
 			editable: true,
 		},
 		{
-			field: 'caracteristicas',
-			headerName: 'Caracteristicas',
+			field: "caracteristicas",
+			headerName: "Caracteristicas",
 			width: 250,
 			editable: true,
 		},
@@ -198,12 +205,12 @@ function TablaPerros(props) {
 	// Funcion para validar los datos al modificarlos
 	function validarDatos(datos) {
 		return (
-			datos.nombre.trim() !== '' &&
-			datos.edad.toString().trim() !== '' &&
-			datos.raza.trim() !== '' &&
+			datos.nombre.trim() !== "" &&
+			datos.edad.toString().trim() !== "" &&
+			datos.raza.trim() !== "" &&
 			// datos.caracteristicas.trim() !== '' &&
 			// datos.enfermedad.trim() !== '' &&
-			datos.sexo.trim() !== ''
+			datos.sexo.trim() !== ""
 		);
 	}
 
@@ -211,31 +218,31 @@ function TablaPerros(props) {
 	const processRowUpdate = useCallback(async (newRow, oldRow) => {
 		if (!validarDatos(newRow)) {
 			setSnackbar({
-				children: 'No puede ingresar un campo vacio.',
-				severity: 'error',
+				children: "No puede ingresar un campo vacio.",
+				severity: "error",
 			});
 			return oldRow;
 		}
-		const response = await fetch(url + 'perros/modify/' + newRow.id, {
-			method: 'PUT',
-			credentials: 'include',
+		const response = await fetch(url + "perros/modify/" + newRow.id, {
+			method: "PUT",
+			credentials: "include",
 			headers: {
-				'Content-Type': 'application/json',
+				"Content-Type": "application/json",
 				token: `${token}`,
 			},
 			body: JSON.stringify(newRow),
 		});
 		if (response.ok) {
 			setSnackbar({
-				children: 'Perro modificado con exito',
-				severity: 'success',
+				children: "Perro modificado con exito",
+				severity: "success",
 			});
 			return newRow;
 		}
 		if (response.status == 500) {
 			setSnackbar({
-				children: 'Error al conectar con la base de datos',
-				severity: 'error',
+				children: "Error al conectar con la base de datos",
+				severity: "error",
 			});
 		}
 		return oldRow;
@@ -243,15 +250,15 @@ function TablaPerros(props) {
 
 	// Manejador de errores en el update (modificacion)
 	const handleProcessRowUpdateError = useCallback((error) => {
-		setSnackbar({ children: error.message, severity: 'error' });
+		setSnackbar({ children: error.message, severity: "error" });
 	}, []);
 
 	// Establece las acciones de cada fila y si es veterinario muestra el borrado
 	columns.push({
-		field: 'actions',
-		headerName: '',
+		field: "actions",
+		headerName: "",
 		minWidth: 300,
-		align: 'right',
+		align: "right",
 		flex: 1,
 		renderCell: (params) => {
 			const { id, nombre } = params.row;
@@ -259,7 +266,7 @@ function TablaPerros(props) {
 
 			const actions = [
 				<Button
-					key="turnos"
+					key='turnos'
 					startIcon={<CalendarMonth />}
 					component={NavLink}
 					to={`/turnos/perro/${id}/${nombre}`}
@@ -268,7 +275,7 @@ function TablaPerros(props) {
 					Turnos
 				</Button>,
 				<Button
-					key="historial"
+					key='historial'
 					startIcon={<AssignmentOutlined />}
 					component={NavLink}
 					to={`/historial-clinico/${id}`}
@@ -280,47 +287,47 @@ function TablaPerros(props) {
 
 			if (isInEditMode) {
 				actions.push(
-					<Tooltip title="Guardar" key="save">
+					<Tooltip title='Guardar' key='save'>
 						<GridActionsCellItem
 							icon={<Save />}
-							label="Save"
+							label='Save'
 							onClick={handleSaveClick(id)}
-							sx={{ '&:hover': { color: 'primary.main' } }}
+							sx={{ "&:hover": { color: "primary.main" } }}
 						/>
 					</Tooltip>,
-					<Tooltip title="Cancelar" key="cancel">
+					<Tooltip title='Cancelar' key='cancel'>
 						<GridActionsCellItem
 							icon={<Cancel />}
-							label="Cancel"
-							className="textPrimary"
+							label='Cancel'
+							className='textPrimary'
 							onClick={handleCancelClick(id)}
-							sx={{ '&:hover': { color: 'red' } }}
+							sx={{ "&:hover": { color: "red" } }}
 						/>
 					</Tooltip>
 				);
 			} else {
 				actions.push(
-					<Tooltip key="edit" title="Editar">
+					<Tooltip key='edit' title='Editar'>
 						<GridActionsCellItem
 							icon={<Edit />}
-							label="Edit"
-							className="textPrimary"
+							label='Edit'
+							className='textPrimary'
 							onClick={handleEditClick(id)}
-							sx={{ '&:hover': { color: 'primary.main' } }}
+							sx={{ "&:hover": { color: "primary.main" } }}
 						/>
 					</Tooltip>
 				);
 				if (esVeterinario) {
 					actions.push(
-						<Tooltip key="delete" title="Eliminar">
+						<Tooltip key='delete' title='Eliminar'>
 							<GridActionsCellItem
 								icon={<Delete />}
-								label="Delete"
+								label='Delete'
 								onClick={() => {
 									setPerroBorrar(id);
 									handleClickOpenConfirmar();
 								}}
-								sx={{ '&:hover': { color: 'red' } }}
+								sx={{ "&:hover": { color: "red" } }}
 							/>
 						</Tooltip>
 					);
@@ -353,13 +360,13 @@ function TablaPerros(props) {
 	};
 
 	return (
-		<div style={{ height: 400, width: '100%' }}>
+		<div style={{ height: 400, width: "100%" }}>
 			<DataGrid
 				rows={rows}
 				columns={columns}
-				editMode="row"
+				editMode='row'
 				columnVisibilityModel={{
-					id: usuario.rol == 'veterinario',
+					id: false,
 				}}
 				rowModesModel={rowModesModel}
 				onRowModesModelChange={handleRowModesModelChange}
@@ -380,29 +387,29 @@ function TablaPerros(props) {
 			<Dialog
 				open={openConfirmar}
 				onClose={handleCloseConfirmar}
-				aria-labelledby="confirmar-title"
-				aria-describedby="confirmar-description"
+				aria-labelledby='confirmar-title'
+				aria-describedby='confirmar-description'
 			>
-				<DialogTitle id="confirmar-title">
-					Estas seguro/a de <b style={{ color: 'red' }}>eliminar</b> al perro?
+				<DialogTitle id='confirmar-title'>
+					Estas seguro/a de <b style={{ color: "red" }}>eliminar</b> al perro?
 				</DialogTitle>
 				<DialogContent>
-					<DialogContentText id="confirmar-description">
+					<DialogContentText id='confirmar-description'>
 						Una vez que confirmes, también se eliminarán todos los turnos
 						asociados al perro.
 					</DialogContentText>
 				</DialogContent>
 				<DialogActions>
 					<Button
-						color="error"
-						variant="outlined"
+						color='error'
+						variant='outlined'
 						onClick={handleCloseConfirmar}
 					>
 						Cancelar
 					</Button>
 					<Button
-						variant="contained"
-						color="error"
+						variant='contained'
+						color='error'
 						onClick={() => {
 							eliminarPerro(perroBorrar);
 							handleCloseConfirmar();
@@ -417,7 +424,7 @@ function TablaPerros(props) {
 				// Declaracion de propiedades de la snackbar
 				<Snackbar
 					open
-					anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+					anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
 					onClose={handleCloseSnackbar}
 					autoHideDuration={6000}
 				>
