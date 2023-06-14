@@ -96,7 +96,7 @@ function TablaUsuarios() {
 		{
 			field: 'actions',
 			headerName: '',
-			width: 350,
+			minWidth: 300,
 			flex: 1,
 			align: 'right',
 			renderCell: (params) => {
