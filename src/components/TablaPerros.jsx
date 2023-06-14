@@ -205,12 +205,12 @@ function TablaPerros(props) {
 	// Funcion para validar los datos al modificarlos
 	function validarDatos(datos) {
 		return (
-			datos.nombre.trim() !== '' &&
-			datos.edad.toString().trim() !== '' &&
-			datos.raza.trim() !== '' &&
+			datos.nombre.trim() != '' &&
+			datos.edad != null &&
+			datos.raza.trim() != '' &&
 			// datos.caracteristicas.trim() !== '' &&
 			// datos.enfermedad.trim() !== '' &&
-			datos.sexo.trim() !== ''
+			datos.sexo.trim() != ''
 		);
 	}
 

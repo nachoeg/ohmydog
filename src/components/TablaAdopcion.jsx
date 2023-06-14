@@ -508,7 +508,7 @@ function TablaAdopcion() {
 		console.log(datos);
 		return (
 			datos.nombre.trim() !== '' &&
-			datos.edad.toString().trim() !== '' &&
+			datos.edad != null &&
 			datos.raza.trim() !== '' &&
 			// datos.caracteristicas.trim() !== '' &&
 			// datos.enfermedad.trim() !== '' &&
