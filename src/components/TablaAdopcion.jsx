@@ -10,12 +10,27 @@ import {
 	Tooltip,
 	Typography,
 } from '@mui/material';
-import { DataGrid, GridActionsCellItem, GridOverlay } from '@mui/x-data-grid';
+import {
+	DataGrid,
+	GridActionsCellItem,
+	GridOverlay,
+	GridRowModes,
+} from '@mui/x-data-grid';
 import { useCallback, useContext, useEffect, useState } from 'react';
 import url from '../data/url';
 import { Context } from '../context/Context';
-import { CheckCircle, Delete, Done, Email, Send } from '@mui/icons-material';
+import {
+	Cancel,
+	CheckCircle,
+	DeleteForever,
+	Done,
+	Edit,
+	Email,
+	Save,
+	Send,
+} from '@mui/icons-material';
 import emailjs from 'emailjs-com';
+import { razas } from '../data/perros';
 
 function TablaAdopcion() {
 	const token = localStorage.getItem('jwt');
@@ -100,15 +115,26 @@ function TablaAdopcion() {
 		{ field: 'idUsuario', id: 'idUsuario' },
 		{ field: 'nombre', headerName: 'Nombre', width: 100, editable: true },
 		{
+			field: 'edad',
+			headerName: 'Edad',
+			type: 'number',
+			width: 100,
+			editable: true,
+		},
+		{
 			field: 'raza',
 			headerName: 'Raza',
 			width: 200,
+			type: 'singleSelect',
+			valueOptions: razas,
 			editable: true,
 		},
 		{
 			field: 'sexo',
 			headerName: 'Sexo',
 			width: 100,
+			type: 'singleSelect',
+			valueOptions: ['Masculino', 'Femenino'],
 			editable: true,
 		},
 		{
@@ -120,13 +146,14 @@ function TablaAdopcion() {
 		{
 			field: 'enfermedades',
 			headerName: 'Enfermedades',
-			width: 250,
+			width: 150,
 			editable: true,
 		},
 		{
 			field: 'telefono',
 			headerName: 'Teléfono',
 			width: 100,
+			type: 'number', //no deberia poner "."
 			editable: true,
 		},
 		{
@@ -146,79 +173,164 @@ function TablaAdopcion() {
 	columns.push({
 		field: 'actions',
 		headerName: '',
-		width: 100,
+		minWidth: 100,
+		flex: 1,
+		align: 'right',
 		renderCell: (params) => {
 			const data = params.row;
-			return (
-				<>
-					{(!usuario ||
-						(data.idUsuario != usuario.id && usuario.rol != 'veterinario')) &&
-						data.estado != 'Adoptado' && (
-							<Tooltip title="Solicitar adopción">
-								<GridActionsCellItem
-									icon={<Email />}
-									key="solicitar"
-									label="Solicitar"
-									onClick={() => {
-										let perroSolicitado = { ...data };
-										// perroSolicitado.estado = 'Solicitado';
-										handleClickOpenConfirmarSolicitar();
-										setPerroSolicitado(perroSolicitado);
-									}}
-									sx={{
-										'&:hover': {
-											color: 'primary.main',
-										},
-									}}
-								/>
-							</Tooltip>
-						)}
+			if (
+				(!usuario ||
+					(data.idUsuario != usuario.id && usuario.rol != 'veterinario')) &&
+				data.estado != 'Adoptado'
+			) {
+				return (
+					<Tooltip title="Solicitar adopción">
+						<GridActionsCellItem
+							icon={<Email />}
+							key="solicitar"
+							label="Solicitar"
+							onClick={() => {
+								let perroSolicitado = { ...data };
+								// perroSolicitado.estado = 'Solicitado';
+								handleClickOpenConfirmarSolicitar();
+								setPerroSolicitado(perroSolicitado);
+							}}
+							sx={{
+								'&:hover': {
+									color: 'primary.main',
+								},
+							}}
+						/>
+					</Tooltip>
+				);
+			}
 
-					{!!usuario &&
-						(usuario.rol == 'veterinario' || data.idUsuario == usuario.id) &&
-						data.estado != 'Adoptado' && (
-							<>
-								<Tooltip title="Confirmar adopción">
-									<GridActionsCellItem
-										icon={<CheckCircle />}
-										key="adoptado"
-										label="Adoptado"
-										onClick={() => {
-											let perroAdoptado = { ...data };
-											// perroAdoptado.estado = 'Adoptado';
-											handleClickOpenConfirmarAdopcion();
-											setPerroAdoptado(perroAdoptado);
-										}}
-										sx={{
-											'&:hover': {
-												color: 'green',
-											},
-										}}
-									/>
-								</Tooltip>
-								<Tooltip title="Eliminar perro">
-									<GridActionsCellItem
-										icon={<Delete />}
-										key="eliminar"
-										label="Eliminar"
-										onClick={() => {
-											let perroEliminar = { ...data };
-											handleClickOpenConfirmarEliminar();
-											setPerroEliminar(perroEliminar);
-										}}
-										sx={{
-											'&:hover': {
-												color: 'red',
-											},
-										}}
-									/>
-								</Tooltip>
-							</>
-						)}
-				</>
-			);
+			const isInEditMode = rowModesModel[data.id]?.mode === GridRowModes.Edit;
+
+			if (isInEditMode) {
+				return [
+					<Tooltip title="Guardar" key="save">
+						<GridActionsCellItem
+							icon={<Save />}
+							label="Save"
+							onClick={handleSaveClick(data.id)}
+							sx={{
+								'&:hover': {
+									color: 'primary.main',
+								},
+							}}
+						/>
+					</Tooltip>,
+					<Tooltip title="Cancelar" key="cancel">
+						<GridActionsCellItem
+							icon={<Cancel />}
+							label="Cancel"
+							className="textPrimary"
+							onClick={handleCancelClick(data.id)}
+							sx={{
+								'&:hover': {
+									color: 'red',
+								},
+							}}
+						/>
+					</Tooltip>,
+				];
+			}
+			if (
+				usuario &&
+				(usuario.rol == 'veterinario' || data.idUsuario == usuario.id) &&
+				data.estado != 'Adoptado'
+			) {
+				return (
+					<>
+						<Tooltip title="Confirmar adopción">
+							<GridActionsCellItem
+								icon={<CheckCircle />}
+								key="adoptado"
+								label="Adoptado"
+								onClick={() => {
+									let perroAdoptado = { ...data };
+									// perroAdoptado.estado = 'Adoptado';
+									handleClickOpenConfirmarAdopcion();
+									setPerroAdoptado(perroAdoptado);
+								}}
+								sx={{
+									'&:hover': {
+										color: 'green',
+									},
+								}}
+							/>
+						</Tooltip>
+						<Tooltip key="edit" title="Editar">
+							<GridActionsCellItem
+								icon={<Edit />}
+								label="Edit"
+								className="textPrimary"
+								onClick={handleEditClick(data.id)}
+								sx={{
+									'&:hover': {
+										color: 'primary.main',
+									},
+								}}
+							/>
+						</Tooltip>
+						<Tooltip title="Eliminar perro">
+							<GridActionsCellItem
+								icon={<DeleteForever />}
+								key="eliminar"
+								label="Eliminar"
+								onClick={() => {
+									let perroEliminar = { ...data };
+									handleClickOpenConfirmarEliminar();
+									setPerroEliminar(perroEliminar);
+								}}
+								sx={{
+									'&:hover': {
+										color: 'red',
+									},
+								}}
+							/>
+						</Tooltip>
+					</>
+				);
+			}
 		},
 	});
+
+	//configuracion para editar la tabla
+	const [rowModesModel, setRowModesModel] = useState({});
+
+	const handleRowEditStart = (params, event) => {
+		event.defaultMuiPrevented = true;
+	};
+
+	const handleRowEditStop = (params, event) => {
+		event.defaultMuiPrevented = true;
+	};
+
+	const handleEditClick = (id) => () => {
+		setRowModesModel({ ...rowModesModel, [id]: { mode: GridRowModes.Edit } });
+	};
+
+	const handleSaveClick = (id) => () => {
+		setRowModesModel({ ...rowModesModel, [id]: { mode: GridRowModes.View } });
+	};
+
+	const handleCancelClick = (id) => () => {
+		setRowModesModel({
+			...rowModesModel,
+			[id]: { mode: GridRowModes.View, ignoreModifications: true },
+		});
+
+		const editedRow = rows.find((row) => row.id === id);
+		if (editedRow.isNew) {
+			setRows(rows.filter((row) => row.id !== id));
+		}
+	};
+
+	const handleRowModesModelChange = (newRowModesModel) => {
+		setRowModesModel(newRowModesModel);
+	};
 
 	const [openConfirmarSolicitar, setOpenConfirmarSolicitar] = useState(false);
 	const [openConfirmarAdopcion, setOpenConfirmarAdopcion] = useState(false);
@@ -272,7 +384,7 @@ function TablaAdopcion() {
 	}
 
 	const handleConfirmarAdopcion = async (perro) => {
-		const response = await fetch(url + 'adopciones/modify/' + perro.id, {
+		const response = await fetch(url + 'adopciones/adoptar/' + perro.id, {
 			method: 'put',
 			credentials: 'include',
 			headers: {
@@ -330,6 +442,55 @@ function TablaAdopcion() {
 
 	const handleCloseSnackbar = () => setSnackbar(null);
 
+	// Funcion para validar los datos al modificarlos
+	function validarDatos(datos) {
+		console.log(datos);
+		return (
+			datos.nombre.trim() !== '' &&
+			datos.edad.toString().trim() !== '' &&
+			datos.raza.trim() !== '' &&
+			// datos.caracteristicas.trim() !== '' &&
+			// datos.enfermedad.trim() !== '' &&
+			datos.sexo.trim() !== '' &&
+			datos.telefono.toString().trim() !== '' &&
+			datos.email.trim() !== ''
+		);
+	}
+
+	// Fetch de modificacion de los datos de un perro
+	const processRowUpdate = useCallback(async (newRow, oldRow) => {
+		if (!validarDatos(newRow)) {
+			setSnackbar({
+				children: 'No puede ingresar un campo vacio.',
+				severity: 'error',
+			});
+			return oldRow;
+		}
+		const response = await fetch(url + 'adopciones/modify/' + newRow.id, {
+			method: 'PUT',
+			credentials: 'include',
+			headers: {
+				'Content-Type': 'application/json',
+				token: `${token}`,
+			},
+			body: JSON.stringify(newRow),
+		});
+		if (response.ok) {
+			setSnackbar({
+				children: 'Perro modificado con exito',
+				severity: 'success',
+			});
+			return newRow;
+		}
+		if (response.status == 500) {
+			setSnackbar({
+				children: 'Error al conectar con la base de datos',
+				severity: 'error',
+			});
+		}
+		return oldRow;
+	}, []);
+
 	const handleProcessRowUpdateError = useCallback((error) => {
 		setSnackbar({ children: error.message, severity: 'error' });
 	}, []);
@@ -344,15 +505,15 @@ function TablaAdopcion() {
 	return (
 		<div style={{ height: 400, width: '100%' }}>
 			<DataGrid
-				editMode="row"
 				rows={rows}
 				columns={columns}
-				isCellEditable={(params) => {
-					return (
-						usuario &&
-						(params.row.idUsuario == usuario.id || usuario.rol == 'veterinario')
-					);
-				}}
+				editMode="row"
+				// isCellEditable={(params) => {
+				// 	return (
+				// 		usuario &&
+				// 		(params.row.idUsuario == usuario.id || usuario.rol == 'veterinario')
+				// 	);
+				// }}
 				columnVisibilityModel={{
 					id: false,
 					idUsuario: false,
@@ -360,6 +521,11 @@ function TablaAdopcion() {
 					// email: false,
 					// telefono: false,
 				}}
+				rowModesModel={rowModesModel}
+				onRowModesModelChange={handleRowModesModelChange}
+				onRowEditStart={handleRowEditStart}
+				onRowEditStop={handleRowEditStop}
+				processRowUpdate={processRowUpdate}
 				onProcessRowUpdateError={handleProcessRowUpdateError}
 				initialState={{
 					pagination: {
@@ -493,7 +659,7 @@ function TablaAdopcion() {
 					<Button
 						variant="contained"
 						color="error"
-						startIcon={<Delete />}
+						startIcon={<DeleteForever />}
 						onClick={() => {
 							handleConfirmarEliminar(perroEliminar);
 							handleCloseConfirmarEliminar();
