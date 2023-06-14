@@ -179,14 +179,14 @@ function AdoptRegisterPage() {
 								)} 
 							/>*/}
 						</Grid>
-						<Grid item xs={12}>
+						{/* <Grid item xs={12}>
 							<TextField
 								fullWidth
 								name="caracteristicas"
 								label="Caracteristicas"
 								id="caracteristicas"
 							/>
-						</Grid>
+						</Grid> */}
 						{!usuario && (
 							<>
 								<Grid item xs={12}>

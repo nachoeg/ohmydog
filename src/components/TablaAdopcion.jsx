@@ -137,16 +137,16 @@ function TablaAdopcion() {
 			valueOptions: ['Masculino', 'Femenino'],
 			editable: true,
 		},
-		{
-			field: 'caracteristicas',
-			headerName: 'Caracteristicas',
-			width: 160,
-			editable: true,
-		},
+		// {
+		// 	field: 'caracteristicas',
+		// 	headerName: 'Caracteristicas',
+		// 	width: 160,
+		// 	editable: true,
+		// },
 		{
 			field: 'descripcion',
 			headerName: 'Descripción',
-			width: 150,
+			width: 300,
 			editable: true,
 		},
 		{
