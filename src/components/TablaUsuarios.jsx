@@ -119,7 +119,7 @@ function TablaUsuarios() {
 							startIcon={<CalendarMonth />}
 							to={`/turnos/cliente/${id}/${nombre}-${apellido}`}
 							component={NavLink}
-							sx={{ fontSize: 11 }}
+							sx={{ fontSize: 11, mr: 1 }}
 						>
 							Turnos
 						</Button>
@@ -127,8 +127,12 @@ function TablaUsuarios() {
 							<GridActionsCellItem
 								component={NavLink}
 								icon={<Edit />}
-								color="primary"
 								to={`/perfil/${id}`}
+								sx={{
+									'&:hover': {
+										color: 'primary.main',
+									},
+								}}
 							></GridActionsCellItem>
 						</Tooltip>
 						<Tooltip key="delete" title="Eliminar">
@@ -139,7 +143,11 @@ function TablaUsuarios() {
 									setUsuarioBorrar(id);
 									handleClickOpenConfirmar();
 								}}
-								color="primary"
+								sx={{
+									'&:hover': {
+										color: 'red',
+									},
+								}}
 							/>
 						</Tooltip>
 					</>

@@ -257,27 +257,6 @@ function TablaPerros(props) {
 			const { id, nombre } = params.row;
 			const isInEditMode = rowModesModel[id]?.mode === GridRowModes.Edit;
 
-			if (isInEditMode) {
-				return [
-					<Tooltip title="Guardar" key="save">
-						<GridActionsCellItem
-							icon={<Save />}
-							label="Save"
-							color="primary"
-							onClick={handleSaveClick(id)}
-						/>
-					</Tooltip>,
-					<Tooltip title="Cancelar" key="cancel">
-						<GridActionsCellItem
-							icon={<Cancel />}
-							label="Cancel"
-							className="textPrimary"
-							onClick={handleCancelClick(id)}
-							color="primary"
-						/>
-					</Tooltip>,
-				];
-			}
 			const actions = [
 				<Button
 					key="turnos"
@@ -293,38 +272,59 @@ function TablaPerros(props) {
 					startIcon={<AssignmentOutlined />}
 					component={NavLink}
 					to={`/historial-clinico/${id}`}
-					sx={{ fontSize: 11 }}
+					sx={{ mr: 1, fontSize: 11 }}
 				>
 					Historial clínico
 				</Button>,
 			];
 
-			actions.push(
-				<Tooltip key="edit" title="Editar">
-					<GridActionsCellItem
-						icon={<Edit />}
-						label="Edit"
-						className="textPrimary"
-						onClick={handleEditClick(id)}
-						color="primary"
-					/>
-				</Tooltip>
-			);
-			if (esVeterinario) {
+			if (isInEditMode) {
 				actions.push(
-					<Tooltip key="delete" title="Eliminar">
+					<Tooltip title="Guardar" key="save">
 						<GridActionsCellItem
-							icon={<Delete />}
-							label="Delete"
-							onClick={() => {
-								setPerroBorrar(id);
-								handleClickOpenConfirmar();
-							}}
-							color="primary"
-							// sx={{ '&:hover': { color: 'red' } }}
+							icon={<Save />}
+							label="Save"
+							onClick={handleSaveClick(id)}
+							sx={{ '&:hover': { color: 'primary.main' } }}
+						/>
+					</Tooltip>,
+					<Tooltip title="Cancelar" key="cancel">
+						<GridActionsCellItem
+							icon={<Cancel />}
+							label="Cancel"
+							className="textPrimary"
+							onClick={handleCancelClick(id)}
+							sx={{ '&:hover': { color: 'red' } }}
 						/>
 					</Tooltip>
 				);
+			} else {
+				actions.push(
+					<Tooltip key="edit" title="Editar">
+						<GridActionsCellItem
+							icon={<Edit />}
+							label="Edit"
+							className="textPrimary"
+							onClick={handleEditClick(id)}
+							sx={{ '&:hover': { color: 'primary.main' } }}
+						/>
+					</Tooltip>
+				);
+				if (esVeterinario) {
+					actions.push(
+						<Tooltip key="delete" title="Eliminar">
+							<GridActionsCellItem
+								icon={<Delete />}
+								label="Delete"
+								onClick={() => {
+									setPerroBorrar(id);
+									handleClickOpenConfirmar();
+								}}
+								sx={{ '&:hover': { color: 'red' } }}
+							/>
+						</Tooltip>
+					);
+				}
 			}
 
 			return <>{actions}</>;
