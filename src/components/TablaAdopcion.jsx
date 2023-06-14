@@ -144,8 +144,8 @@ function TablaAdopcion() {
 			editable: true,
 		},
 		{
-			field: 'enfermedades',
-			headerName: 'Enfermedades',
+			field: 'descripcion',
+			headerName: 'Descripción',
 			width: 150,
 			editable: true,
 		},
