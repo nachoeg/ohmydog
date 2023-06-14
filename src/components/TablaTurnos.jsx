@@ -283,6 +283,7 @@ function TablaTurnos({ urlTurnos }) {
 				onProcessRowUpdateError={handleProcessRowUpdateError}
 				columnVisibilityModel={{
 					idPerro: false,
+					nombre: !urlTurnos.toString().includes('perro'),
 					estadoBotones: usuario.rol == 'veterinario',
 				}}
 				initialState={{
