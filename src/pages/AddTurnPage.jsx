@@ -103,10 +103,22 @@ export default function AddTurn() {
 						location.replace('/mis-turnos');
 					}, 1000);
 				}
+				if (response.status == 204) {
+					setSnackbar({
+						children: 'El perro ya esta castrado',
+						severity: 'error',
+					});
+				}
 				if (response.status == 400) {
 					setSnackbar({
 						children:
 							'El perro no cumple con los requisitos solicitados para vacunarse',
+						severity: 'error',
+					});
+				}
+				if (response.status == 403) {
+					setSnackbar({
+						children: 'No puede tomar un turno porque tiene uno pendiente',
 						severity: 'error',
 					});
 				}
