@@ -47,7 +47,7 @@ function AdoptRegisterPage() {
 				edad: data.get('edad'),
 				sexo: data.get('sexo'),
 				caracteristicas: data.get('caracteristicas'),
-				enfermedades: enf.toString().replaceAll(',', ', '),
+				descripcion: data.get('descripcion'),
 				email: usuario ? usuario.email : data.get('email'),
 				telefono: usuario ? usuario.telefono : data.get('telefono'),
 			}),
@@ -157,9 +157,15 @@ function AdoptRegisterPage() {
 							</TextField>
 						</Grid>
 						<Grid item xs={12}>
-							<Autocomplete
+							<TextField
+								fullWidth
+								name="descripcion"
+								label="Descripción"
+								id="descripcion"
+							/>
+							{/* <Autocomplete
 								multiple
-								id="enfermedades"
+								id="caracteristicas"
 								value={enf}
 								onChange={(event, newValue) => {
 									setEnf(newValue);
@@ -170,8 +176,8 @@ function AdoptRegisterPage() {
 								defaultValue={[enfermedades[1]]}
 								renderInput={(params) => (
 									<TextField {...params} label="Enfermedades" />
-								)}
-							/>
+								)} 
+							/>*/}
 						</Grid>
 						<Grid item xs={12}>
 							<TextField
