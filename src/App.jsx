@@ -22,6 +22,11 @@ import AddTurn from "./pages/AddTurnPage";
 import DogsUsersTurnsPage from "./pages/DogsUsersTurnsPage";
 import GetDataForAdoptPage from "./pages/GetDataForAdoptPage";
 import ConfirmAdoptPage from "./pages/ConfirmAdoptPage";
+import CampaniasPage from "./pages/CampaniasPage";
+import RegisterCampaniaPage from "./pages/RegisterCampaniaPage";
+import CampaniaProfilePage from "./pages/CampaniaProfilePage";
+import DonarPage from "./pages/DonarPage";
+import OldCampainsPage from "./pages/OldCampainsPage";
 
 function App() {
 	const theme = createTheme({
@@ -60,6 +65,17 @@ function App() {
 						<Route path='usuarios/registrar' element={<SignUpPage />} />
 						<Route path='usuarios' element={<UsersPage />} />
 						<Route path='turnos' element={<AllTurnsPage />} />
+						<Route path='campanias' element={<CampaniasPage />} />
+						<Route path='campanias/donar/:nombre' element={<DonarPage />} />
+						<Route
+							path='campanias/registrar_campania'
+							element={<RegisterCampaniaPage />}
+						/>
+						<Route
+							path='campanias/campaniasBorradasyPasadas'
+							element={<OldCampainsPage />}
+						/>
+						<Route path='campanias/:id' element={<CampaniaProfilePage />} />
 						<Route
 							path='turnos/cliente/:id/:nombre'
 							element={<DogsUsersTurnsPage />}
