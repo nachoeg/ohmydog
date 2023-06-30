@@ -1,7 +1,7 @@
 const pages = [
 	{ nombre: 'Adopcion', url: '/adopcion' },
 	{ nombre: 'Perdidos', url: '/perdidos' },
-	{ nombre: 'Campañas', url: '/campañas' },
+	{ nombre: 'Campañas', url: '/campanias' },
 	{ nombre: 'Cruza', url: '/cruza' },
 	{ nombre: 'Servicios externos', url: '/servicios' },
 ];
