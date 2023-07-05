@@ -1,7 +1,13 @@
 import { Box, Button, Container } from '@mui/material';
-import { NavLink, Outlet } from 'react-router-dom';
+import { useEffect } from 'react';
+import { NavLink, Outlet, useNavigate } from 'react-router-dom';
 
 function Turns() {
+	const navigate = useNavigate();
+	useEffect(() => {
+		console.log('hola');
+		navigate('/turnos/todos');
+	}, []);
 	return (
 		<>
 			<Container
