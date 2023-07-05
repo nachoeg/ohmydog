@@ -5,7 +5,7 @@ import Snackbar from '@mui/material/Snackbar';
 import Alert from '@mui/material/Alert';
 import { GridOverlay } from '@mui/x-data-grid';
 import { GridActionsCellItem } from '@mui/x-data-grid';
-import { CheckCircle, DoNotDisturbOn } from '@mui/icons-material';
+import { CheckCircle, DoNotDisturbOn, Unpublished } from '@mui/icons-material';
 import {
 	Button,
 	Dialog,
@@ -17,7 +17,7 @@ import {
 } from '@mui/material';
 import { Context } from '../context/Context';
 
-function TablaTurnos({ urlTurnos }) {
+function TablaTurnos({ urlTurnos, filtro }) {
 	const token = localStorage.getItem('jwt');
 
 	const [rows, setRows] = useState([]);
@@ -28,7 +28,7 @@ function TablaTurnos({ urlTurnos }) {
 
 	useEffect(() => {
 		actualizarTabla();
-	}, []);
+	}, [filtro]);
 
 	function actualizarTabla() {
 		obtenerTurnos()
@@ -38,6 +38,24 @@ function TablaTurnos({ urlTurnos }) {
 				})
 			)
 			.then((rows) => rows.sort((a) => (a.estado == 'Pendiente' ? -1 : 1)))
+			.then((rows) => {
+				if (filtro == 'hoy') {
+					let currentDate = new Date().toJSON().slice(0, 10);
+					let newRows = rows.filter(
+						(a) => new Date(a.fecha).toJSON().slice(0, 10) == currentDate
+					);
+					return newRows;
+				}
+				if (filtro == 'asistidos') {
+					let newRows = rows.filter((a) => a.estado == 'Asistio');
+					return newRows;
+				}
+				if (filtro == 'no-asistidos') {
+					let newRows = rows.filter((a) => a.estado == 'Falto');
+					return newRows;
+				}
+				return rows;
+			})
 			.then((rows) => setRows(rows));
 	}
 
@@ -199,6 +217,46 @@ function TablaTurnos({ urlTurnos }) {
 								</Tooltip>
 							</>
 						)}
+						{data.estado == 'Aceptado' && usuario.rol == 'veterinario' && (
+							<>
+								<Tooltip title="Asistio">
+									<GridActionsCellItem
+										icon={<CheckCircle />}
+										key="asistio"
+										label="Asistio"
+										onClick={() => {
+											let nuevoTurno = { ...data };
+											nuevoTurno.estado = 'Asistio';
+											handleClickOpenAsistio();
+											setTurno(nuevoTurno);
+										}}
+										sx={{
+											'&:hover': {
+												color: 'green',
+											},
+										}}
+									/>
+								</Tooltip>
+								<Tooltip title="Falto">
+									<GridActionsCellItem
+										icon={<Unpublished />}
+										key="falto"
+										label="Falto"
+										onClick={() => {
+											let nuevoTurno = { ...data };
+											nuevoTurno.estado = 'Falto';
+											handleClickOpenFalto();
+											setTurno(nuevoTurno);
+										}}
+										sx={{
+											'&:hover': {
+												color: 'red',
+											},
+										}}
+									/>
+								</Tooltip>
+							</>
+						)}
 					</>
 				);
 			},
@@ -235,12 +293,26 @@ function TablaTurnos({ urlTurnos }) {
 		handleCambiarEstado(turno);
 		handleCloseAceptar();
 	};
+
+	const handleConfirmarAsistio = () => {
+		handleCambiarEstado(turno);
+		handleCloseAsistio();
+	};
+
 	const handleConfirmarRechazar = () => {
 		handleCambiarEstado(turno);
 		handleCloseRechazar();
 	};
+
+	const handleConfirmarFalto = () => {
+		handleCambiarEstado(turno);
+		handleCloseFalto();
+	};
+
 	const [openAceptar, setOpenAceptar] = useState(false);
+	const [openAsistio, setOpenAsistio] = useState(false);
 	const [openRechazar, setOpenRechazar] = useState(false);
+	const [openFalto, setOpenFalto] = useState(false);
 
 	const handleClickOpenAceptar = () => {
 		setOpenAceptar(true);
@@ -256,6 +328,22 @@ function TablaTurnos({ urlTurnos }) {
 
 	const handleCloseRechazar = () => {
 		setOpenRechazar(false);
+	};
+
+	const handleClickOpenAsistio = () => {
+		setOpenAsistio(true);
+	};
+
+	const handleCloseAsistio = () => {
+		setOpenAsistio(false);
+	};
+
+	const handleClickOpenFalto = () => {
+		setOpenFalto(true);
+	};
+
+	const handleCloseFalto = () => {
+		setOpenFalto(false);
 	};
 
 	const [snackbar, setSnackbar] = useState(null);
@@ -340,6 +428,39 @@ function TablaTurnos({ urlTurnos }) {
 				</DialogActions>
 			</Dialog>
 			<Dialog
+				open={openAsistio}
+				onClose={handleCloseAsistio}
+				aria-labelledby="asistio-title"
+				aria-describedby="asistio-description"
+			>
+				<DialogTitle id="asistio-title">
+					Estas seguro que deseas marcar que{' '}
+					<b style={{ color: 'green' }}>asistio</b> al turno?
+				</DialogTitle>
+				<DialogContent>
+					<DialogContentText id="asistio-description">
+						Recuerda que no podrás deshacer esta acción
+					</DialogContentText>
+				</DialogContent>
+				<DialogActions>
+					<Button
+						color="success"
+						variant="outlined"
+						onClick={handleCloseAsistio}
+					>
+						Cancelar
+					</Button>
+					<Button
+						variant="contained"
+						color="success"
+						onClick={handleConfirmarAsistio}
+						autoFocus
+					>
+						Asistio
+					</Button>
+				</DialogActions>
+			</Dialog>
+			<Dialog
 				open={openRechazar}
 				onClose={handleCloseRechazar}
 				aria-labelledby="rechazar-title"
@@ -369,6 +490,35 @@ function TablaTurnos({ urlTurnos }) {
 						autoFocus
 					>
 						Rechazar
+					</Button>
+				</DialogActions>
+			</Dialog>
+			<Dialog
+				open={openFalto}
+				onClose={handleCloseFalto}
+				aria-labelledby="falto-title"
+				aria-describedby="falto-description"
+			>
+				<DialogTitle id="falto-title">
+					Estas seguro que deseas marcar que{' '}
+					<b style={{ color: 'red' }}>falto</b> al turno?
+				</DialogTitle>
+				<DialogContent>
+					<DialogContentText id="falto-description">
+						Recuerda que no podrás deshacer esta acción
+					</DialogContentText>
+				</DialogContent>
+				<DialogActions>
+					<Button color="error" variant="outlined" onClick={handleCloseFalto}>
+						Cancelar
+					</Button>
+					<Button
+						variant="contained"
+						color="error"
+						onClick={handleConfirmarFalto}
+						autoFocus
+					>
+						Falto
 					</Button>
 				</DialogActions>
 			</Dialog>
