@@ -11,12 +11,12 @@ import {
 	Snackbar,
 	Alert,
 	Grid,
-} from "@mui/material";
-import { Close, Edit, Save } from "@mui/icons-material";
-import { useLocation } from "react-router-dom"; // Para obtener el parametro pasado por la url
-import { useEffect, useState } from "react";
-import url from "../data/url";
-import MenuItem from "@mui/material/MenuItem";
+} from '@mui/material';
+import { Close, Edit, Save } from '@mui/icons-material';
+import { useLocation } from 'react-router-dom'; // Para obtener el parametro pasado por la url
+import { useEffect, useState } from 'react';
+import url from '../data/url';
+import MenuItem from '@mui/material/MenuItem';
 
 // La pagina del historial clinico recibe el ID del perro, y muestra las enfermedades (si tuviera)
 // las fechas de las vacunas (si las tuviera) y si esta castrado o no.
@@ -26,8 +26,8 @@ import MenuItem from "@mui/material/MenuItem";
 function HistorialClinicoPage() {
 	// Obtiene el id del perro que se pasa como parametro en la url
 	const location = useLocation();
-	const idPerro = location.pathname.split("/")[2];
-	const token = localStorage.getItem("jwt"); // Token de la sesion activa
+	const idPerro = location.pathname.split('/')[2];
+	const token = localStorage.getItem('jwt'); // Token de la sesion activa
 
 	// Perro del que se muestran los datos
 	const [perro, setPerro] = useState(obtenerPerro);
@@ -40,19 +40,19 @@ function HistorialClinicoPage() {
 	// Obtiene el perro de la BD mediante su ID.
 	async function obtenerPerro() {
 		try {
-			const response = await fetch(url + "perros/perroPorId/" + idPerro, {
-				method: "GET",
-				credentials: "include",
+			const response = await fetch(url + 'perros/perroPorId/' + idPerro, {
+				method: 'GET',
+				credentials: 'include',
 				headers: {
-					"Content-Type": "application/json",
+					'Content-Type': 'application/json',
 					token: `${token}`,
 				},
 			});
 			if (!response.ok) {
 				if (response.status == 401) {
 					setSnackbar({
-						children: "No estas autorizado para ver el perro",
-						severity: "error",
+						children: 'No estas autorizado para ver el perro',
+						severity: 'error',
 					});
 				}
 				return null;
@@ -60,28 +60,28 @@ function HistorialClinicoPage() {
 			let dog = await response.json();
 			if (dog == null) {
 				setSnackbar({
-					children: "No se encontro al perro",
-					severity: "error",
+					children: 'No se encontro al perro',
+					severity: 'error',
 				});
 			}
 			console.log(dog);
 			return dog;
 		} catch (error) {
-			console.error("Error en el fetch: " + error);
+			console.error('Error en el fetch: ' + error);
 
 			setSnackbar({
-				children: "Error al conectar con la base de datos",
-				severity: "error",
+				children: 'Error al conectar con la base de datos',
+				severity: 'error',
 			});
 			return null;
 		}
 	}
 
 	// Los atributos a mostrar que son modificables
-	const [enfermedad, setEnfermedad] = useState("");
-	const [antirrabica, setAntirrabica] = useState("");
-	const [antienfermedades, setAntienfermedades] = useState("");
-	const [castrado, setCastrado] = useState("");
+	const [enfermedad, setEnfermedad] = useState('');
+	const [antirrabica, setAntirrabica] = useState('');
+	const [antienfermedades, setAntienfermedades] = useState('');
+	const [castrado, setCastrado] = useState('');
 
 	// Si cambia el perro, se deben actualizar los datos
 	useEffect(() => {
@@ -103,16 +103,16 @@ function HistorialClinicoPage() {
 		const data = new FormData(event.currentTarget);
 		const dog = {
 			...perro,
-			enfermedad: data.get("enfermedad"),
-			castrado: data.get("castrado"),
-			vacunaAntienfermedades: data.get("antienfermedades"),
-			vacunaAntirrabica: data.get("antirrabica"),
+			enfermedad: data.get('enfermedad'),
+			castrado: data.get('castrado'),
+			vacunaAntienfermedades: data.get('antienfermedades'),
+			vacunaAntirrabica: data.get('antirrabica'),
 		};
-		const response = await fetch(url + "perros/modify/" + idPerro, {
-			method: "PUT",
-			credentials: "include",
+		const response = await fetch(url + 'perros/modify/' + idPerro, {
+			method: 'PUT',
+			credentials: 'include',
 			headers: {
-				"Content-Type": "application/json",
+				'Content-Type': 'application/json',
 				token: `${token}`,
 			},
 			body: JSON.stringify(dog),
@@ -120,22 +120,22 @@ function HistorialClinicoPage() {
 		if (response.ok) {
 			setPerro(dog);
 			setSnackbar({
-				children: "Modificación realizada con éxito",
-				severity: "success",
+				children: 'Modificación realizada con éxito',
+				severity: 'success',
 			});
 			setEditar(false);
 			return;
 		}
 		if (response.status == 400) {
 			setSnackbar({
-				children: "Dato invalido",
-				severity: "error",
+				children: 'Dato invalido',
+				severity: 'error',
 			});
 			return;
 		}
 		setSnackbar({
-			children: "Error al conectar con la base de datos",
-			severity: "error",
+			children: 'Error al conectar con la base de datos',
+			severity: 'error',
 		});
 	};
 
@@ -153,7 +153,7 @@ function HistorialClinicoPage() {
 		<Button
 			startIcon={<Edit />}
 			fullWidth
-			variant='contained'
+			variant="contained"
 			onClick={handleEditarClick}
 		>
 			Editar
@@ -163,9 +163,9 @@ function HistorialClinicoPage() {
 		<Button
 			startIcon={<Save />}
 			fullWidth
-			color={"success"}
-			variant='contained'
-			type='submit'
+			color={'success'}
+			variant="contained"
+			type="submit"
 		>
 			Guardar
 		</Button>
@@ -174,8 +174,8 @@ function HistorialClinicoPage() {
 		<Button
 			startIcon={<Close />}
 			fullWidth
-			color={"error"}
-			variant='contained'
+			color={'error'}
+			variant="contained"
 			onClick={handleCancelarClick}
 		>
 			Cancelar
@@ -187,13 +187,13 @@ function HistorialClinicoPage() {
 	const handleCloseSnackbar = () => setSnackbar(null);
 
 	return (
-		<Container component='main' maxWidth='sm'>
-			<Card sx={{ padding: "10px", marginTop: 4 }}>
-				<List component='form' onSubmit={handleSubmit}>
+		<Container component="main" maxWidth="sm">
+			<Card sx={{ padding: '10px', marginTop: 4 }}>
+				<List component="form" onSubmit={handleSubmit}>
 					<ListItem>
 						<ListItemText
 							primary={
-								<Typography variant='h5'>
+								<Typography variant="h5">
 									Historial clínico de {perro.nombre}
 								</Typography>
 							}
@@ -202,7 +202,7 @@ function HistorialClinicoPage() {
 					<Divider />
 					<ListItem>
 						<ListItemText>
-							<Typography variant='h7' sx={{ mr: "20px" }}>
+							<Typography variant="h7" sx={{ mr: '20px' }}>
 								Enfermedades
 							</Typography>
 							<TextField
@@ -210,11 +210,11 @@ function HistorialClinicoPage() {
 									readOnly: !editar,
 								}}
 								fullWidth
-								name='enfermedad'
-								id='enfermedad'
+								name="enfermedad"
+								id="enfermedad"
 								value={enfermedad}
-								variant='outlined'
-								size='small'
+								variant="outlined"
+								size="small"
 								onChange={(event) => {
 									setEnfermedad(event.target.value);
 								}}
@@ -222,23 +222,23 @@ function HistorialClinicoPage() {
 						</ListItemText>
 					</ListItem>
 					<ListItem>
-						<Grid container spacing={2} alignItems='center'>
+						<Grid container spacing={2} alignItems="center">
 							<Grid item xs={6}>
 								<ListItemText>
-									<Typography variant='h7' sx={{ mr: "20px" }}>
+									<Typography variant="h7" sx={{ mr: '20px' }}>
 										Vacuna antirrábica
 									</Typography>
 									<TextField
 										InputProps={{
 											readOnly: !editar,
 										}}
-										type='date'
+										type="date"
 										fullWidth
-										id='antirrabica'
-										name='antirrabica'
+										id="antirrabica"
+										name="antirrabica"
 										value={antirrabica}
-										variant='outlined'
-										size='small'
+										variant="outlined"
+										size="small"
 										onChange={(event) => {
 											setAntirrabica(event.target.value);
 										}}
@@ -246,21 +246,21 @@ function HistorialClinicoPage() {
 								</ListItemText>
 							</Grid>
 							<Grid item xs={6}>
-								<Typography variant='h7' sx={{ mr: "20px" }}>
+								<Typography variant="h7" sx={{ mr: '20px' }}>
 									Vacuna antienfermedades
 								</Typography>
 								<TextField
 									InputProps={{
 										readOnly: !editar,
 									}}
-									style={{ color: "#000" }}
-									type='date'
+									style={{ color: '#000' }}
+									type="date"
 									fullWidth
-									id='antienfermedades'
-									name='antienfermedades'
+									id="antienfermedades"
+									name="antienfermedades"
 									value={antienfermedades}
-									variant='outlined'
-									size='small'
+									variant="outlined"
+									size="small"
 									onChange={(event) => {
 										setAntienfermedades(event.target.value);
 									}}
@@ -270,7 +270,7 @@ function HistorialClinicoPage() {
 					</ListItem>
 					<ListItem>
 						<ListItemText>
-							<Typography variant='h7' sx={{ mr: "20px" }}>
+							<Typography variant="h7" sx={{ mr: '20px' }}>
 								Castrado
 							</Typography>
 							<TextField
@@ -279,19 +279,19 @@ function HistorialClinicoPage() {
 								}}
 								select
 								fullWidth
-								id='castrado'
-								name='castrado'
+								id="castrado"
+								name="castrado"
 								value={castrado}
-								variant='outlined'
-								size='small'
+								variant="outlined"
+								size="small"
 								onChange={(event) => {
 									setCastrado(event.target.value);
 								}}
 							>
-								<MenuItem value={false} key={"No castrado"}>
+								<MenuItem value={false} key={'No castrado'}>
 									No castrado
 								</MenuItem>
-								<MenuItem value={true} key={"Castrado"}>
+								<MenuItem value={true} key={'Castrado'}>
 									Castrado
 								</MenuItem>
 							</TextField>
@@ -317,7 +317,7 @@ function HistorialClinicoPage() {
 			{!!snackbar && (
 				<Snackbar
 					open
-					anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+					anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
 					onClose={handleCloseSnackbar}
 					autoHideDuration={6000}
 				>
