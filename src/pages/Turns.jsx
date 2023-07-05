@@ -5,7 +5,6 @@ import { NavLink, Outlet, useNavigate } from 'react-router-dom';
 function Turns() {
 	const navigate = useNavigate();
 	useEffect(() => {
-		console.log('hola');
 		navigate('/turnos/todos');
 	}, []);
 	return (
