@@ -157,18 +157,17 @@ function TablaPerros(props) {
 		// Datos de los perros: ID, nombre, raza, edad, enfermedad, sexo y caracteristicas
 		{ field: 'id', headerName: 'ID', width: 50, id: 'id' },
 		{
-			field: 'usuarioNombreyApellido',
-			headerName: 'Dueño',
-			width: 120,
-			id: 'usuarioNombreyApellido',
-			editable: true,
-		},
-		{
 			field: 'nombre',
 			headerName: 'Nombre',
 			width: 100,
 			id: 'nombre',
 			editable: true,
+		},
+		{
+			field: 'usuarioNombreyApellido',
+			headerName: 'Dueño',
+			width: 120,
+			id: 'usuarioNombreyApellido',
 		},
 		{
 			field: 'edad',
