@@ -27,8 +27,8 @@ import RegisterCampaniaPage from './pages/RegisterCampaniaPage';
 import CampaniaProfilePage from './pages/CampaniaProfilePage';
 import DonarPage from './pages/DonarPage';
 import OldCampainsPage from './pages/OldCampainsPage';
-import Logotipo from './components/Logotipo';
 import TablaTurnos from './components/TablaTurnos';
+import LostDogsPage from './pages/LostDogsPage';
 
 function App() {
 	const theme = createTheme({
@@ -106,6 +106,7 @@ function App() {
 						<Route path="perros" element={<AllDogsPage />} />
 						<Route path="adopcion" element={<AdoptPage />} />
 						<Route path="adopcion/registrar" element={<AdoptRegisterPage />} />
+						<Route path="perdidos" element={<LostDogsPage />} />
 						<Route path="perfil/:idUsuario" element={<ProfilePage />} />
 						<Route
 							path="agregar-perro/:idUsuario/:nombre"
