@@ -134,7 +134,7 @@ function TablaAdopcion() {
 			headerName: 'Sexo',
 			width: 100,
 			type: 'singleSelect',
-			valueOptions: ['Masculino', 'Femenino'],
+			valueOptions: ['Macho', 'Hembra'],
 			editable: true,
 		},
 		// {

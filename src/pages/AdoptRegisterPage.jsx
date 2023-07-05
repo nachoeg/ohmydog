@@ -146,13 +146,12 @@ function AdoptRegisterPage() {
 								select
 								required
 								fullWidth
-								defaultValue="Femenino"
 							>
-								<MenuItem key={'femenino'} value={'Femenino'}>
-									Femenino
+								<MenuItem key={'macho'} value={'Macho'}>
+									Macho
 								</MenuItem>
-								<MenuItem key={'masculino'} value={'Masculino'}>
-									Masculino
+								<MenuItem key={'hembra'} value={'Hembra'}>
+									Hembra
 								</MenuItem>
 							</TextField>
 						</Grid>
