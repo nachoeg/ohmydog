@@ -29,6 +29,7 @@ import DonarPage from './pages/DonarPage';
 import OldCampainsPage from './pages/OldCampainsPage';
 import TablaTurnos from './components/TablaTurnos';
 import LostDogsPage from './pages/LostDogsPage';
+import LostDogsRegisterPage from './pages/LostDogsRegisterPage';
 
 function App() {
 	const theme = createTheme({
@@ -107,6 +108,10 @@ function App() {
 						<Route path="adopcion" element={<AdoptPage />} />
 						<Route path="adopcion/registrar" element={<AdoptRegisterPage />} />
 						<Route path="perdidos" element={<LostDogsPage />} />
+						<Route
+							path="perdidos/registrar"
+							element={<LostDogsRegisterPage />}
+						/>
 						<Route path="perfil/:idUsuario" element={<ProfilePage />} />
 						<Route
 							path="agregar-perro/:idUsuario/:nombre"
