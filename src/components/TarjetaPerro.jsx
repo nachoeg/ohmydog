@@ -83,7 +83,7 @@ function TarjetaPerro({ datos }) {
 		let allowedExtension = ['image/jpeg', 'image/jpg', 'image/png'];
 		if (
 			selectedImage != null &&
-			!(allowedExtension.indexOf(selectedImage.type) < -1)
+			allowedExtension.indexOf(selectedImage.type) <= -1
 		) {
 			setImage(datos.imagen);
 			setSelectedImage(null);
@@ -151,7 +151,6 @@ function TarjetaPerro({ datos }) {
 			severity: 'error',
 		});
 	};
-
 	return (
 		<>
 			<Card
