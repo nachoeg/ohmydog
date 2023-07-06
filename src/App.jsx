@@ -85,13 +85,10 @@ function App() {
 						<Route path="campanias" element={<CampaniasPage />} />
 						<Route path="campanias/donar/:nombre" element={<DonarPage />} />
 						<Route
-							path="campanias/registrar_campania"
+							path="campanias/registrar"
 							element={<RegisterCampaniaPage />}
 						/>
-						<Route
-							path="campanias/campaniasBorradasyPasadas"
-							element={<OldCampainsPage />}
-						/>
+						<Route path="campanias/archivadas" element={<OldCampainsPage />} />
 						<Route path="campanias/:id" element={<CampaniaProfilePage />} />
 						<Route
 							path="turnos/cliente/:id/:nombre"
