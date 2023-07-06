@@ -37,6 +37,7 @@ function LostDogsRegisterPage() {
 				idUsuario: usuario ? usuario.id : -1,
 				nombre: data.get('nombre'),
 				zona: data.get('zona'),
+				fecha: data.get('fecha'),
 				imagen: selectedImage,
 				email: usuario ? usuario.email : data.get('email'),
 			}),
