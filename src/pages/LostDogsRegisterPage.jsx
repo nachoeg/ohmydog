@@ -32,6 +32,7 @@ function LostDogsRegisterPage() {
 			method: 'POST',
 			headers: {
 				// 'Content-Type': 'application/json',
+				'Content-Type': 'multipart/form-data',
 				token: `${token}`,
 			},
 			credentials: 'include',
