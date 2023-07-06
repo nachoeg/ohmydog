@@ -1,11 +1,13 @@
 import { Alert, Button, Container, Snackbar, Typography } from '@mui/material';
 import TarjetaPerro from '../components/TarjetaPerro';
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import url from '../data/url';
 import { Add } from '@mui/icons-material';
 import { NavLink } from 'react-router-dom';
+import { Context } from '../context/Context';
 
 function LostDogsPage() {
+	const { usuario } = useContext(Context);
 	const [perros, setPerros] = useState([]);
 
 	useEffect(() => {
@@ -29,7 +31,39 @@ function LostDogsPage() {
 				});
 				return [];
 			}
-			let perros = await response.json();
+			// let perros = await response.json();
+			let perros = [
+				{
+					nombre: 'Titan',
+					id: 1,
+					idDuenio: '2',
+					imagen: '/perro1.jpeg',
+					fecha: '2023-08-05',
+					zona: 'Plaza Italia',
+					email: 'pedro@email.com',
+					estado: 'Pendiente',
+				},
+				{
+					nombre: 'Lobo',
+					id: 2,
+					idDuenio: '-1',
+					imagen: '/perro2.jpg',
+					fecha: '2023-08-05',
+					zona: 'Plaza Italia',
+					email: 'pedro@email.com',
+					estado: 'Encontrado',
+				},
+				{
+					nombre: 'Kala',
+					id: 3,
+					idDuenio: '-1',
+					imagen: '/perro3.jpeg',
+					fecha: '2023-08-05',
+					zona: 'Plaza Italia',
+					email: 'pedro@email.com',
+					estado: 'Pendiente',
+				},
+			];
 			if (perros.length == 0) {
 				setSnackbar({
 					children: 'La lista de perros se encuentra vacia',
@@ -37,7 +71,21 @@ function LostDogsPage() {
 				});
 				setVacia(true);
 			}
-			return perros;
+
+			return perros
+				.sort((a) => {
+					if (a.estado == 'Encontrado') {
+						return 1;
+					}
+					if (a.estado == 'Pendiente') {
+						return -1;
+					}
+				})
+				.sort((a) => {
+					if (a.idDuenio == usuario.id && a.estado == 'Pendiente') {
+						return -1;
+					}
+				});
 		} catch (error) {
 			console.error('Error en el fetch: ' + error);
 
@@ -48,33 +96,6 @@ function LostDogsPage() {
 			return [];
 		}
 	}
-
-	// let perros = [
-	// 	{
-	// 		nombre: 'Titan',
-	// 		idDuenio: '2',
-	// 		imagen: '/perro1.jpeg',
-	// 		fecha: '08/05/2023',
-	// 		zona: 'Plaza Italia',
-	// 		email: 'pedro@email.com',
-	// 	},
-	// 	{
-	// 		nombre: 'Kala',
-	// 		idDuenio: '-1',
-	// 		imagen: '/perro2.jpg',
-	// 		fecha: '08/05/2023',
-	// 		zona: 'Plaza Italia',
-	// 		email: 'pedro@email.com',
-	// 	},
-	// 	{
-	// 		nombre: 'Kala',
-	// 		idDuenio: '-1',
-	// 		imagen: '/perro3.jpeg',
-	// 		fecha: '08/05/2023',
-	// 		zona: 'Plaza Italia',
-	// 		email: 'pedro@email.com',
-	// 	},
-	// ];
 
 	const [snackbar, setSnackbar] = useState(null);
 	const handleCloseSnackbar = () => setSnackbar(null);

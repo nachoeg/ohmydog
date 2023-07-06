@@ -1,64 +1,210 @@
 import {
 	CalendarMonth,
+	Check,
+	Delete,
 	Edit,
 	Email,
 	Image,
 	Map,
 	Pets,
 	Save,
+	Verified,
 } from '@mui/icons-material';
 import {
+	Alert,
+	Box,
 	Button,
 	Card,
 	CardActions,
 	CardContent,
 	CardMedia,
+	Grid,
 	List,
 	ListItem,
 	ListItemIcon,
 	ListItemText,
+	Snackbar,
 	TextField,
+	Typography,
 } from '@mui/material';
-import { useState } from 'react';
+import { useContext, useState } from 'react';
+import url from '../data/url';
+import { Context } from '../context/Context';
 
 function TarjetaPerro({ datos }) {
-	console.log(datos);
 	const [editar, setEditar] = useState(false);
-	const id = 2;
+	const [email, setEmail] = useState(datos.email);
+	const [nombre, setNombre] = useState(datos.nombre);
+	const [zona, setZona] = useState(datos.zona);
+	const [fecha, setFecha] = useState(datos.fecha);
+	const [estado, setEstado] = useState(datos.estado);
+	const [image, setImage] = useState(datos.imagen);
+	const [selectedImage, setSelectedImage] = useState(null);
+	const [snackbar, setSnackbar] = useState(null);
+	const token = localStorage.getItem('jwt');
+	const handleCloseSnackbar = () => setSnackbar(null);
+	const { usuario } = useContext(Context);
+	const [visible, setVisible] = useState(true);
+
 	const handleEditarClick = () => {
 		setEditar(true);
 	};
-	const handleGuardarClick = () => {
-		setEditar(false);
+	const handleBorrarClick = () => {
+		setSnackbar({
+			children: 'Se elimino con éxito',
+			severity: 'success',
+		});
+		setVisible(false);
 	};
+
+	const handleEncontradoClick = () => {
+		setEstado('Encontrado');
+	};
+
+	function validarDatos(data) {
+		let mensaje = 'No se puede enviar un campo vacio';
+		if (data.get('email').toString().trim() == '') {
+			setEmail(datos.email);
+			return { resultado: false, mensaje };
+		}
+		if (data.get('zona').trim() == '') {
+			setZona(datos.zona);
+			return { resultado: false, mensaje };
+		}
+		if (data.get('fecha').trim() == '') {
+			setFecha(datos.fecha);
+			return { resultado: false, mensaje };
+		}
+		if (data.get('nombre').trim() == '') {
+			setNombre(datos.nombre);
+			return { resultado: false, mensaje };
+		}
+		//validar imagen
+		let allowedExtension = ['image/jpeg', 'image/jpg', 'image/png'];
+		if (
+			selectedImage != null &&
+			!(allowedExtension.indexOf(selectedImage.type) < -1)
+		) {
+			setImage(datos.imagen);
+			setSelectedImage(null);
+			mensaje = 'El tipo de archivo soportado para la foto es jpg, jpeg o png.';
+			return { resultado: false, mensaje };
+		}
+		return { resultado: true };
+	}
+
+	const handleSubmit = async (event) => {
+		event.preventDefault();
+
+		const data = new FormData(event.currentTarget);
+		const datosValidados = validarDatos(data);
+		console.log(datosValidados);
+		if (!datosValidados.resultado) {
+			setSnackbar({
+				children: datosValidados.mensaje,
+				severity: 'error',
+			});
+			return;
+		}
+		const perro = {
+			nombre: data.get('nombre'),
+			zona: data.get('zona'),
+			fecha: data.get('fecha'),
+			email: data.get('email'),
+			imagen: selectedImage ? selectedImage : datos.imagen,
+		};
+
+		const response = await fetch(url + 'perdidos/modify/' + datos.id, {
+			method: 'PUT',
+			credentials: 'include',
+			headers: {
+				'Content-Type': 'application/json',
+				token: `${token}`,
+			},
+			body: JSON.stringify(perro),
+		});
+
+		if (response.ok) {
+			setSnackbar({
+				children: 'Modificación realizada con éxito',
+				severity: 'success',
+			});
+			setEditar(false);
+			return;
+		}
+		//se resetean los datos
+		setEditar(false);
+		setEmail(datos.email);
+		setZona(datos.zona);
+		setFecha(datos.fecha);
+		setNombre(datos.nombre);
+		setImage(datos.imagen);
+		if (response.status == 400) {
+			setSnackbar({
+				children: 'Datos invalidos',
+				severity: 'error',
+			});
+			return;
+		}
+		setSnackbar({
+			children: 'Error al conectar con la base de datos',
+			severity: 'error',
+		});
+	};
+
 	return (
-		<Card sx={{ display: 'flex', flexDirection: { xs: 'column', sm: 'row' } }}>
-			<CardMedia
+		<>
+			<Card
 				sx={{
-					height: 300,
-					width: 300,
-					flexShrink: 0,
-					flexGrow: 1,
-					alignSelf: 'center',
-					m: 1,
-					borderRadius: 1,
-					boxShadow: 4,
+					display: visible ? 'flex' : 'none',
+					flexDirection: { xs: 'column', sm: 'row' },
 				}}
-				image={datos.imagen}
-				title="foto del perro"
-			/>
-			<>
-				<CardContent>
+				component="form"
+				onSubmit={handleSubmit}
+			>
+				<CardMedia
+					sx={{
+						height: 300,
+						width: 300,
+						flexShrink: 0,
+						flexGrow: 1,
+						alignSelf: 'center',
+						m: 1,
+						borderRadius: 1,
+						boxShadow: 4,
+					}}
+					image={image}
+					title={`Foto de ${datos.nombre}`}
+				/>
+				<CardContent
+					sx={{
+						p: 0,
+						'&:last-child': {
+							p: 0,
+						},
+					}}
+				>
 					{/* <Typography gutterBottom variant="h5" component="div">
 						{datos.nombre}
 					</Typography> */}
 					{/* <Divider sx={{ mb: 1 }} /> */}
 
-					<List
-						component="form"
-						sx={{ minWidth: 250 }}
-						// onSubmit={handleSubmit}
-					>
+					<List sx={{ minWidth: 250, p: 0 }}>
+						{estado == 'Encontrado' && (
+							<ListItem sx={{ gap: 2 }}>
+								<ListItemIcon sx={{ minWidth: 0, color: 'primary.main' }}>
+									<Verified />
+								</ListItemIcon>
+								<ListItemText>
+									<Typography
+										variant="h6"
+										sx={{ fontWeight: 'bold', color: 'primary.main' }}
+									>
+										Encontrado
+									</Typography>
+								</ListItemText>
+							</ListItem>
+						)}
 						<ListItem sx={{ gap: 2 }}>
 							<ListItemIcon sx={{ minWidth: 0 }}>
 								<Pets />
@@ -73,9 +219,9 @@ function TarjetaPerro({ datos }) {
 									fullWidth
 									name="nombre"
 									id="nombre"
-									value={datos.nombre}
+									value={nombre}
 									onChange={(event) => {
-										// setEmail(event.target.value);
+										setNombre(event.target.value);
 									}}
 									variant="outlined"
 									size="small"
@@ -88,7 +234,7 @@ function TarjetaPerro({ datos }) {
 							</ListItemIcon>
 							<ListItemText>
 								<TextField
-									label="Correo Electrónico"
+									label="Contacto"
 									InputProps={{
 										readOnly: !editar,
 									}}
@@ -96,9 +242,9 @@ function TarjetaPerro({ datos }) {
 									fullWidth
 									name="email"
 									id="email"
-									value={datos.email}
+									value={email}
 									onChange={(event) => {
-										// setEmail(event.target.value);
+										setEmail(event.target.value);
 									}}
 									variant="outlined"
 									size="small"
@@ -119,9 +265,10 @@ function TarjetaPerro({ datos }) {
 									fullWidth
 									name="fecha"
 									id="fecha"
-									value={datos.fecha}
+									type="date"
+									value={fecha}
 									onChange={(event) => {
-										// setEmail(event.target.value);
+										setFecha(event.target.value);
 									}}
 									variant="outlined"
 									size="small"
@@ -142,9 +289,9 @@ function TarjetaPerro({ datos }) {
 									fullWidth
 									name="zona"
 									id="zona"
-									value={datos.zona}
+									value={zona}
 									onChange={(event) => {
-										// setEmail(event.target.value);
+										setZona(event.target.value);
 									}}
 									variant="outlined"
 									size="small"
@@ -152,47 +299,115 @@ function TarjetaPerro({ datos }) {
 							</ListItemText>
 						</ListItem>
 					</List>
-					{datos.idDuenio == id && (
-						<CardActions sx={{ display: 'flex', justifyContent: 'end' }}>
-							{!editar ? (
-								<Button
-									size="small"
-									startIcon={<Edit />}
-									onClick={handleEditarClick}
-									fullWidth
-									variant="contained"
-								>
-									Editar
-								</Button>
-							) : (
-								<>
-									<Button
+					{(datos.idDuenio == usuario.id || usuario.rol == 'veterinario') &&
+						estado != 'Encontrado' && (
+							<CardActions
+								sx={{
+									display: 'flex',
+									flexDirection: 'column',
+									py: 0,
+								}}
+							>
+								{!editar ? (
+									<>
+										<Grid container spacing={1}>
+											<Grid item xs={12} sm={6}>
+												<Button
+													size="small"
+													startIcon={<Edit />}
+													onClick={handleEditarClick}
+													fullWidth
+													variant="contained"
+												>
+													Editar
+												</Button>
+											</Grid>
+											<Grid item xs={12} sm={6}>
+												<Button
+													size="small"
+													startIcon={<Delete />}
+													onClick={handleBorrarClick}
+													fullWidth
+													color="error"
+													variant="contained"
+												>
+													Borrar
+												</Button>
+											</Grid>
+										</Grid>
+
+										<Button
+											size="small"
+											startIcon={<Check />}
+											sx={{ margin: 1 }}
+											onClick={handleEncontradoClick}
+											fullWidth
+											color="success"
+											variant="contained"
+										>
+											Encontrado
+										</Button>
+									</>
+								) : (
+									<>
+										{/* <Button
 										size="small"
 										startIcon={<Image />}
 										// onClick={handleEditarClick}
+										component
 										fullWidth
 										variant="contained"
 										color={'tertiary'}
 									>
 										Foto
-									</Button>
-									<Button
-										size="small"
-										startIcon={<Save />}
-										onClick={handleGuardarClick}
-										fullWidth
-										color={'success'}
-										variant="contained"
-									>
-										Guardar
-									</Button>
-								</>
-							)}
-						</CardActions>
-					)}
+									</Button> */}
+										<Button
+											fullWidth
+											color={'tertiary'}
+											variant="contained"
+											size="small"
+											startIcon={<Image />}
+											component="label"
+										>
+											Subir foto
+											<input
+												type="file"
+												hidden
+												name="fotoPerro"
+												onChange={(event) => {
+													setImage(URL.createObjectURL(event.target.files[0]));
+													setSelectedImage(event.target.files[0]);
+												}}
+											/>
+										</Button>
+										<Button
+											size="small"
+											startIcon={<Save />}
+											fullWidth
+											sx={{ margin: 1 }}
+											color={'success'}
+											variant="contained"
+											type="submit"
+										>
+											Guardar
+										</Button>
+									</>
+								)}
+							</CardActions>
+						)}
 				</CardContent>
-			</>
-		</Card>
+			</Card>
+			{!!snackbar && (
+				<Snackbar
+					open
+					anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+					onClose={handleCloseSnackbar}
+					autoHideDuration={6000}
+				>
+					<Alert {...snackbar} onClose={handleCloseSnackbar} />
+				</Snackbar>
+			)}
+		</>
 	);
 }
 
