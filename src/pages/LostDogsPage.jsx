@@ -31,39 +31,39 @@ function LostDogsPage() {
 				});
 				return [];
 			}
-			// let perros = await response.json();
-			let perros = [
-				{
-					nombre: 'Titan',
-					id: 1,
-					idDuenio: '2',
-					imagen: '/perro1.jpeg',
-					fecha: '2023-08-05',
-					zona: 'Plaza Italia',
-					email: 'pedro@email.com',
-					estado: 'Pendiente',
-				},
-				{
-					nombre: 'Lobo',
-					id: 2,
-					idDuenio: '-1',
-					imagen: '/perro2.jpg',
-					fecha: '2023-08-05',
-					zona: 'Plaza Italia',
-					email: 'pedro@email.com',
-					estado: 'Encontrado',
-				},
-				{
-					nombre: 'Kala',
-					id: 3,
-					idDuenio: '-1',
-					imagen: '/perro3.jpeg',
-					fecha: '2023-08-05',
-					zona: 'Plaza Italia',
-					email: 'pedro@email.com',
-					estado: 'Pendiente',
-				},
-			];
+			let perros = await response.json();
+			// let perros = [
+			// 	{
+			// 		nombre: 'Titan',
+			// 		id: 1,
+			// 		idDuenio: '2',
+			// 		imagen: '/perro1.jpeg',
+			// 		fecha: '2023-08-05',
+			// 		zona: 'Plaza Italia',
+			// 		email: 'pedro@email.com',
+			// 		estado: 'Pendiente',
+			// 	},
+			// 	{
+			// 		nombre: 'Lobo',
+			// 		id: 2,
+			// 		idDuenio: '-1',
+			// 		imagen: '/perro2.jpg',
+			// 		fecha: '2023-08-05',
+			// 		zona: 'Plaza Italia',
+			// 		email: 'pedro@email.com',
+			// 		estado: 'Encontrado',
+			// 	},
+			// 	{
+			// 		nombre: 'Kala',
+			// 		id: 3,
+			// 		idDuenio: '-1',
+			// 		imagen: '/perro3.jpeg',
+			// 		fecha: '2023-08-05',
+			// 		zona: 'Plaza Italia',
+			// 		email: 'pedro@email.com',
+			// 		estado: 'Pendiente',
+			// 	},
+			// ];
 			if (perros.length == 0) {
 				setSnackbar({
 					children: 'La lista de perros se encuentra vacia',
@@ -82,7 +82,7 @@ function LostDogsPage() {
 					}
 				})
 				.sort((a) => {
-					if (a.idDuenio == usuario.id && a.estado == 'Pendiente') {
+					if (usuario && a.idDuenio == usuario.id && a.estado == 'Pendiente') {
 						return -1;
 					}
 				});

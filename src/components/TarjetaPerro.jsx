@@ -299,7 +299,8 @@ function TarjetaPerro({ datos }) {
 							</ListItemText>
 						</ListItem>
 					</List>
-					{(datos.idDuenio == usuario.id || usuario.rol == 'veterinario') &&
+					{usuario &&
+						(datos.idDuenio == usuario.id || usuario.rol == 'veterinario') &&
 						estado != 'Encontrado' && (
 							<CardActions
 								sx={{
