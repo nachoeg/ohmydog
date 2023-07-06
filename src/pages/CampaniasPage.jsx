@@ -4,6 +4,7 @@ import { Context } from '../context/Context';
 import { Button } from '@mui/material';
 import TablaCampanias from '../components/TablaCampanias';
 import { NavLink } from 'react-router-dom';
+import { Add } from '@mui/icons-material';
 
 function CampaniasPage() {
 	const { usuario } = useContext(Context);
@@ -31,27 +32,28 @@ function CampaniasPage() {
 		>
 			<TablaCampanias />
 			{esVeterinario && (
-				<div>
+				<>
 					<Button
 						fullWidth
-						color={'success'}
+						color="tertiary"
 						variant="contained"
+						component={NavLink}
+						to={`archivadas`}
+						style={{ marginTop: '10px' }}
+					>
+						Ver campañas borradas y/o finalizadas
+					</Button>
+					<Button
+						fullWidth
+						variant="contained"
+						startIcon={<Add />}
 						component={NavLink}
 						to={`registrar`}
 						style={{ marginTop: '10px' }}
 					>
 						Registrar campaña
 					</Button>
-					<Button
-						fullWidth
-						variant="contained"
-						component={NavLink}
-						to={`archivadas`}
-						style={{ marginTop: '10px' }}
-					>
-						Ver campañas finalizadas y/o borradas
-					</Button>
-				</div>
+				</>
 			)}
 		</Container>
 	);
