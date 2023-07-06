@@ -22,25 +22,29 @@ function LostDogsRegisterPage() {
 		// Se elimina las acciones default del formulario
 		// Almacena la informacion del formulario, currentTarget hace referencia al formulario actual
 		const data = new FormData(event.currentTarget);
-
+		data.append('idUsuario', usuario ? usuario.id : -1);
+		data.append('imagen', selectedImage);
+		data.append('email', usuario ? usuario.email : data.get('email'));
 		// Se realiza el fetch con la BD y se manda en el cuerpo del mensaje los datos del formulario
+		console.log(selectedImage);
 
 		fetch(url + 'perdidos/register', {
 			method: 'POST',
 			headers: {
-				'Content-Type': 'application/json',
+				// 'Content-Type': 'application/json',
 				token: `${token}`,
 			},
 			credentials: 'include',
 			mode: 'cors',
-			body: JSON.stringify({
-				idUsuario: usuario ? usuario.id : -1,
-				nombre: data.get('nombre'),
-				zona: data.get('zona'),
-				fecha: data.get('fecha'),
-				imagen: selectedImage,
-				email: usuario ? usuario.email : data.get('email'),
-			}),
+			body: data,
+			// body: JSON.stringify({
+			// 	idUsuario: usuario ? usuario.id : -1,
+			// 	nombre: data.get('nombre'),
+			// 	zona: data.get('zona'),
+			// 	fecha: data.get('fecha'),
+			// 	imagen: selectedImage,
+			// 	email: usuario ? usuario.email : data.get('email'),
+			// }),
 		})
 			.then((response) => {
 				if (response.ok) {
@@ -48,9 +52,9 @@ function LostDogsRegisterPage() {
 						children: 'Registro exitoso.',
 						severity: 'success',
 					});
-					setTimeout(() => {
-						window.location.replace('/perdidos');
-					}, 1000);
+					// setTimeout(() => {
+					// 	window.location.replace('/perdidos');
+					// }, 1000);
 				} else {
 					setSnackbar({
 						children: 'Error al conectar con la base de datos',
