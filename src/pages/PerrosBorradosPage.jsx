@@ -1,9 +1,9 @@
 import { Container } from "@mui/material";
 import TablaPerros from "../components/TablaPerros";
-import Button from "@mui/material/Button";
-import { NavLink } from "react-router-dom";
+import Typography from "@mui/material/Typography";
+
 // La tabla de perros recibe en props el id del usuario que va a mostrar los perros
-function AllDogsPage() {
+function PerrosBorrados() {
 	return (
 		<Container
 			component='main'
@@ -15,19 +15,12 @@ function AllDogsPage() {
 				mt: 4,
 			}}
 		>
-			<TablaPerros idUsuario={""} />
-			<Button
-				key='perrosBorrados'
-				component={NavLink}
-				to={`/perrosBorrados/`}
-				color='tertiary'
-				variant='contained'
-				fullWidth
-			>
+			<Typography component='h2' variant='h5'>
 				Perros borrados
-			</Button>
+			</Typography>
+			<TablaPerros borrados={true} />
 		</Container>
 	);
 }
 
-export default AllDogsPage;
+export default PerrosBorrados;
