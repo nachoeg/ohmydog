@@ -2,11 +2,11 @@ import { Container } from "@mui/material";
 import { useEffect, useState, useCallback, useContext } from "react";
 import { Context } from "../context/Context";
 import { Button } from "@mui/material";
-import TablaCampanias from "../components/TablaCampanias";
+import TablaPaseadoresCuidadores from "../components/TablaPaseadoresCuidadores";
 import { NavLink } from "react-router-dom";
 import { Add } from "@mui/icons-material";
 
-function CampaniasPage() {
+function PaseadoresCuidadoresPage() {
 	const { usuario } = useContext(Context);
 	const token = localStorage.getItem("jwt");
 
@@ -30,7 +30,7 @@ function CampaniasPage() {
 				mt: 4,
 			}}
 		>
-			<TablaCampanias />
+			<TablaPaseadoresCuidadores />
 			{esVeterinario && (
 				<>
 					<Button
@@ -38,10 +38,10 @@ function CampaniasPage() {
 						color='tertiary'
 						variant='contained'
 						component={NavLink}
-						to={`archivadas`}
+						to={`archivados`}
 						style={{ marginTop: "10px" }}
 					>
-						Ver campañas borradas y/o finalizadas
+						Ver paseadores y cuidadores borrados y/o no disponibles
 					</Button>
 					<Button
 						fullWidth
@@ -51,7 +51,7 @@ function CampaniasPage() {
 						to={`registrar`}
 						style={{ marginTop: "10px" }}
 					>
-						Registrar campaña
+						Registrar paseador o cuidador
 					</Button>
 				</>
 			)}
@@ -59,4 +59,4 @@ function CampaniasPage() {
 	);
 }
 
-export default CampaniasPage;
+export default PaseadoresCuidadoresPage;

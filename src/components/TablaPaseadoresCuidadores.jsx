@@ -10,6 +10,7 @@ import {
 import Snackbar from "@mui/material/Snackbar";
 import Alert from "@mui/material/Alert";
 import Delete from "@mui/icons-material/DeleteForever";
+import { razas } from "../data/perros";
 import Button from "@mui/material/Button";
 import { NavLink } from "react-router-dom";
 import {
@@ -20,10 +21,9 @@ import {
 	DialogTitle,
 } from "@mui/material";
 import { Tooltip } from "@mui/material";
-import { CreditCard, Money } from "@mui/icons-material";
 
-// La tabla de campanias recibe en props si debe mostrar las campañas borradas/pasadas
-function TablaCampanias(props) {
+// La tabla de paseadores/cuidadores recibe en props si debe mostrar los borrados
+function TablaPaseadoresCuidadores(props) {
 	const { usuario } = useContext(Context); // Usuario que accede a la tabla
 	const token = localStorage.getItem("jwt");
 
@@ -43,10 +43,16 @@ function TablaCampanias(props) {
 	// Columnas a mostrar
 	const [rows, setRows] = useState([]);
 
-	// Establece las columnas a mostrar de la tabla de campañas
+	// Establece las columnas a mostrar de la tabla de cuidadores y paseadores
 	const columns = [
-		// Datos de las campañas: Nombre, motivo, fecha de inicio, de fin, telefono, mail, CVU para realizar las donaciones.
+		// Datos de las campañas: Nombre, apellido, DNI, telefono, mail, zona y un tipo para distinguir si es paseador o cuidador.
 		{ field: "id", headerName: "ID", width: 50, id: "id" },
+		{
+			field: "tipo",
+			headerName: "Tipo",
+			width: 90,
+			id: "tipo",
+		},
 		{
 			field: "nombre",
 			headerName: "Nombre",
@@ -54,16 +60,16 @@ function TablaCampanias(props) {
 			id: "nombre",
 		},
 		{
-			field: "motivo",
-			headerName: "Motivo",
-			width: 200,
-			id: "motivo",
+			field: "apellido",
+			headerName: "Apellido",
+			width: 100,
+			id: "apellido",
 		},
 		{
-			field: "cvu",
-			headerName: "CVU",
+			field: "dni",
+			headerName: "DNi",
 			width: 150,
-			id: "cvu",
+			id: "dni",
 		},
 		{
 			field: "telefono",
@@ -74,20 +80,22 @@ function TablaCampanias(props) {
 		{
 			field: "email",
 			headerName: "Mail",
-			width: 100,
+			width: 150,
 			id: "email",
 		},
 		{
-			field: "fechaInicio",
-			headerName: "Inicio",
+			field: "zona",
+			headerName: "Zona",
 			width: 100,
-			id: "fechaInicio",
+			id: "zona",
 		},
 		{
-			field: "fechaFin",
-			headerName: "Fin",
+			field: "estado",
+			headerName: "Estado",
 			width: 100,
-			id: "fechaFin",
+			id: "estado",
+			valueFormatter: (params) =>
+				params.value ? "Disponible" : "No disponible",
 		},
 	];
 
@@ -101,28 +109,14 @@ function TablaCampanias(props) {
 		renderCell: (params) => {
 			const actions = [
 				<Button
-					key='campaniaProfile'
-					to={`/campanias/${params.id}`}
+					key='paseadorCuidadorProfile'
+					to={`/paseadorCuidadorProfile/${params.id}`}
 					component={NavLink}
 					sx={{ fontSize: 11, mr: 1 }}
 				>
 					Ver detalles
 				</Button>,
 			];
-			if (!props.borrados) {
-				actions.push(
-					<Button
-						color={"success"}
-						variant='contained'
-						key='perros'
-						to={`/campanias/donar/${params.row.nombre}`}
-						component={NavLink}
-						sx={{ fontSize: 11, mr: 1 }}
-					>
-						Donar
-					</Button>
-				);
-			}
 			if (esVeterinario && !props.borrados) {
 				// Si esta en los borrados no debe mostrar el boton de borrado.
 				actions.push(
@@ -131,7 +125,7 @@ function TablaCampanias(props) {
 							icon={<Delete />}
 							label='Delete'
 							onClick={() => {
-								setCampaniaBorrar(params.row.id);
+								setPaseadorCuidadorBorrar(params.row.id);
 								handleClickOpenConfirmar();
 							}}
 							sx={{ "&:hover": { color: "red" } }}
@@ -142,9 +136,8 @@ function TablaCampanias(props) {
 				actions.push(
 					<Button
 						color={"success"}
-						key='perros'
+						key='recuperar'
 						onClick={() => {
-							console.log("Quiso recuperar " + params.row.id);
 							handleRecuperar(params.row.id);
 						}}
 						sx={{ fontSize: 11, mr: 1 }}
@@ -157,22 +150,22 @@ function TablaCampanias(props) {
 		},
 	});
 
-	// Si se recibe en los parametros el parametro borrado, debe hacer un fetch pero mostrando las campanias viejas/borradas.
+	// Si se recibe en los parametros el parametro borrado, debe hacer un fetch pero mostrando los paseadores/cuidadores borrados.
 	if (!props.borrados) {
 		// Asigna a las filas las campanias actuales obtenidas de la bd
 		useEffect(() => {
-			obtenerCampaniasActuales().then((rows) => setRows(rows));
+			obtenerPaseadoresCuidadores().then((rows) => setRows(rows));
 		}, []);
 	} else {
-		// Debe mostrar las campañas viejas
+		// Debe mostrar los paseadores cuidadores borrados
 		useEffect(() => {
-			obtenerCampaniasBorradas().then((rows) => setRows(rows));
+			obtenerPaseadoresCuidadoresBorrados().then((rows) => setRows(rows));
 		}, []);
 	}
 
 	// Manejador del boton de recuperar
 	async function handleRecuperar(id) {
-		const response = await fetch(url + "campanias/recover/" + id, {
+		const response = await fetch(url + "paseador/recover/" + id, {
 			method: "PUT",
 			credentials: "include",
 			headers: {
@@ -186,7 +179,7 @@ function TablaCampanias(props) {
 				severity: "success",
 			});
 			setTimeout(() => {
-				window.location.replace("/campanias/");
+				window.location.replace("/paseadores-cuidadores/");
 			}, 1000);
 			return;
 		}
@@ -196,10 +189,10 @@ function TablaCampanias(props) {
 		});
 	}
 
-	// Obtiene las campanias borradas/pasadas de la BD
-	async function obtenerCampaniasBorradas() {
+	// Obtiene los paseadores cuidadores de la BD
+	async function obtenerPaseadoresCuidadoresBorrados() {
 		try {
-			const response = await fetch(url + "campanias/borradas", {
+			const response = await fetch(url + "paseador/borrados", {
 				method: "GET",
 				credentials: "include",
 				headers: {
@@ -210,20 +203,21 @@ function TablaCampanias(props) {
 			if (!response.ok) {
 				if (response.status == 401) {
 					setSnackbar({
-						children: "Error al mostrar las campañas",
+						children: "Error al mostrar las paseadores/cuidadores",
 						severity: "error",
 					});
 				}
 				return [];
 			}
-			let campains = await response.json();
-			if (campains.length == 0) {
+			let datos = await response.json();
+			if (datos.length == 0) {
 				setSnackbar({
-					children: "La lista de campañas se encuentra vacia",
+					children:
+						"La lista de paseadores/cuidadores borrados o no disponibles se encuentra vacia",
 					severity: "info",
 				});
 			}
-			return campains;
+			return datos;
 		} catch (error) {
 			console.error("Error en el fetch: " + error);
 
@@ -235,10 +229,10 @@ function TablaCampanias(props) {
 		}
 	}
 
-	// Obtiene las campanias de la BD
-	async function obtenerCampaniasActuales() {
+	// Obtiene los paseadores cuidadores de la BD
+	async function obtenerPaseadoresCuidadores() {
 		try {
-			const response = await fetch(url + "campanias/", {
+			const response = await fetch(url + "paseador/", {
 				method: "GET",
 				credentials: "include",
 				headers: {
@@ -249,20 +243,20 @@ function TablaCampanias(props) {
 			if (!response.ok) {
 				if (response.status == 401) {
 					setSnackbar({
-						children: "Error al mostrar las campañas",
+						children: "Error al mostrar los paseadores/cuidadores",
 						severity: "error",
 					});
 				}
 				return [];
 			}
-			let perros = await response.json();
-			if (perros.length == 0) {
+			let paseadoresCuidadores = await response.json();
+			if (paseadoresCuidadores.length == 0) {
 				setSnackbar({
-					children: "La lista de campañas se encuentra vacia",
+					children: "La lista de paseadores/cuidadores se encuentra vacia",
 					severity: "info",
 				});
 			}
-			return perros;
+			return paseadoresCuidadores;
 		} catch (error) {
 			console.error("Error en el fetch: " + error);
 
@@ -274,10 +268,10 @@ function TablaCampanias(props) {
 		}
 	}
 
-	// Manejador del borrado de las campañas, como el borrado es logico simplemente hace una modificacion
-	// de la campania modificando su booleano "borrado" poniendolo en true.
-	async function eliminarCampania(id) {
-		const response = await fetch(url + "campanias/delete/" + id, {
+	// Manejador del borrado de los paseadores/cuidadores, como el borrado es logico simplemente hace una modificacion
+	// del cuidador o paseador modificando su booleano "borrado" poniendolo en true.
+	async function eliminarPaseadorCuidador(id) {
+		const response = await fetch(url + "paseador/delete/" + id, {
 			method: "DELETE",
 			credentials: "include",
 			headers: {
@@ -288,7 +282,7 @@ function TablaCampanias(props) {
 		console.log(response);
 		if (response.ok) {
 			setSnackbar({
-				children: "Campaña eliminada con exito",
+				children: "Paseador/cuidador eliminado con exito",
 				severity: "success",
 			});
 			setRows(rows.filter((row) => row.id !== id));
@@ -300,18 +294,18 @@ function TablaCampanias(props) {
 		}
 	}
 
-	// Para cambiar el mensaje que muestra si no hay campañas
+	// Para cambiar el mensaje que muestra si no hay paseadores/cuidadores borrados
 	const CustomNoRowsOverlay = () => {
 		return (
 			<GridOverlay>
-				<div>No hay campañas registradas</div>
+				<div>No hay paseadores/cuidadores borrados y/o no disponibles</div>
 			</GridOverlay>
 		);
 	};
 
 	// Variables para mostrar los mensajes de confirmar eliminacion
 	const [openConfirmar, setOpenConfirmar] = useState(false);
-	const [campaniaBorrar, setCampaniaBorrar] = useState();
+	const [paseadorCuidadorBorrar, setPaseadorCuidadorBorrar] = useState();
 
 	// Manejadores de los mensajes de confirmar
 	const handleClickOpenConfirmar = () => {
@@ -346,13 +340,12 @@ function TablaCampanias(props) {
 				aria-describedby='confirmar-description'
 			>
 				<DialogTitle id='confirmar-title'>
-					¿Estás seguro/a de <b style={{ color: "red" }}>eliminar</b> la
-					campaña?
+					¿Estás seguro/a de <b style={{ color: "red" }}>eliminar</b>?
 				</DialogTitle>
 				<DialogContent>
 					<DialogContentText id='confirmar-description'>
-						Una vez que confirmes, esta se moverá al listado de campañas
-						borradas. Podrás recuperarla desde allí.
+						Una vez que confirmes, se moverá al listado de paseadores/cuidadores
+						borrados. Podrás recuperarlo desde allí.
 					</DialogContentText>
 				</DialogContent>
 				<DialogActions>
@@ -367,7 +360,7 @@ function TablaCampanias(props) {
 						variant='contained'
 						color='error'
 						onClick={() => {
-							eliminarCampania(campaniaBorrar);
+							eliminarPaseadorCuidador(paseadorCuidadorBorrar);
 							handleCloseConfirmar();
 						}}
 						autoFocus
@@ -391,4 +384,4 @@ function TablaCampanias(props) {
 	);
 }
 
-export default TablaCampanias;
+export default TablaPaseadoresCuidadores;

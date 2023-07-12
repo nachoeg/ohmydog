@@ -12,6 +12,7 @@ import {
 	Button,
 	Snackbar,
 	Alert,
+	MenuItem,
 } from "@mui/material";
 import { useEffect, useState, useContext } from "react";
 import { Close, Edit, Password, Save } from "@mui/icons-material";
@@ -19,14 +20,14 @@ import url from "../data/url";
 import { NavLink } from "react-router-dom";
 import { Context } from "../context/Context";
 
-function CampaniaProfilePage() {
+function PaseadorCuidadorProfilePage() {
 	// Declaracion de snackbar para mostrar mensajes.
 	const [snackbar, setSnackbar] = useState(null);
 	const handleCloseSnackbar = () => setSnackbar(null);
 
-	// Obtiene el id de la campaña que se pasa como parametro en la url
+	// Obtiene el id del paseador/cuidador que se pasa como parametro en la url
 	const location = useLocation();
-	const idCampania = location.pathname.split("/")[2];
+	const idPaseadorCuidador = location.pathname.split("/")[2];
 
 	// Variables para mostrar/ocultar opciones en funcion de si accede un veterinario.
 	const { usuario } = useContext(Context);
@@ -40,19 +41,23 @@ function CampaniaProfilePage() {
 	// Token de la sesion
 	const token = localStorage.getItem("jwt");
 
-	// Campaña de la que se muestran los datos
-	const [campania, setCampania] = useState(obtenerCampania);
+	// paseador/cuidador de la que se muestran los datos
+	const [paseadorCuidador, setPaseadorCuidador] = useState(
+		obtenerPaseadorCuidador
+	);
 
-	// Asigna al perfil la campaña obtenida de la BD.
+	// Asigna al perfil el paseador-cuidador obtenido de la BD.
 	useEffect(() => {
-		obtenerCampania().then((campania) => setCampania(campania));
+		obtenerPaseadorCuidador().then((paseadorCuidador) =>
+			setPaseadorCuidador(paseadorCuidador)
+		);
 		setEditar(false);
-	}, [idCampania]);
+	}, [idPaseadorCuidador]);
 
-	// Obtiene la campania de la BD mediante su ID.
-	async function obtenerCampania() {
+	// Obtiene el paseadorCuidador de la BD mediante su ID.
+	async function obtenerPaseadorCuidador() {
 		try {
-			const response = await fetch(url + "campanias/" + idCampania, {
+			const response = await fetch(url + "paseador/" + idPaseadorCuidador, {
 				method: "GET",
 				credentials: "include",
 				headers: {
@@ -60,15 +65,15 @@ function CampaniaProfilePage() {
 					token: `${token}`,
 				},
 			});
-			let campain = await response.json();
-			if (campain == null) {
+			let datos = await response.json();
+			if (datos == null) {
 				setSnackbar({
-					children: "No se encontro la campania",
+					children: "No se encontro el paseador/cuidador.",
 					severity: "error",
 				});
 			}
-			console.log(campain);
-			return campain;
+			console.log(datos);
+			return datos;
 		} catch (error) {
 			console.error("Error en el fetch: " + error);
 
@@ -80,31 +85,29 @@ function CampaniaProfilePage() {
 		}
 	}
 
-	// Atributos a mostrar de las campanias
+	// Atributos a mostrar de los paseadores/cuidadores
+	// nombre, apellido, dni, telefono, email, zona y estado
 	const [nombre, setNombre] = useState("");
-	const [motivo, setMotivo] = useState("");
-	const [cvu, setCvu] = useState("");
+	const [apellido, setApellido] = useState("");
+	const [dni, setDni] = useState("");
 	const [email, setEmail] = useState("");
 	const [telefono, setTelefono] = useState("");
-	const [fechaInicio, setFechaInicio] = useState("");
-	const [fechaFin, setFechaFin] = useState("");
+	const [zona, setZona] = useState("");
+	const [estado, setEstado] = useState("");
+	const [tipo, setTipo] = useState("");
 
-	// Se ejecuta cada vez que cambia la campaña (si es modificada por ejemplo)
+	// Se ejecuta cada vez que cambia el paseador/cuidador (si es modificado por ejemplo)
 	// seteando los nuevos valores
 	useEffect(() => {
-		setNombre(campania.nombre);
-		setMotivo(campania.motivo);
-		setCvu(campania.cvu);
-		setEmail(campania.email);
-		setTelefono(campania.telefono);
-		setFechaInicio(campania.fechaInicio);
-		setFechaFin(campania.fechaFin);
-	}, [campania]);
-
-	// Si no hay campania para mostrar entonces se regresa a la pagina de campanias.
-	//if (campania == null) {
-	//	location.replace("/campanias");
-	//}
+		setNombre(paseadorCuidador.nombre);
+		setApellido(paseadorCuidador.apellido);
+		setDni(paseadorCuidador.dni);
+		setEmail(paseadorCuidador.email);
+		setTelefono(paseadorCuidador.telefono);
+		setZona(paseadorCuidador.zona);
+		setEstado(paseadorCuidador.estado);
+		setTipo(paseadorCuidador.tipo);
+	}, [paseadorCuidador]);
 
 	// Variables para editar los atributos.
 	const [editar, setEditar] = useState(false);
@@ -115,27 +118,27 @@ function CampaniaProfilePage() {
 	// Funcion para validar que los datos de entrada no sean campos vacios.
 	function validarDatos(datos) {
 		if (datos.get("email").toString().trim() == "") {
-			setEmail(campania.email);
+			setEmail(paseadorCuidador.email);
 			return false;
 		}
-		if (datos.get("motivo").trim() == "") {
-			setMotivo(campania.motivo);
+		if (datos.get("dni").trim() == "") {
+			setDni(paseadorCuidador.dni);
 			return false;
 		}
 		if (datos.get("nombre").trim() == "") {
-			setNombre(campania.nombre);
+			setNombre(paseadorCuidador.nombre);
 			return false;
 		}
-		if (datos.get("cvu").trim() == "") {
-			setCvu(campania.cvu);
+		if (datos.get("apellido").trim() == "") {
+			setApellido(paseadorCuidador.apellido);
 			return false;
 		}
 		if (datos.get("telefono").trim() == "") {
-			setTelefono(campania.telefono);
+			setTelefono(paseadorCuidador.telefono);
 			return false;
 		}
-		if (datos.get("fechaInicio").trim() == "") {
-			setFechaInicio(campania.fechaInicio);
+		if (datos.get("zona").trim() == "") {
+			setZona(paseadorCuidador.zona);
 			return false;
 		}
 		return true;
@@ -152,27 +155,30 @@ function CampaniaProfilePage() {
 			});
 			return;
 		}
-		const campain = {
-			...campania,
+		const modificando = {
+			...paseadorCuidador,
 			nombre: data.get("nombre"),
-			motivo: data.get("motivo"),
-			cvu: data.get("cvu"),
+			dni: data.get("dni"),
+			zona: data.get("zona"),
 			email: data.get("email"),
 			telefono: data.get("telefono"),
-			fechaInicio: data.get("fechaInicio"),
-			fechaFin: data.get("fechaFin"),
+			apellido: data.get("apellido"),
+			estado: data.get("estado"),
 		};
-		const response = await fetch(url + "campanias/modify/" + idCampania, {
-			method: "PUT",
-			credentials: "include",
-			headers: {
-				"Content-Type": "application/json",
-				token: `${token}`,
-			},
-			body: JSON.stringify(campain),
-		});
+		const response = await fetch(
+			url + "paseador/modify/" + idPaseadorCuidador,
+			{
+				method: "PUT",
+				credentials: "include",
+				headers: {
+					"Content-Type": "application/json",
+					token: `${token}`,
+				},
+				body: JSON.stringify(modificando),
+			}
+		);
 		if (response.ok) {
-			setCampania(campain);
+			setPaseadorCuidador(modificando);
 			setSnackbar({
 				children: "Modificación realizada con éxito",
 				severity: "success",
@@ -195,13 +201,13 @@ function CampaniaProfilePage() {
 
 	// Manejador del boton de cancelar la edicion.
 	const handleCancelarClick = () => {
-		setNombre(campania.nombre);
-		setMotivo(campania.motivo);
-		setCvu(campania.cvu);
-		setEmail(campania.email);
-		setTelefono(campania.telefono);
-		setFechaInicio(campania.fechaInicio);
-		setFechaFin(campania.fechaFin);
+		setEmail(paseadorCuidador.email);
+		setDni(paseadorCuidador.dni);
+		setNombre(paseadorCuidador.nombre);
+		setApellido(paseadorCuidador.apellido);
+		setTelefono(paseadorCuidador.telefono);
+		setZona(paseadorCuidador.zona);
+		setEstado(paseadorCuidador.estado);
 		setEditar(false);
 	};
 
@@ -246,7 +252,9 @@ function CampaniaProfilePage() {
 					<ListItem>
 						<ListItemText
 							primary={
-								<Typography variant='h5'>Campaña {campania.nombre}</Typography>
+								<Typography variant='h5'>
+									Perfil del {paseadorCuidador.tipo} {paseadorCuidador.nombre}
+								</Typography>
 							}
 						/>
 					</ListItem>
@@ -275,18 +283,18 @@ function CampaniaProfilePage() {
 					<ListItem>
 						<ListItemText>
 							<Typography variant='h7' sx={{ mr: "20px" }}>
-								Motivo
+								Apellido
 							</Typography>
 							<TextField
 								InputProps={{
 									readOnly: !editar,
 								}}
 								fullWidth
-								name='motivo'
-								id='motivo'
-								value={motivo}
+								name='apellido'
+								id='apellido'
+								value={apellido}
 								onChange={(event) => {
-									setMotivo(event.target.value);
+									setApellido(event.target.value);
 								}}
 								variant='outlined'
 								size='small'
@@ -296,18 +304,18 @@ function CampaniaProfilePage() {
 					<ListItem>
 						<ListItemText>
 							<Typography variant='h7' sx={{ mr: "20px" }}>
-								CVU/CBU
+								DNI
 							</Typography>
 							<TextField
 								InputProps={{
 									readOnly: !editar,
 								}}
-								name='cvu'
+								name='dni'
 								fullWidth
-								id='cvu'
-								value={cvu}
+								id='dni'
+								value={dni}
 								onChange={(event) => {
-									setCvu(event.target.value);
+									setDni(event.target.value);
 								}}
 								variant='outlined'
 								size='small'
@@ -360,47 +368,50 @@ function CampaniaProfilePage() {
 					<ListItem>
 						<ListItemText>
 							<Typography variant='h7' sx={{ mr: "20px" }}>
-								Fecha inicio
+								Zona
 							</Typography>
 							<TextField
 								InputProps={{
 									readOnly: !editar,
 								}}
-								style={{ color: "#000" }}
-								type='date'
 								fullWidth
-								id='fechaInicio'
-								name='fechaInicio'
-								value={fechaInicio}
+								id='zona'
+								name='zona'
+								value={zona}
+								onChange={(event) => {
+									setZona(event.target.value);
+								}}
 								variant='outlined'
 								size='small'
-								onChange={(event) => {
-									setFechaInicio(event.target.value);
-								}}
 							/>
 						</ListItemText>
 					</ListItem>
 					<ListItem>
 						<ListItemText>
 							<Typography variant='h7' sx={{ mr: "20px" }}>
-								Fecha fin
+								Estado
 							</Typography>
 							<TextField
 								InputProps={{
 									readOnly: !editar,
 								}}
-								style={{ color: "#000" }}
-								type='date'
+								id='estado'
+								name='estado'
+								select
+								required
 								fullWidth
-								id='fechaFin'
-								name='fechaFin'
-								value={fechaFin}
-								variant='outlined'
-								size='small'
+								value={estado}
 								onChange={(event) => {
-									setFechaFin(event.target.value);
+									setEstado(event.target.value);
 								}}
-							/>
+							>
+								<MenuItem key={"disponible"} value={true}>
+									Disponible
+								</MenuItem>
+								<MenuItem key={"no disponible"} value={false}>
+									No disponible
+								</MenuItem>
+							</TextField>
 						</ListItemText>
 					</ListItem>
 
@@ -420,21 +431,6 @@ function CampaniaProfilePage() {
 							)}
 						</ListItem>
 					) : null}
-					<ListItem>
-						{!esVeterinario ? (
-							<NavLink style={{ width: "100%" }} to={"/donar"}>
-								<Button
-									fullWidth
-									variant='contained'
-									color={"success"}
-									to={`/campanias/donar/${nombre}`}
-									component={NavLink}
-								>
-									Donar
-								</Button>
-							</NavLink>
-						) : null}
-					</ListItem>
 				</List>
 			</Card>
 			{!!snackbar && (
@@ -451,4 +447,4 @@ function CampaniaProfilePage() {
 	);
 }
 
-export default CampaniaProfilePage;
+export default PaseadorCuidadorProfilePage;
