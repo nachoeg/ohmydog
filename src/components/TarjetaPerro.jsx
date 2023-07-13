@@ -1,5 +1,6 @@
 import {
 	CalendarMonth,
+	Cancel,
 	Check,
 	Delete,
 	Edit,
@@ -12,7 +13,6 @@ import {
 } from '@mui/icons-material';
 import {
 	Alert,
-	Box,
 	Button,
 	Card,
 	CardActions,
@@ -49,17 +49,52 @@ function TarjetaPerro({ datos }) {
 	const handleEditarClick = () => {
 		setEditar(true);
 	};
-	const handleBorrarClick = () => {
-		setSnackbar({
-			children: 'Se elimino con éxito',
-			severity: 'success',
+
+	const handleCancelarClick = () => {
+		resetearDatos();
+	};
+
+	const handleBorrarClick = async () => {
+		const response = await fetch(url + 'perdidos/delete/' + datos.id, {
+			method: 'PUT',
+			credentials: 'include',
+			headers: {
+				'Content-Type': 'application/json',
+			},
 		});
-		setVisible(false);
+		if (response.ok) {
+			setSnackbar({
+				children: 'Se elimino con éxito',
+				severity: 'success',
+			});
+			setVisible(false);
+			return;
+		}
+		if (response.status == 400) {
+			setSnackbar({
+				children: 'No se encontro al perro',
+				severity: 'error',
+			});
+			return;
+		}
+		setSnackbar({
+			children: 'Error al conectar con la base de datos',
+			severity: 'error',
+		});
 	};
 
 	const handleEncontradoClick = () => {
 		setEstado('Encontrado');
 	};
+
+	function resetearDatos() {
+		setEditar(false);
+		setEmail(datos.email);
+		setZona(datos.zona);
+		setFecha(datos.fecha);
+		setNombre(datos.nombre);
+		setImage(datos.imagen);
+	}
 
 	function validarDatos(data) {
 		let mensaje = 'No se puede enviar un campo vacio';
@@ -98,7 +133,6 @@ function TarjetaPerro({ datos }) {
 
 		const data = new FormData(event.currentTarget);
 		const datosValidados = validarDatos(data);
-		console.log(datosValidados);
 		if (!datosValidados.resultado) {
 			setSnackbar({
 				children: datosValidados.mensaje,
@@ -133,12 +167,8 @@ function TarjetaPerro({ datos }) {
 			return;
 		}
 		//se resetean los datos
-		setEditar(false);
-		setEmail(datos.email);
-		setZona(datos.zona);
-		setFecha(datos.fecha);
-		setNombre(datos.nombre);
-		setImage(datos.imagen);
+		resetearDatos();
+
 		if (response.status == 400) {
 			setSnackbar({
 				children: 'Datos invalidos',
@@ -299,7 +329,7 @@ function TarjetaPerro({ datos }) {
 						</ListItem>
 					</List>
 					{usuario &&
-						(datos.idDuenio == usuario.id || usuario.rol == 'veterinario') &&
+						(datos.idUsuario == usuario.id || usuario.rol == 'veterinario') &&
 						estado != 'Encontrado' && (
 							<CardActions
 								sx={{
@@ -361,11 +391,39 @@ function TarjetaPerro({ datos }) {
 									>
 										Foto
 									</Button> */}
+
+										<Grid container spacing={1}>
+											<Grid item xs={12} sm={6}>
+												<Button
+													size="small"
+													startIcon={<Cancel />}
+													fullWidth
+													color="error"
+													variant="contained"
+													onClick={handleCancelarClick}
+												>
+													Cancelar
+												</Button>
+											</Grid>
+											<Grid item xs={12} sm={6}>
+												<Button
+													size="small"
+													startIcon={<Save />}
+													fullWidth
+													color={'success'}
+													variant="contained"
+													type="submit"
+												>
+													Guardar
+												</Button>
+											</Grid>
+										</Grid>
 										<Button
 											fullWidth
 											color={'tertiary'}
 											variant="contained"
 											size="small"
+											sx={{ margin: 1 }}
 											startIcon={<Image />}
 											component="label"
 										>
@@ -379,17 +437,6 @@ function TarjetaPerro({ datos }) {
 													setSelectedImage(event.target.files[0]);
 												}}
 											/>
-										</Button>
-										<Button
-											size="small"
-											startIcon={<Save />}
-											fullWidth
-											sx={{ margin: 1 }}
-											color={'success'}
-											variant="contained"
-											type="submit"
-										>
-											Guardar
 										</Button>
 									</>
 								)}
