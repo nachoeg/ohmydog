@@ -41,6 +41,7 @@ import MarcarPerroParaCruzar from "./pages/MarcarPerroParaCruzar";
 import OpcionesDeCruza from "./pages/OpcionesDeCruza";
 import PerrosBorrados from "./pages/PerrosBorradosPage";
 import UsuariosBorradosPage from "./pages/UsuariosBorradosPage";
+import BouchersPage from "./pages/BouchersPage";
 
 function App() {
 	const theme = createTheme({
@@ -170,6 +171,7 @@ function App() {
 							element={<OpcionesDeCruza />}
 						/>
 						<Route path='guarderias' element={<GuarderiasPage />} />
+						<Route path='descuentos' element={<BouchersPage />} />
 						<Route path='cambiar-contraseña' element={<ChangePassword />} />
 						<Route path='*' element={<NotFoundPage />} />
 					</Route>

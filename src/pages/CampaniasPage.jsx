@@ -53,6 +53,15 @@ function CampaniasPage() {
 					>
 						Registrar campaña
 					</Button>
+					<Button
+						fullWidth
+						variant='contained'
+						component={NavLink}
+						to={`/descuentos`}
+						style={{ marginTop: "10px" }}
+					>
+						Comprobar descuento
+					</Button>
 				</>
 			)}
 		</Container>
