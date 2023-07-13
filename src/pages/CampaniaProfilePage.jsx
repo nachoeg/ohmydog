@@ -290,6 +290,16 @@ function CampaniaProfilePage() {
 								}}
 								variant='outlined'
 								size='small'
+								multiline
+								rows={8} // Ajusta el número de filas para hacerlo más alto verticalmente
+								inputProps={{ style: { width: "100%" } }} // Ajusta el ancho del campo de texto
+								InputLabelProps={{
+									style: {
+										overflow: "hidden",
+										textOverflow: "ellipsis",
+										width: "100%",
+									},
+								}} // Ajusta el ancho de la etiqueta
 							/>
 						</ListItemText>
 					</ListItem>
