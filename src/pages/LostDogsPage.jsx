@@ -112,15 +112,17 @@ function LostDogsPage() {
 				gap: 2,
 			}}
 		>
-			<Button
-				component={NavLink}
-				to={'/perdidos/registrar'}
-				startIcon={<Add />}
-				variant="contained"
-				fullWidth
-			>
-				Cargar perro
-			</Button>
+			{usuario && (
+				<Button
+					component={NavLink}
+					to={'/perdidos/registrar'}
+					startIcon={<Add />}
+					variant="contained"
+					fullWidth
+				>
+					Cargar perro
+				</Button>
+			)}
 			{perros.map((perro) => (
 				<TarjetaPerro datos={perro} key={perro.id} />
 			))}
