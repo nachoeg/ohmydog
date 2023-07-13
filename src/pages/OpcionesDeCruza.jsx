@@ -17,8 +17,8 @@ import Typography from "@mui/material/Typography";
 function OpcionesDeCruza() {
 	// Obtiene el id del perro que se pasa como parametro en la url
 	const location = useLocation();
-	const idPerro = location.pathname.split("/")[2];
-	const nombrePerro = location.pathname.split("/")[3].replace(/%20/g, " ");
+	const idPerro = location.pathname.split("/")[3];
+	const nombrePerro = location.pathname.split("/")[4].replace(/%20/g, " ");
 
 	const token = localStorage.getItem("jwt");
 
@@ -117,8 +117,8 @@ function OpcionesDeCruza() {
 
 	return (
 		<Container
-			component='main'
-			maxWidth='lg'
+			component="main"
+			maxWidth="lg"
 			sx={{
 				display: "flex",
 				alignItems: "center",
@@ -126,14 +126,14 @@ function OpcionesDeCruza() {
 				mt: 4,
 			}}
 		>
-			<Typography component='h2' variant='h5'>
+			<Typography component="h1" variant="h5" sx={{ mb: 1 }}>
 				Opciones de cruza para {nombrePerro}
 			</Typography>
 			<div style={{ height: 400, width: "100%" }}>
 				<DataGrid
 					rows={rows}
 					columns={columns}
-					editMode='row'
+					editMode="row"
 					columnVisibilityModel={{
 						id: false,
 					}}

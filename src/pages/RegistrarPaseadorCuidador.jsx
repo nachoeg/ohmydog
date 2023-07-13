@@ -54,7 +54,7 @@ function RegistrarPaseadorCuidador() {
 						severity: "success",
 					});
 					setTimeout(() => {
-						window.location.replace("/paseadores-cuidadores");
+						window.location.replace("/servicios/paseadores-cuidadores");
 					}, 1000);
 				} else {
 					setSnackbar({
@@ -75,7 +75,7 @@ function RegistrarPaseadorCuidador() {
 	// Datos de las campañas: Nombre, apellido, DNI, telefono, mail y zona.
 	// Y un tipo para distinguirlos.
 	return (
-		<Container component='main' maxWidth='xs'>
+		<Container component="main" maxWidth="xs">
 			<Box
 				sx={{
 					marginTop: 4,
@@ -84,21 +84,21 @@ function RegistrarPaseadorCuidador() {
 					alignItems: "center",
 				}}
 			>
-				<Typography component='h1' variant='h5'>
+				<Typography component="h1" variant="h5">
 					Registrar paseador/cuidador
 				</Typography>
 
-				<Box component='form' onSubmit={handleSubmit} sx={{ mt: 3 }}>
+				<Box component="form" onSubmit={handleSubmit} sx={{ mt: 3 }}>
 					<Grid container spacing={2}>
 						<Grid item xs={12} sm={12}>
 							<TextField
-								id='tipo'
-								name='tipo'
-								label='Voy a registrar un...'
+								id="tipo"
+								name="tipo"
+								label="Voy a registrar un..."
 								select
 								required
 								fullWidth
-								defaultValue='Paseador'
+								defaultValue="Paseador"
 							>
 								<MenuItem key={"paseador"} value={"Paseador"}>
 									Paseador
@@ -110,69 +110,69 @@ function RegistrarPaseadorCuidador() {
 						</Grid>
 						<Grid item xs={12} sm={6}>
 							<TextField
-								name='nombre'
+								name="nombre"
 								required
 								fullWidth
-								id='nombre'
-								label='Nombre'
+								id="nombre"
+								label="Nombre"
 								autoFocus
 							/>
 						</Grid>
 						<Grid item xs={12} sm={6}>
 							<TextField
-								label='Apellido'
+								label="Apellido"
 								required
 								fullWidth
-								id='apellido'
-								name='apellido'
-								variant='outlined'
+								id="apellido"
+								name="apellido"
+								variant="outlined"
 							/>
 						</Grid>
 						<Grid item xs={12} sm={12}>
 							<TextField
-								name='dni'
+								name="dni"
 								required
 								fullWidth
-								id='dni'
-								label='DNI'
-								type='number'
+								id="dni"
+								label="DNI"
+								type="number"
 							/>
 						</Grid>
 						<Grid item xs={12}>
 							<TextField
 								fullWidth
 								required
-								name='telefono'
-								label='Telefono'
-								id='telefono'
-								type='number'
+								name="telefono"
+								label="Telefono"
+								id="telefono"
+								type="number"
 							/>
 						</Grid>
 						<Grid item xs={12}>
 							<TextField
 								fullWidth
 								required
-								name='email'
-								label='Email'
-								id='email'
-								type='email'
+								name="email"
+								label="Email"
+								id="email"
+								type="email"
 							/>
 						</Grid>
 						<Grid item xs={12}>
 							<TextField
 								fullWidth
 								required
-								name='zona'
-								label='Zona'
-								id='zona'
+								name="zona"
+								label="Zona"
+								id="zona"
 							/>
 						</Grid>
 					</Grid>
 
 					<Button
-						type='submit'
+						type="submit"
 						fullWidth
-						variant='contained'
+						variant="contained"
 						sx={{ mt: 3, mb: 2 }}
 					>
 						Registrar

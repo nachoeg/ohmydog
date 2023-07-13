@@ -27,7 +27,7 @@ function PaseadorCuidadorProfilePage() {
 
 	// Obtiene el id del paseador/cuidador que se pasa como parametro en la url
 	const location = useLocation();
-	const idPaseadorCuidador = location.pathname.split("/")[2];
+	const idPaseadorCuidador = location.pathname.split("/")[4];
 
 	// Variables para mostrar/ocultar opciones en funcion de si accede un veterinario.
 	const { usuario } = useContext(Context);
@@ -216,7 +216,7 @@ function PaseadorCuidadorProfilePage() {
 		<Button
 			startIcon={<Edit />}
 			fullWidth
-			variant='contained'
+			variant="contained"
 			onClick={handleEditarClick}
 		>
 			Editar
@@ -227,8 +227,8 @@ function PaseadorCuidadorProfilePage() {
 			startIcon={<Save />}
 			fullWidth
 			color={"success"}
-			variant='contained'
-			type='submit'
+			variant="contained"
+			type="submit"
 		>
 			Guardar
 		</Button>
@@ -238,7 +238,7 @@ function PaseadorCuidadorProfilePage() {
 			startIcon={<Close />}
 			fullWidth
 			color={"error"}
-			variant='contained'
+			variant="contained"
 			onClick={handleCancelarClick}
 		>
 			Cancelar
@@ -246,13 +246,13 @@ function PaseadorCuidadorProfilePage() {
 	);
 
 	return (
-		<Container component='main' maxWidth='sm'>
+		<Container component="main" maxWidth="sm">
 			<Card sx={{ padding: "10px", marginTop: 4 }}>
-				<List component='form' onSubmit={handleSubmit}>
+				<List component="form" onSubmit={handleSubmit}>
 					<ListItem>
 						<ListItemText
 							primary={
-								<Typography variant='h5'>
+								<Typography variant="h5">
 									Perfil del {paseadorCuidador.tipo} {paseadorCuidador.nombre}
 								</Typography>
 							}
@@ -261,7 +261,7 @@ function PaseadorCuidadorProfilePage() {
 					<Divider />
 					<ListItem>
 						<ListItemText>
-							<Typography variant='h7' sx={{ mr: "20px" }}>
+							<Typography variant="h7" sx={{ mr: "20px" }}>
 								Nombre
 							</Typography>
 							<TextField
@@ -269,20 +269,20 @@ function PaseadorCuidadorProfilePage() {
 									readOnly: !editar,
 								}}
 								fullWidth
-								name='nombre'
-								id='nombre'
+								name="nombre"
+								id="nombre"
 								value={nombre}
 								onChange={(event) => {
 									setNombre(event.target.value);
 								}}
-								variant='outlined'
-								size='small'
+								variant="outlined"
+								size="small"
 							/>
 						</ListItemText>
 					</ListItem>
 					<ListItem>
 						<ListItemText>
-							<Typography variant='h7' sx={{ mr: "20px" }}>
+							<Typography variant="h7" sx={{ mr: "20px" }}>
 								Apellido
 							</Typography>
 							<TextField
@@ -290,41 +290,41 @@ function PaseadorCuidadorProfilePage() {
 									readOnly: !editar,
 								}}
 								fullWidth
-								name='apellido'
-								id='apellido'
+								name="apellido"
+								id="apellido"
 								value={apellido}
 								onChange={(event) => {
 									setApellido(event.target.value);
 								}}
-								variant='outlined'
-								size='small'
+								variant="outlined"
+								size="small"
 							/>
 						</ListItemText>
 					</ListItem>
 					<ListItem>
 						<ListItemText>
-							<Typography variant='h7' sx={{ mr: "20px" }}>
+							<Typography variant="h7" sx={{ mr: "20px" }}>
 								DNI
 							</Typography>
 							<TextField
 								InputProps={{
 									readOnly: !editar,
 								}}
-								name='dni'
+								name="dni"
 								fullWidth
-								id='dni'
+								id="dni"
 								value={dni}
 								onChange={(event) => {
 									setDni(event.target.value);
 								}}
-								variant='outlined'
-								size='small'
+								variant="outlined"
+								size="small"
 							/>
 						</ListItemText>
 					</ListItem>
 					<ListItem>
 						<ListItemText>
-							<Typography variant='h7' sx={{ mr: "20px" }}>
+							<Typography variant="h7" sx={{ mr: "20px" }}>
 								Email
 							</Typography>
 							<TextField
@@ -332,20 +332,20 @@ function PaseadorCuidadorProfilePage() {
 									readOnly: !editar,
 								}}
 								fullWidth
-								name='email'
-								id='email'
+								name="email"
+								id="email"
 								value={email}
 								onChange={(event) => {
 									setEmail(event.target.value);
 								}}
-								variant='outlined'
-								size='small'
+								variant="outlined"
+								size="small"
 							/>
 						</ListItemText>
 					</ListItem>
 					<ListItem>
 						<ListItemText>
-							<Typography variant='h7' sx={{ mr: "20px" }}>
+							<Typography variant="h7" sx={{ mr: "20px" }}>
 								Telefono
 							</Typography>
 							<TextField
@@ -353,21 +353,21 @@ function PaseadorCuidadorProfilePage() {
 									readOnly: !editar,
 								}}
 								fullWidth
-								type='number'
-								id='telefono'
-								name='telefono'
+								type="number"
+								id="telefono"
+								name="telefono"
 								value={telefono}
 								onChange={(event) => {
 									setTelefono(event.target.value);
 								}}
-								variant='outlined'
-								size='small'
+								variant="outlined"
+								size="small"
 							/>
 						</ListItemText>
 					</ListItem>
 					<ListItem>
 						<ListItemText>
-							<Typography variant='h7' sx={{ mr: "20px" }}>
+							<Typography variant="h7" sx={{ mr: "20px" }}>
 								Zona
 							</Typography>
 							<TextField
@@ -375,28 +375,28 @@ function PaseadorCuidadorProfilePage() {
 									readOnly: !editar,
 								}}
 								fullWidth
-								id='zona'
-								name='zona'
+								id="zona"
+								name="zona"
 								value={zona}
 								onChange={(event) => {
 									setZona(event.target.value);
 								}}
-								variant='outlined'
-								size='small'
+								variant="outlined"
+								size="small"
 							/>
 						</ListItemText>
 					</ListItem>
 					<ListItem>
 						<ListItemText>
-							<Typography variant='h7' sx={{ mr: "20px" }}>
+							<Typography variant="h7" sx={{ mr: "20px" }}>
 								Estado
 							</Typography>
 							<TextField
 								InputProps={{
 									readOnly: !editar,
 								}}
-								id='estado'
-								name='estado'
+								id="estado"
+								name="estado"
 								select
 								required
 								fullWidth

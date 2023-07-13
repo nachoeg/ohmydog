@@ -6,8 +6,8 @@ import Typography from "@mui/material/Typography";
 function PerrosBorrados() {
 	return (
 		<Container
-			component='main'
-			maxWidth='lg'
+			component="main"
+			maxWidth="lg"
 			sx={{
 				display: "flex",
 				alignItems: "center",
@@ -15,7 +15,7 @@ function PerrosBorrados() {
 				mt: 4,
 			}}
 		>
-			<Typography component='h2' variant='h5'>
+			<Typography component="h1" variant="h5" sx={{ mb: 1 }}>
 				Perros borrados
 			</Typography>
 			<TablaPerros borrados={true} />

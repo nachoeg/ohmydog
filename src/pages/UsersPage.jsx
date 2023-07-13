@@ -7,8 +7,8 @@ import TablaUsuarios from "../components/TablaUsuarios";
 function UsersPage() {
 	return (
 		<Container
-			component='main'
-			maxWidth='lg'
+			component="main"
+			maxWidth="lg"
 			sx={{
 				display: "flex",
 				alignItems: "center",
@@ -19,21 +19,22 @@ function UsersPage() {
 			<TablaUsuarios />
 			<Button
 				fullWidth
-				color='tertiary'
-				variant='contained'
+				color="tertiary"
+				variant="contained"
 				component={NavLink}
-				to={`usuariosBorrados`}
+				to={`/usuarios/borrados`}
+				sx={{ mt: 1 }}
 			>
 				Ver usuarios borrados
 			</Button>
 			<NavLink
-				to='/usuarios/registrar'
+				to="/usuarios/registrar"
 				style={{ textDecoration: "none", width: "100%" }}
 			>
 				<Button
 					startIcon={<AddIcon />}
-					sx={{ mt: 2, width: "100%" }}
-					variant='contained'
+					sx={{ mt: 1, width: "100%" }}
+					variant="contained"
 				>
 					Registrar Usuario
 				</Button>

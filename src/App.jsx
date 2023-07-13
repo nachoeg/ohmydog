@@ -74,106 +74,106 @@ function App() {
 			<ThemeProvider theme={theme}>
 				<CssBaseline />
 				<Routes>
-					<Route path='/' element={<Navbar />}>
+					<Route path="/" element={<Navbar />}>
 						<Route index element={<HomePage />} />
-						<Route path='login' element={<LogInPage />} />
-						<Route path='usuarios/registrar' element={<SignUpPage />} />
-						<Route path='usuarios' element={<UsersPage />} />
-						<Route path='turnos/' element={<Turns />}>
-							<Route path='todos' element={<TablaTurnos urlTurnos='' />} />
+						<Route path="login" element={<LogInPage />} />
+						<Route path="usuarios/registrar" element={<SignUpPage />} />
+						<Route path="usuarios" element={<UsersPage />} />
+						<Route path="turnos/" element={<Turns />}>
+							<Route path="todos" element={<TablaTurnos urlTurnos="" />} />
 							<Route
-								path='hoy'
-								element={<TablaTurnos urlTurnos='' filtro={"hoy"} />}
+								path="hoy"
+								element={<TablaTurnos urlTurnos="" filtro={"hoy"} />}
 							/>
 							<Route
-								path='asistidos'
-								element={<TablaTurnos urlTurnos='' filtro={"asistidos"} />}
+								path="asistidos"
+								element={<TablaTurnos urlTurnos="" filtro={"asistidos"} />}
 							/>
 							<Route
-								path='no-asistidos'
-								element={<TablaTurnos urlTurnos='' filtro={"no-asistidos"} />}
+								path="no-asistidos"
+								element={<TablaTurnos urlTurnos="" filtro={"no-asistidos"} />}
 							/>
 						</Route>
-						<Route path='campanias' element={<CampaniasPage />} />
-						<Route path='campanias/donar/:nombre' element={<DonarPage />} />
+						<Route path="campanias" element={<CampaniasPage />} />
+						<Route path="campanias/donar/:nombre" element={<DonarPage />} />
 						<Route
-							path='campanias/registrar'
+							path="campanias/registrar"
 							element={<RegisterCampaniaPage />}
 						/>
-						<Route path='campanias/archivadas' element={<OldCampainsPage />} />
-						<Route path='campanias/:id' element={<CampaniaProfilePage />} />
+						<Route path="campanias/archivadas" element={<OldCampainsPage />} />
+						<Route path="campanias/:id" element={<CampaniaProfilePage />} />
 						<Route
-							path='turnos/cliente/:id/:nombre'
+							path="turnos/cliente/:id/:nombre"
 							element={<DogsUsersTurnsPage />}
 						/>
 						<Route
-							path='turnos/perro/:id/:nombre'
+							path="turnos/perro/:id/:nombre"
 							element={<DogsUsersTurnsPage />}
 						/>
-						<Route path='mis-perros' element={<MyDogsPage />} />
-						<Route path='mis-turnos' element={<MyTurnsPage />} />
-						<Route path='mis-turnos/solicitar-turno' element={<AddTurn />} />
-						<Route path='perros' element={<AllDogsPage />} />
-						<Route path='adopcion' element={<AdoptPage />} />
-						<Route path='adopcion/registrar' element={<AdoptRegisterPage />} />
-						<Route path='perdidos' element={<LostDogsPage />} />
+						<Route path="mis-perros" element={<MyDogsPage />} />
+						<Route path="mis-turnos" element={<MyTurnsPage />} />
+						<Route path="mis-turnos/solicitar-turno" element={<AddTurn />} />
+						<Route path="perros" element={<AllDogsPage />} />
+						<Route path="adopcion" element={<AdoptPage />} />
+						<Route path="adopcion/registrar" element={<AdoptRegisterPage />} />
+						<Route path="perdidos" element={<LostDogsPage />} />
 						<Route
-							path='perdidos/registrar'
+							path="perdidos/registrar"
 							element={<LostDogsRegisterPage />}
 						/>
-						<Route path='perfil/:idUsuario' element={<ProfilePage />} />
+						<Route path="perfil/:idUsuario" element={<ProfilePage />} />
 						<Route
-							path='agregar-perro/:idUsuario/:nombre'
+							path="agregar-perro/:idUsuario/:nombre"
 							element={<LoadDogPage />}
 						/>
 						<Route
-							path='perros/usuario/:idUsuario/:nombre'
+							path="perros/usuario/:idUsuario/:nombre"
 							element={<UserDogsPage />}
 						/>
 						<Route
-							path='historial-clinico/:idPerro'
+							path="historial-clinico/:idPerro"
 							element={<HistorialClinicoPage />}
 						/>
 						<Route
-							path='pedir-datos-para-adoptar/:idPerro'
+							path="pedir-datos-para-adoptar/:idPerro"
 							element={<GetDataForAdoptPage />}
 						/>
 						<Route
-							path='confirmar-adopcion/:idPerro'
+							path="confirmar-adopcion/:idPerro"
 							element={<ConfirmAdoptPage />}
 						/>
-						<Route path='servicios' element={<ServiciosExternosPage />} />
+						<Route path="servicios" element={<ServiciosExternosPage />} />
 						<Route
-							path='paseadores-cuidadores'
+							path="servicios/paseadores-cuidadores"
 							element={<PaseadoresCuidadoresPage />}
 						/>
 						<Route
-							path='paseadores-cuidadores/registrar'
+							path="servicios/paseadores-cuidadores/registrar"
 							element={<RegistrarPaseadorCuidador />}
 						/>
 						<Route
-							path='paseadores-cuidadores/archivados'
+							path="servicios/paseadores-cuidadores/archivados"
 							element={<PaseadoresCuidadoresBorradosPage />}
 						/>
 						<Route
-							path='paseadorCuidadorProfile/:id'
+							path="servicios/paseadores-cuidadores/perfil/:id"
 							element={<PaseadorCuidadorProfilePage />}
 						/>
-						<Route path='perrosBorrados' element={<PerrosBorrados />} />
+						<Route path="perros/borrados" element={<PerrosBorrados />} />
 						<Route
-							path='usuarios/usuariosBorrados'
+							path="usuarios/borrados"
 							element={<UsuariosBorradosPage />}
 						/>
-						<Route path='cruza' element={<CruzasPage />} />
-						<Route path='marcarPerro' element={<MarcarPerroParaCruzar />} />
+						<Route path="cruza" element={<CruzasPage />} />
+						<Route path="marcarPerro" element={<MarcarPerroParaCruzar />} />
 						<Route
-							path='opcionesDeCruza/:id/:nombrePerro'
+							path="cruza/opciones/:id/:nombrePerro"
 							element={<OpcionesDeCruza />}
 						/>
-						<Route path='guarderias' element={<GuarderiasPage />} />
-						<Route path='descuentos' element={<BouchersPage />} />
-						<Route path='cambiar-contraseña' element={<ChangePassword />} />
-						<Route path='*' element={<NotFoundPage />} />
+						<Route path="servicios/guarderias" element={<GuarderiasPage />} />
+						<Route path="campanias/descuentos" element={<BouchersPage />} />
+						<Route path="cambiar-contraseña" element={<ChangePassword />} />
+						<Route path="*" element={<NotFoundPage />} />
 					</Route>
 				</Routes>
 			</ThemeProvider>

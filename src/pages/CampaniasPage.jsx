@@ -21,8 +21,8 @@ function CampaniasPage() {
 
 	return (
 		<Container
-			component='main'
-			maxWidth='lg'
+			component="main"
+			maxWidth="lg"
 			sx={{
 				display: "flex",
 				alignItems: "center",
@@ -35,30 +35,30 @@ function CampaniasPage() {
 				<>
 					<Button
 						fullWidth
-						color='tertiary'
-						variant='contained'
+						color="tertiary"
+						variant="contained"
 						component={NavLink}
 						to={`archivadas`}
-						style={{ marginTop: "10px" }}
+						sx={{ mt: 1 }}
 					>
 						Ver campañas borradas y/o finalizadas
 					</Button>
 					<Button
 						fullWidth
-						variant='contained'
+						variant="contained"
 						startIcon={<Add />}
 						component={NavLink}
 						to={`registrar`}
-						style={{ marginTop: "10px" }}
+						sx={{ mt: 1 }}
 					>
 						Registrar campaña
 					</Button>
 					<Button
 						fullWidth
-						variant='contained'
+						variant="contained"
 						component={NavLink}
-						to={`/descuentos`}
-						style={{ marginTop: "10px" }}
+						to={`/campanias/descuentos`}
+						sx={{ mt: 1 }}
 					>
 						Comprobar descuento
 					</Button>

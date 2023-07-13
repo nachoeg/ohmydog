@@ -99,19 +99,19 @@ function TablaCruzas() {
 
 				const actions = [
 					<Button
-						key='turnos'
+						key="turnos"
 						component={NavLink}
-						to={`/opcionesDeCruza/` + id + "/" + nombre}
+						to={`/cruza/opciones/` + id + "/" + nombre}
 						sx={{ mr: 1, fontSize: 11 }}
-						color='success'
+						color="success"
 					>
 						Opciones de cruza
 					</Button>,
 					<Button
-						key='eliminarDeCruzas'
+						key="eliminarDeCruzas"
 						onClick={() => eliminarDeCruza(id)}
 						sx={{ mr: 1, fontSize: 11 }}
-						color='error'
+						color="error"
 					>
 						Eliminar de cruzas
 					</Button>,
@@ -247,7 +247,7 @@ function TablaCruzas() {
 			<DataGrid
 				rows={rows}
 				columns={columns}
-				editMode='row'
+				editMode="row"
 				columnVisibilityModel={{
 					id: false,
 				}}

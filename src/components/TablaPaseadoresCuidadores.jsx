@@ -109,8 +109,8 @@ function TablaPaseadoresCuidadores(props) {
 		renderCell: (params) => {
 			const actions = [
 				<Button
-					key='paseadorCuidadorProfile'
-					to={`/paseadorCuidadorProfile/${params.id}`}
+					key="paseadorCuidadorPerfil"
+					to={`/servicios/paseadores-cuidadores/perfil/${params.id}`}
 					component={NavLink}
 					sx={{ fontSize: 11, mr: 1 }}
 				>
@@ -120,10 +120,10 @@ function TablaPaseadoresCuidadores(props) {
 			if (esVeterinario && !props.borrados) {
 				// Si esta en los borrados no debe mostrar el boton de borrado.
 				actions.push(
-					<Tooltip key='delete' title='Eliminar'>
+					<Tooltip key="delete" title="Eliminar">
 						<GridActionsCellItem
 							icon={<Delete />}
-							label='Delete'
+							label="Delete"
 							onClick={() => {
 								setPaseadorCuidadorBorrar(params.row.id);
 								handleClickOpenConfirmar();
@@ -136,7 +136,7 @@ function TablaPaseadoresCuidadores(props) {
 				actions.push(
 					<Button
 						color={"success"}
-						key='recuperar'
+						key="recuperar"
 						onClick={() => {
 							handleRecuperar(params.row.id);
 						}}
@@ -179,7 +179,7 @@ function TablaPaseadoresCuidadores(props) {
 				severity: "success",
 			});
 			setTimeout(() => {
-				window.location.replace("/paseadores-cuidadores/");
+				window.location.replace("/servicios/paseadores-cuidadores/");
 			}, 1000);
 			return;
 		}
@@ -336,29 +336,29 @@ function TablaPaseadoresCuidadores(props) {
 			<Dialog
 				open={openConfirmar}
 				onClose={handleCloseConfirmar}
-				aria-labelledby='confirmar-title'
-				aria-describedby='confirmar-description'
+				aria-labelledby="confirmar-title"
+				aria-describedby="confirmar-description"
 			>
-				<DialogTitle id='confirmar-title'>
+				<DialogTitle id="confirmar-title">
 					¿Estás seguro/a de <b style={{ color: "red" }}>eliminar</b>?
 				</DialogTitle>
 				<DialogContent>
-					<DialogContentText id='confirmar-description'>
+					<DialogContentText id="confirmar-description">
 						Una vez que confirmes, se moverá al listado de paseadores/cuidadores
 						borrados. Podrás recuperarlo desde allí.
 					</DialogContentText>
 				</DialogContent>
 				<DialogActions>
 					<Button
-						color='error'
-						variant='outlined'
+						color="error"
+						variant="outlined"
 						onClick={handleCloseConfirmar}
 					>
 						Cancelar
 					</Button>
 					<Button
-						variant='contained'
-						color='error'
+						variant="contained"
+						color="error"
 						onClick={() => {
 							eliminarPaseadorCuidador(paseadorCuidadorBorrar);
 							handleCloseConfirmar();

@@ -6,8 +6,8 @@ import { NavLink } from "react-router-dom";
 function AllDogsPage() {
 	return (
 		<Container
-			component='main'
-			maxWidth='lg'
+			component="main"
+			maxWidth="lg"
 			sx={{
 				display: "flex",
 				alignItems: "center",
@@ -17,11 +17,12 @@ function AllDogsPage() {
 		>
 			<TablaPerros idUsuario={""} />
 			<Button
-				key='perrosBorrados'
+				key="perrosBorrados"
 				component={NavLink}
-				to={`/perrosBorrados/`}
-				color='tertiary'
-				variant='contained'
+				to={`/perros/borrados/`}
+				color="tertiary"
+				variant="contained"
+				sx={{ mt: 1 }}
 				fullWidth
 			>
 				Perros borrados

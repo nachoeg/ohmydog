@@ -1,4 +1,4 @@
-import { Container } from "@mui/material";
+import { Container, Typography } from "@mui/material";
 import { useEffect, useState, useCallback, useContext } from "react";
 import { Context } from "../context/Context";
 import { Button } from "@mui/material";
@@ -21,8 +21,8 @@ function PaseadoresCuidadoresPage() {
 
 	return (
 		<Container
-			component='main'
-			maxWidth='lg'
+			component="main"
+			maxWidth="lg"
 			sx={{
 				display: "flex",
 				alignItems: "center",
@@ -30,13 +30,16 @@ function PaseadoresCuidadoresPage() {
 				mt: 4,
 			}}
 		>
+			<Typography variant="h5" sx={{ mb: 1 }}>
+				Paseadores y cuidadores
+			</Typography>
 			<TablaPaseadoresCuidadores />
 			{esVeterinario && (
 				<>
 					<Button
 						fullWidth
-						color='tertiary'
-						variant='contained'
+						color="tertiary"
+						variant="contained"
 						component={NavLink}
 						to={`archivados`}
 						style={{ marginTop: "10px" }}
@@ -45,7 +48,7 @@ function PaseadoresCuidadoresPage() {
 					</Button>
 					<Button
 						fullWidth
-						variant='contained'
+						variant="contained"
 						startIcon={<Add />}
 						component={NavLink}
 						to={`registrar`}

@@ -1,43 +1,49 @@
-import Button from '@mui/material/Button';
-import TextField from '@mui/material/TextField';
-import Grid from '@mui/material/Grid';
-import Snackbar from '@mui/material/Snackbar';
-import Box from '@mui/material/Box';
-import Typography from '@mui/material/Typography';
-import Container from '@mui/material/Container';
-import { Alert, Avatar } from '@mui/material';
-import url from '../data/url';
-import { useContext, useState } from 'react';
+import Button from "@mui/material/Button";
+import TextField from "@mui/material/TextField";
+import Grid from "@mui/material/Grid";
+import Snackbar from "@mui/material/Snackbar";
+import Box from "@mui/material/Box";
+import Typography from "@mui/material/Typography";
+import Container from "@mui/material/Container";
+import { Alert, Avatar } from "@mui/material";
+import url from "../data/url";
+import { useContext, useState } from "react";
 
-import { Image, Pets, Remove } from '@mui/icons-material';
-import { Context } from '../context/Context';
+import { Image, Pets, Remove } from "@mui/icons-material";
+import { Context } from "../context/Context";
 
 function LostDogsRegisterPage() {
 	const { usuario } = useContext(Context);
-	const token = localStorage.getItem('jwt');
+	if (!usuario) {
+		window.location.replace("/login");
+	}
+
+	const token = localStorage.getItem("jwt");
+
+	// handleSubirImagen = () = {
+	// 	fetch(url + 'perdidos/subirImagen/' + id)
+	// }
 
 	// Manejador del boton submit del formulario
 	const handleSubmit = (event) => {
 		event.preventDefault();
-		// Se elimina las acciones default del formulario
-		// Almacena la informacion del formulario, currentTarget hace referencia al formulario actual
-		const data = new FormData(event.currentTarget);
-		data.append('idUsuario', usuario ? usuario.id : -1);
-		data.append('imagen', selectedImage);
-		data.append('email', usuario ? usuario.email : data.get('email'));
-		// Se realiza el fetch con la BD y se manda en el cuerpo del mensaje los datos del formulario
-		console.log(selectedImage);
-
-		fetch(url + 'perdidos/register', {
-			method: 'POST',
+		// const data = new FormData(event.currentTarget);
+		// data.append('idUsuario', usuario ? usuario.id : -1);
+		// data.append('imagen', selectedImage);
+		// data.append('email', usuario ? usuario.email : data.get('email'));
+		// console.log(selectedImage);
+		// console.log(data.get('fecha'));
+		fetch(url + "perdidos/register", {
+			method: "POST",
 			headers: {
-				// 'Content-Type': 'application/json',
-				'Content-Type': 'multipart/form-data',
+				// 'Content-Type': 'multipart/form-data',
+				"Content-Type": "application/json",
 				token: `${token}`,
 			},
-			credentials: 'include',
-			mode: 'cors',
-			body: data,
+			credentials: "include",
+			mode: "cors",
+			// body: data,
+			body: JSON.stringify({ dato: "asdf" }),
 			// body: JSON.stringify({
 			// 	idUsuario: usuario ? usuario.id : -1,
 			// 	nombre: data.get('nombre'),
@@ -50,29 +56,29 @@ function LostDogsRegisterPage() {
 			.then((response) => {
 				if (response.ok) {
 					setSnackbar({
-						children: 'Registro exitoso.',
-						severity: 'success',
+						children: "Registro exitoso.",
+						severity: "success",
 					});
-					// setTimeout(() => {
-					// 	window.location.replace('/perdidos');
-					// }, 1000);
+					setTimeout(() => {
+						window.location.replace("/perdidos");
+					}, 1000);
 				} else {
 					setSnackbar({
-						children: 'Error al conectar con la base de datos',
-						severity: 'error',
+						children: "Error al conectar con la base de datos",
+						severity: "error",
 					});
 				}
 			})
 			.catch((error) => {
 				setSnackbar({
-					children: 'Error al conectar con la base de datos',
-					severity: 'error',
+					children: "Error al conectar con la base de datos",
+					severity: "error",
 				});
 				console.error(error);
 			});
 	};
 
-	const hoy = new Date().toISOString().split('T')[0];
+	const hoy = new Date().toISOString().split("T")[0];
 
 	const [snackbar, setSnackbar] = useState(null);
 	const handleCloseSnackbar = () => setSnackbar(null);
@@ -84,12 +90,12 @@ function LostDogsRegisterPage() {
 			<Box
 				sx={{
 					marginTop: 4,
-					display: 'flex',
-					flexDirection: 'column',
-					alignItems: 'center',
+					display: "flex",
+					flexDirection: "column",
+					alignItems: "center",
 				}}
 			>
-				<Avatar sx={{ m: 1, bgcolor: 'primary.main' }}>
+				<Avatar sx={{ m: 1, bgcolor: "primary.main" }}>
 					<Pets />
 				</Avatar>
 				<Typography component="h1" variant="h5">
@@ -148,17 +154,17 @@ function LostDogsRegisterPage() {
 								item
 								xs={12}
 								sx={{
-									display: 'flex',
-									flexDirection: 'column',
+									display: "flex",
+									flexDirection: "column",
 									gap: 2,
 								}}
 							>
 								<img
 									alt="foto perro perdido"
 									style={{
-										width: '100%',
+										width: "100%",
 										borderRadius: 4,
-										boxShadow: '0px 3px 5px -2px',
+										boxShadow: "0px 3px 5px -2px",
 									}}
 									src={URL.createObjectURL(selectedImage)}
 								/>
@@ -175,7 +181,7 @@ function LostDogsRegisterPage() {
 					</Grid>
 					<Button
 						fullWidth
-						color={'tertiary'}
+						color={"tertiary"}
 						variant="contained"
 						component="label"
 						startIcon={<Image />}
@@ -198,7 +204,7 @@ function LostDogsRegisterPage() {
 					{!!snackbar && (
 						<Snackbar
 							open
-							anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+							anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
 							onClose={handleCloseSnackbar}
 							autoHideDuration={6000}
 						>

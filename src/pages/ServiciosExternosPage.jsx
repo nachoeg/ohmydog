@@ -5,8 +5,8 @@ import { NavLink } from "react-router-dom";
 function ServiciosExternosPage() {
 	return (
 		<Container
-			component='main'
-			maxWidth='sm'
+			component="main"
+			maxWidth="sm"
 			sx={{
 				display: "flex",
 				alignItems: "center",
@@ -16,25 +16,25 @@ function ServiciosExternosPage() {
 			}}
 		>
 			<NavLink
-				to='/paseadores-cuidadores'
+				to="/servicios/paseadores-cuidadores"
 				style={{ textDecoration: "none", width: "100%" }}
 			>
 				<Button
 					sx={{ mt: 2, width: "100%" }}
-					variant='contained'
-					color='tertiary'
+					variant="contained"
+					color="tertiary"
 				>
 					Paseadores y cuidadores
 				</Button>
 			</NavLink>
 			<NavLink
-				to='/guarderias'
+				to="/servicios/guarderias"
 				style={{ textDecoration: "none", width: "100%" }}
 			>
 				<Button
 					sx={{ mt: 2, width: "100%" }}
-					variant='contained'
-					color='tertiary'
+					variant="contained"
+					color="tertiary"
 				>
 					Guarderias
 				</Button>

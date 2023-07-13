@@ -12,6 +12,7 @@ import {
 	DialogTitle,
 	Tooltip,
 } from "@mui/material";
+import { Add } from "@mui/icons-material";
 
 function CruzasPage() {
 	const { usuario } = useContext(Context);
@@ -48,8 +49,8 @@ function CruzasPage() {
 
 	return (
 		<Container
-			component='main'
-			maxWidth='lg'
+			component="main"
+			maxWidth="lg"
 			sx={{
 				display: "flex",
 				alignItems: "center",
@@ -61,10 +62,10 @@ function CruzasPage() {
 			<Dialog
 				open={openConfirmar}
 				onClose={handleCloseConfirmar}
-				aria-labelledby='confirmar-title'
-				aria-describedby='confirmar-description'
+				aria-labelledby="confirmar-title"
+				aria-describedby="confirmar-description"
 			>
-				<DialogTitle id='confirmar-title'>
+				<DialogTitle id="confirmar-title">
 					Te queriamos contar que desde Oh My Dog! creemos que adoptar siempre
 					es una mejor opcion que hacer cruzas. Hay muchos perritos esperando
 					encontrar un hogar! Por eso, abriremos un link a la pagina de
@@ -72,8 +73,8 @@ function CruzasPage() {
 				</DialogTitle>
 				<DialogActions>
 					<Button
-						variant='contained'
-						color='success'
+						variant="contained"
+						color="success"
 						onClick={() => {
 							handleCloseConfirmar();
 						}}
@@ -86,12 +87,13 @@ function CruzasPage() {
 			{usuario != null && !esVeterinario && (
 				<Button
 					fullWidth
-					variant='contained'
+					variant="contained"
 					component={NavLink}
-					to='../marcarPerro'
-					style={{ marginTop: "10px" }}
+					to="../marcarPerro"
+					startIcon={<Add />}
+					sx={{ mt: 1 }}
 				>
-					+ Agregar perro
+					Agregar perro
 				</Button>
 			)}
 		</Container>

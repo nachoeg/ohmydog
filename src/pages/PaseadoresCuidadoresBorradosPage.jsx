@@ -19,8 +19,8 @@ function PaseadoresCuidadoresBorradosPage() {
 
 	return (
 		<Container
-			component='main'
-			maxWidth='lg'
+			component="main"
+			maxWidth="lg"
 			sx={{
 				display: "flex",
 				alignItems: "center",
@@ -28,21 +28,17 @@ function PaseadoresCuidadoresBorradosPage() {
 				mt: 4,
 			}}
 		>
-			<Typography component='h1' variant='h5' style={{ marginBottom: "15px" }}>
+			<Typography component="h1" variant="h5" sx={{ mb: 1 }}>
 				Paseadores y cuidadores borrados y/o no disponibles
 			</Typography>
-			<Typography
-				variant='body2'
-				component='h1'
-				style={{ marginBotton: "20px" }}
-			>
+			<Typography variant="body2" component="h1" sx={{ mb: 1 }}>
 				Tenga en cuenta que al recuperar un paseador/cuidador cuyo estado es "No
 				disponible" automaticamente se cambia su estado a "Disponible". Si lo
 				desea, puede modificar el estado desde el perfil del mismo, pero volverá
 				a estar en este listado.
 			</Typography>
 			{/* Borrados es para indicarle a la tabla que muestre los borrados y/o no disponibles*/}
-			<TablaPaseadoresCuidadores borrados='true' />
+			<TablaPaseadoresCuidadores borrados="true" />
 		</Container>
 	);
 }
