@@ -112,7 +112,7 @@ function LostDogsPage() {
 				gap: 2,
 			}}
 		>
-			{usuario && (
+			{usuario && usuario.rol == 'cliente' && (
 				<Button
 					component={NavLink}
 					to={'/perdidos/registrar'}
