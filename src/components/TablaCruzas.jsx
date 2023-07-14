@@ -63,64 +63,58 @@ function TablaCruzas() {
 			headerName: "Caracteristicas",
 			width: 250,
 		},
-	];
-
-	if (esVeterinario || usuario == null) {
-		useEffect(() => {
-			obtenerTodosLosPerrosDisponibleCruza().then((rows) => setRows(rows));
-		}, []);
-		columns.push({
+		{
 			field: "usuarioTelefono",
 			headerName: "Telefono",
-			width: 150,
+			width: 100,
 			id: "usuarioTelefono",
-		});
-		columns.push({
+		},
+		{
 			field: "usuarioNombreyApellido",
 			headerName: "Dueño",
-			width: 150,
+			width: 100,
 			id: "usuarioNombreyApellido",
-		});
-	} else {
-		// Si es un usuario logueado muestra sus perros marcados como disponibles para cruza
-		// fetch que devuelve los perros marcados disponibles para cruza mediante id
-		useEffect(() => {
-			obtenerPerrosDisponibleCruzaCliente().then((rows) => setRows(rows));
-		}, []);
-		// Establece las acciones de cada fila y si es veterinario muestra el borrado
-		columns.push({
+		},
+		{
 			field: "actions",
 			headerName: "",
 			minWidth: 300,
 			align: "right",
 			flex: 1,
 			renderCell: (params) => {
-				const { id, nombre } = params.row;
-
-				const actions = [
-					<Button
-						key="turnos"
-						component={NavLink}
-						to={`/cruza/opciones/` + id + "/" + nombre}
-						sx={{ mr: 1, fontSize: 11 }}
-						color="success"
-					>
-						Opciones de cruza
-					</Button>,
-					<Button
-						key="eliminarDeCruzas"
-						onClick={() => eliminarDeCruza(id)}
-						sx={{ mr: 1, fontSize: 11 }}
-						color="error"
-					>
-						Eliminar de cruzas
-					</Button>,
-				];
-
-				return <>{actions}</>;
+				const { id, usuarioId, nombre } = params.row;
+				return (
+					<>
+						{usuario && usuario.rol == "cliente" && usuario.id == usuarioId && (
+							<>
+								<Button
+									key="turnos"
+									component={NavLink}
+									to={`/cruzas/opciones/` + id + "/" + nombre}
+									sx={{ mr: 1, fontSize: 11 }}
+									color="success"
+								>
+									Opciones de cruza
+								</Button>
+								<Button
+									key="eliminarDeCruzas"
+									onClick={() => eliminarDeCruza(id)}
+									sx={{ mr: 1, fontSize: 11 }}
+									color="error"
+								>
+									Eliminar de cruzas
+								</Button>
+							</>
+						)}
+					</>
+				);
 			},
-		});
-	}
+		},
+	];
+
+	useEffect(() => {
+		obtenerTodosLosPerrosDisponibleCruza().then((rows) => setRows(rows));
+	}, []);
 
 	function eliminarDeCruza(id) {
 		console.log(id);
@@ -139,7 +133,7 @@ function TablaCruzas() {
 					severity: "success",
 				});
 				setTimeout(() => {
-					location.replace("/cruza");
+					location.replace("/cruzas");
 				}, 1000);
 			} else {
 				setSnackbar({
@@ -221,6 +215,9 @@ function TablaCruzas() {
 						"La lista de perros disponible para cruzar se encuentra vacia",
 					severity: "info",
 				});
+			}
+			if (usuario) {
+				dogs.sort((a) => (a.usuarioId != usuario.id ? 1 : -1));
 			}
 			return dogs;
 		} catch (error) {
