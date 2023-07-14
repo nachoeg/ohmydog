@@ -27,7 +27,7 @@ function LostDogsRegisterPage() {
 	// Manejador del boton submit del formulario
 	const handleSubmit = (event) => {
 		event.preventDefault();
-		// const data = new FormData(event.currentTarget);
+		const data = new FormData(event.currentTarget);
 		// data.append('idUsuario', usuario ? usuario.id : -1);
 		// data.append('imagen', selectedImage);
 		// data.append('email', usuario ? usuario.email : data.get('email'));
@@ -43,15 +43,15 @@ function LostDogsRegisterPage() {
 			credentials: "include",
 			mode: "cors",
 			// body: data,
-			body: JSON.stringify({ dato: "asdf" }),
-			// body: JSON.stringify({
-			// 	idUsuario: usuario ? usuario.id : -1,
-			// 	nombre: data.get('nombre'),
-			// 	zona: data.get('zona'),
-			// 	fecha: data.get('fecha'),
-			// 	imagen: selectedImage,
-			// 	email: usuario ? usuario.email : data.get('email'),
-			// }),
+			body: JSON.stringify({
+				idUsuario: usuario ? usuario.id : -1,
+				nombre: data.get("nombre"),
+				zona: data.get("zona"),
+				fecha: data.get("fecha"),
+				descripcion: data.get("descripcion"),
+				email: usuario ? usuario.email : data.get("email"),
+				// imagen: selectedImage,
+			}),
 		})
 			.then((response) => {
 				if (response.ok) {
@@ -135,7 +135,15 @@ function LostDogsRegisterPage() {
 								label="Zona"
 							/>
 						</Grid>
-
+						<Grid item xs={12}>
+							<TextField
+								name="descripcion"
+								required
+								fullWidth
+								id="descripcion"
+								label="Descripción"
+							/>
+						</Grid>
 						{!usuario && (
 							<>
 								<Grid item xs={12}>
@@ -179,13 +187,14 @@ function LostDogsRegisterPage() {
 							</Grid>
 						)}
 					</Grid>
-					<Button
+
+					{/* <Button
 						fullWidth
 						color={"tertiary"}
 						variant="contained"
 						component="label"
 						startIcon={<Image />}
-						sx={{ mt: 2, mb: 2 }}
+						sx={{ mt: 2 }}
 					>
 						Subir foto
 						<input
@@ -197,8 +206,8 @@ function LostDogsRegisterPage() {
 								setSelectedImage(event.target.files[0]);
 							}}
 						/>
-					</Button>
-					<Button type="submit" fullWidth variant="contained">
+					</Button> */}
+					<Button sx={{ mt: 2 }} type="submit" fullWidth variant="contained">
 						Registrar
 					</Button>
 					{!!snackbar && (

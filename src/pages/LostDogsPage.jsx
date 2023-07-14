@@ -1,10 +1,10 @@
-import { Alert, Button, Container, Snackbar, Typography } from '@mui/material';
-import TarjetaPerro from '../components/TarjetaPerro';
-import { useContext, useEffect, useState } from 'react';
-import url from '../data/url';
-import { Add } from '@mui/icons-material';
-import { NavLink } from 'react-router-dom';
-import { Context } from '../context/Context';
+import { Alert, Button, Container, Snackbar, Typography } from "@mui/material";
+import TarjetaPerro from "../components/TarjetaPerro";
+import { useContext, useEffect, useState } from "react";
+import url from "../data/url";
+import { Add } from "@mui/icons-material";
+import { NavLink } from "react-router-dom";
+import { Context } from "../context/Context";
 
 function LostDogsPage() {
 	const { usuario } = useContext(Context);
@@ -17,17 +17,17 @@ function LostDogsPage() {
 	const [vacia, setVacia] = useState(false);
 	async function obtenerPerros() {
 		try {
-			const response = await fetch(url + 'perdidos', {
-				method: 'GET',
-				credentials: 'include',
+			const response = await fetch(url + "perdidos", {
+				method: "GET",
+				credentials: "include",
 				headers: {
-					'Content-Type': 'application/json',
+					"Content-Type": "application/json",
 				},
 			});
 			if (!response.ok) {
 				setSnackbar({
-					children: 'Hubo un error al intentar cargar los perros perdidos',
-					severity: 'error',
+					children: "Hubo un error al intentar cargar los perros perdidos",
+					severity: "error",
 				});
 				return [];
 			}
@@ -66,32 +66,32 @@ function LostDogsPage() {
 			// ];
 			if (perros.length == 0) {
 				setSnackbar({
-					children: 'La lista de perros se encuentra vacia',
-					severity: 'info',
+					children: "La lista de perros se encuentra vacia",
+					severity: "info",
 				});
 				setVacia(true);
 			}
 
 			return perros
 				.sort((a) => {
-					if (a.estado == 'Encontrado') {
+					if (a.estado == "Encontrado") {
 						return 1;
 					}
-					if (a.estado == 'Pendiente') {
+					if (a.estado == "Pendiente") {
 						return -1;
 					}
 				})
 				.sort((a) => {
-					if (usuario && a.idDuenio == usuario.id && a.estado == 'Pendiente') {
+					if (usuario && a.idDuenio == usuario.id && a.estado == "Pendiente") {
 						return -1;
 					}
 				});
 		} catch (error) {
-			console.error('Error en el fetch: ' + error);
+			console.error("Error en el fetch: " + error);
 
 			setSnackbar({
-				children: 'Error al conectar con la base de datos',
-				severity: 'error',
+				children: "Error al conectar con la base de datos",
+				severity: "error",
 			});
 			return [];
 		}
@@ -105,17 +105,17 @@ function LostDogsPage() {
 			component="main"
 			maxWidth="sm"
 			sx={{
-				display: 'flex',
-				alignItems: 'center',
-				flexDirection: 'column',
+				display: "flex",
+				alignItems: "center",
+				flexDirection: "column",
 				mt: 4,
 				gap: 2,
 			}}
 		>
-			{usuario && usuario.rol == 'cliente' && (
+			{usuario && usuario.rol == "cliente" && (
 				<Button
 					component={NavLink}
-					to={'/perdidos/registrar'}
+					to={"/perdidos/registrar"}
 					startIcon={<Add />}
 					variant="contained"
 					fullWidth
@@ -129,7 +129,7 @@ function LostDogsPage() {
 			{!!snackbar && (
 				<Snackbar
 					open
-					anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+					anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
 					onClose={handleCloseSnackbar}
 					autoHideDuration={6000}
 				>
@@ -141,8 +141,8 @@ function LostDogsPage() {
 					<Typography variant="h6"> No hay perros perdidos cargados</Typography>
 					<img
 						style={{
-							maxHeight: '50vh',
-							maxWidth: '50vw',
+							maxHeight: "50vh",
+							maxWidth: "50vw",
 						}}
 						src="/good-dog.svg"
 						alt="Foto de veterinario"

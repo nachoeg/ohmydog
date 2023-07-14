@@ -3,14 +3,14 @@ import {
 	Cancel,
 	Check,
 	Delete,
+	Description,
 	Edit,
 	Email,
-	Image,
 	Map,
 	Pets,
 	Save,
 	Verified,
-} from '@mui/icons-material';
+} from "@mui/icons-material";
 import {
 	Alert,
 	Button,
@@ -26,10 +26,10 @@ import {
 	Snackbar,
 	TextField,
 	Typography,
-} from '@mui/material';
-import { useContext, useState } from 'react';
-import url from '../data/url';
-import { Context } from '../context/Context';
+} from "@mui/material";
+import { useContext, useState } from "react";
+import url from "../data/url";
+import { Context } from "../context/Context";
 
 function TarjetaPerro({ datos }) {
 	const [editar, setEditar] = useState(false);
@@ -38,10 +38,11 @@ function TarjetaPerro({ datos }) {
 	const [zona, setZona] = useState(datos.zona);
 	const [fecha, setFecha] = useState(datos.fecha);
 	const [estado, setEstado] = useState(datos.estado);
+	const [descripcion, setDescripcion] = useState(datos.descripcion);
 	const [image, setImage] = useState(datos.imagen);
 	const [selectedImage, setSelectedImage] = useState(null);
 	const [snackbar, setSnackbar] = useState(null);
-	const token = localStorage.getItem('jwt');
+	const token = localStorage.getItem("jwt");
 	const handleCloseSnackbar = () => setSnackbar(null);
 	const { usuario } = useContext(Context);
 	const [visible, setVisible] = useState(true);
@@ -55,36 +56,57 @@ function TarjetaPerro({ datos }) {
 	};
 
 	const handleBorrarClick = async () => {
-		const response = await fetch(url + 'perdidos/delete/' + datos.id, {
-			method: 'PUT',
-			credentials: 'include',
+		const response = await fetch(url + "perdidos/delete/" + datos.id, {
+			method: "DELETE",
+			credentials: "include",
 			headers: {
-				'Content-Type': 'application/json',
+				"Content-Type": "application/json",
 			},
 		});
 		if (response.ok) {
 			setSnackbar({
-				children: 'Se elimino con éxito',
-				severity: 'success',
+				children: "Se elimino con éxito",
+				severity: "success",
 			});
 			setVisible(false);
 			return;
 		}
 		if (response.status == 400) {
 			setSnackbar({
-				children: 'No se encontro al perro',
-				severity: 'error',
+				children: "No se encontro al perro",
+				severity: "error",
 			});
 			return;
 		}
 		setSnackbar({
-			children: 'Error al conectar con la base de datos',
-			severity: 'error',
+			children: "Error al conectar con la base de datos",
+			severity: "error",
 		});
 	};
 
-	const handleEncontradoClick = () => {
-		setEstado('Encontrado');
+	const handleEncontradoClick = async () => {
+		const response = await fetch(url + "perdidos/found/" + datos.id, {
+			method: "POST",
+			credentials: "include",
+			headers: {
+				"Content-Type": "application/json",
+				token: `${token}`,
+			},
+		});
+
+		if (response.ok) {
+			setSnackbar({
+				children: "Marcado como encontrado con éxito",
+				severity: "success",
+			});
+			setEstado("Encontrado");
+			return;
+		}
+
+		setSnackbar({
+			children: "Error al conectar con la base de datos",
+			severity: "error",
+		});
 	};
 
 	function resetearDatos() {
@@ -94,37 +116,42 @@ function TarjetaPerro({ datos }) {
 		setFecha(datos.fecha);
 		setNombre(datos.nombre);
 		setImage(datos.imagen);
+		setDescripcion(datos.descripcion);
 	}
 
 	function validarDatos(data) {
-		let mensaje = 'No se puede enviar un campo vacio';
-		if (data.get('email').toString().trim() == '') {
+		let mensaje = "No se puede enviar un campo vacio";
+		if (data.get("email").toString().trim() == "") {
 			setEmail(datos.email);
 			return { resultado: false, mensaje };
 		}
-		if (data.get('zona').trim() == '') {
+		if (data.get("zona").trim() == "") {
 			setZona(datos.zona);
 			return { resultado: false, mensaje };
 		}
-		if (data.get('fecha').trim() == '') {
+		if (data.get("fecha").trim() == "") {
 			setFecha(datos.fecha);
 			return { resultado: false, mensaje };
 		}
-		if (data.get('nombre').trim() == '') {
+		if (data.get("nombre").trim() == "") {
 			setNombre(datos.nombre);
 			return { resultado: false, mensaje };
 		}
-		//validar imagen
-		let allowedExtension = ['image/jpeg', 'image/jpg', 'image/png'];
-		if (
-			selectedImage != null &&
-			allowedExtension.indexOf(selectedImage.type) <= -1
-		) {
-			setImage(datos.imagen);
-			setSelectedImage(null);
-			mensaje = 'El tipo de archivo soportado para la foto es jpg, jpeg o png.';
+		if (data.get("descripcion").trim() == "") {
+			setNombre(datos.descripcion);
 			return { resultado: false, mensaje };
 		}
+		//validar imagen
+		// let allowedExtension = ["image/jpeg", "image/jpg", "image/png"];
+		// if (
+		// 	selectedImage != null &&
+		// 	allowedExtension.indexOf(selectedImage.type) <= -1
+		// ) {
+		// 	setImage(datos.imagen);
+		// 	setSelectedImage(null);
+		// 	mensaje = "El tipo de archivo soportado para la foto es jpg, jpeg o png.";
+		// 	return { resultado: false, mensaje };
+		// }
 		return { resultado: true };
 	}
 
@@ -136,23 +163,24 @@ function TarjetaPerro({ datos }) {
 		if (!datosValidados.resultado) {
 			setSnackbar({
 				children: datosValidados.mensaje,
-				severity: 'error',
+				severity: "error",
 			});
 			return;
 		}
 		const perro = {
-			nombre: data.get('nombre'),
-			zona: data.get('zona'),
-			fecha: data.get('fecha'),
-			email: data.get('email'),
-			imagen: selectedImage ? selectedImage : datos.imagen,
+			nombre: data.get("nombre"),
+			zona: data.get("zona"),
+			fecha: data.get("fecha"),
+			email: data.get("email"),
+			descripcion: data.get("descripcion"),
+			// imagen: selectedImage ? selectedImage : datos.imagen,
 		};
 
-		const response = await fetch(url + 'perdidos/modify/' + datos.id, {
-			method: 'PUT',
-			credentials: 'include',
+		const response = await fetch(url + "perdidos/modify/" + datos.id, {
+			method: "PUT",
+			credentials: "include",
 			headers: {
-				'Content-Type': 'application/json',
+				"Content-Type": "application/json",
 				token: `${token}`,
 			},
 			body: JSON.stringify(perro),
@@ -160,8 +188,8 @@ function TarjetaPerro({ datos }) {
 
 		if (response.ok) {
 			setSnackbar({
-				children: 'Modificación realizada con éxito',
-				severity: 'success',
+				children: "Modificación realizada con éxito",
+				severity: "success",
 			});
 			setEditar(false);
 			return;
@@ -171,22 +199,22 @@ function TarjetaPerro({ datos }) {
 
 		if (response.status == 400) {
 			setSnackbar({
-				children: 'Datos invalidos',
-				severity: 'error',
+				children: "Datos invalidos",
+				severity: "error",
 			});
 			return;
 		}
 		setSnackbar({
-			children: 'Error al conectar con la base de datos',
-			severity: 'error',
+			children: "Error al conectar con la base de datos",
+			severity: "error",
 		});
 	};
 	return (
 		<>
 			<Card
 				sx={{
-					display: visible ? 'flex' : 'none',
-					flexDirection: { xs: 'column', sm: 'row' },
+					display: visible ? "flex" : "none",
+					flexDirection: { xs: "column", sm: "row" },
 				}}
 				component="form"
 				onSubmit={handleSubmit}
@@ -197,18 +225,42 @@ function TarjetaPerro({ datos }) {
 						width: 300,
 						flexShrink: 0,
 						flexGrow: 1,
-						alignSelf: 'center',
+						alignSelf: "center",
 						m: 1,
 						borderRadius: 1,
 						boxShadow: 4,
+						display: "flex",
 					}}
-					image={image}
+					image={"/perroPlaceHolder.png"}
 					title={`Foto de ${datos.nombre}`}
-				/>
+				>
+					<div
+						style={{
+							flexGrow: 1,
+							display: "flex",
+							justifyContent: "center",
+							background: "rgba(0, 0, 0, 0.6)",
+						}}
+					>
+						<Typography
+							variant="h6"
+							sx={{
+								px: 4,
+								alignSelf: "center",
+								textAlign: "center",
+								textShadow: "1px 1px 2px black",
+								color: "white",
+								// background: "white",
+							}}
+						>
+							{descripcion}
+						</Typography>
+					</div>
+				</CardMedia>
 				<CardContent
 					sx={{
 						p: 0,
-						'&:last-child': {
+						"&:last-child": {
 							p: 0,
 						},
 					}}
@@ -219,15 +271,15 @@ function TarjetaPerro({ datos }) {
 					{/* <Divider sx={{ mb: 1 }} /> */}
 
 					<List sx={{ minWidth: 250, p: 0 }}>
-						{estado == 'Encontrado' && (
+						{estado == "Encontrado" && (
 							<ListItem sx={{ gap: 2 }}>
-								<ListItemIcon sx={{ minWidth: 0, color: 'primary.main' }}>
+								<ListItemIcon sx={{ minWidth: 0, color: "primary.main" }}>
 									<Verified />
 								</ListItemIcon>
 								<ListItemText>
 									<Typography
 										variant="h6"
-										sx={{ fontWeight: 'bold', color: 'primary.main' }}
+										sx={{ fontWeight: "bold", color: "primary.main" }}
 									>
 										Encontrado
 									</Typography>
@@ -327,15 +379,40 @@ function TarjetaPerro({ datos }) {
 								/>
 							</ListItemText>
 						</ListItem>
+						{editar && (
+							<ListItem sx={{ gap: 2 }}>
+								<ListItemIcon sx={{ minWidth: 0 }}>
+									<Description />
+								</ListItemIcon>
+								<ListItemText>
+									<TextField
+										label="Descripción"
+										InputProps={{
+											readOnly: !editar,
+										}}
+										required
+										fullWidth
+										name="descripcion"
+										id="descripcion"
+										value={descripcion}
+										onChange={(event) => {
+											setDescripcion(event.target.value);
+										}}
+										variant="outlined"
+										size="small"
+									/>
+								</ListItemText>
+							</ListItem>
+						)}
 					</List>
 					{usuario &&
-						(datos.idUsuario == usuario.id || usuario.rol == 'veterinario') &&
-						estado != 'Encontrado' && (
+						(datos.idUsuario == usuario.id || usuario.rol == "veterinario") &&
+						estado != "Encontrado" && (
 							<CardActions
 								sx={{
-									display: 'flex',
-									flexDirection: 'column',
-									py: 0,
+									display: "flex",
+									flexDirection: "column",
+									// py: 0,
 								}}
 							>
 								{!editar ? (
@@ -410,7 +487,7 @@ function TarjetaPerro({ datos }) {
 													size="small"
 													startIcon={<Save />}
 													fullWidth
-													color={'success'}
+													color={"success"}
 													variant="contained"
 													type="submit"
 												>
@@ -418,9 +495,9 @@ function TarjetaPerro({ datos }) {
 												</Button>
 											</Grid>
 										</Grid>
-										<Button
+										{/* <Button
 											fullWidth
-											color={'tertiary'}
+											color={"tertiary"}
 											variant="contained"
 											size="small"
 											sx={{ margin: 1 }}
@@ -437,7 +514,7 @@ function TarjetaPerro({ datos }) {
 													setSelectedImage(event.target.files[0]);
 												}}
 											/>
-										</Button>
+										</Button> */}
 									</>
 								)}
 							</CardActions>
@@ -447,7 +524,7 @@ function TarjetaPerro({ datos }) {
 			{!!snackbar && (
 				<Snackbar
 					open
-					anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+					anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
 					onClose={handleCloseSnackbar}
 					autoHideDuration={6000}
 				>
