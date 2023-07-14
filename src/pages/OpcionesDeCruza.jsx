@@ -62,6 +62,18 @@ function OpcionesDeCruza() {
 			headerName: "Caracteristicas",
 			width: 250,
 		},
+		{
+			field: "usuarioTelefono",
+			headerName: "Telefono",
+			width: 100,
+			id: "usuarioTelefono",
+		},
+		{
+			field: "usuarioNombreyApellido",
+			headerName: "Dueño",
+			width: 100,
+			id: "usuarioNombreyApellido",
+		},
 	];
 
 	useEffect(() => {
@@ -118,7 +130,7 @@ function OpcionesDeCruza() {
 	return (
 		<Container
 			component="main"
-			maxWidth="lg"
+			maxWidth="md"
 			sx={{
 				display: "flex",
 				alignItems: "center",
