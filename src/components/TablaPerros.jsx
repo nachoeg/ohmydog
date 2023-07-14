@@ -145,7 +145,7 @@ function TablaPerros(props) {
 			let perros = await response.json();
 			if (perros.length == 0) {
 				setSnackbar({
-					children: "La lista de perros se encuentra vacia",
+					children: "La lista de perros borrados se encuentra vacia",
 					severity: "info",
 				});
 			}

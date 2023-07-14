@@ -219,7 +219,8 @@ function TablaCampanias(props) {
 			let campains = await response.json();
 			if (campains.length == 0) {
 				setSnackbar({
-					children: "La lista de campañas se encuentra vacia",
+					children:
+						"La lista de campañas borradas/finalizadas se encuentra vacia",
 					severity: "info",
 				});
 			}
