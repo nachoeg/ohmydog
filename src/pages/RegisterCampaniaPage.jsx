@@ -151,6 +151,9 @@ function RegisterCampaniaPage() {
 								label='Telefono'
 								id='telefono'
 								type='number'
+								inputProps={{
+									min: 1,
+								}}
 							/>
 						</Grid>
 						<Grid item xs={12}>
@@ -171,6 +174,9 @@ function RegisterCampaniaPage() {
 								label='CVU/CBU'
 								id='cvu'
 								type='number'
+								inputProps={{
+									min: 1,
+								}}
 							/>
 						</Grid>
 					</Grid>

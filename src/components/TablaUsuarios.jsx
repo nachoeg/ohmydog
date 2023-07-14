@@ -53,7 +53,7 @@ function TablaUsuarios(props) {
 			let usuarios = await response.json();
 			if (usuarios.length == 0) {
 				setSnackbar({
-					children: "La lista de usuarios clientes se encuentra vacia",
+					children: "La lista de usuarios borrados se encuentra vacia",
 					severity: "info",
 				});
 			}

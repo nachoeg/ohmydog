@@ -79,6 +79,9 @@ function LostDogsRegisterPage() {
 	};
 
 	const hoy = new Date().toISOString().split("T")[0];
+	// Variables para no permitir piquear fechas anteriores a hoy.
+	const today = new Date();
+	const formattedToday = today.toISOString().split("T")[0];
 
 	const [snackbar, setSnackbar] = useState(null);
 	const handleCloseSnackbar = () => setSnackbar(null);
@@ -86,7 +89,7 @@ function LostDogsRegisterPage() {
 	const [selectedImage, setSelectedImage] = useState(null);
 
 	return (
-		<Container component="main" maxWidth="xs">
+		<Container component='main' maxWidth='xs'>
 			<Box
 				sx={{
 					marginTop: 4,
@@ -98,19 +101,19 @@ function LostDogsRegisterPage() {
 				<Avatar sx={{ m: 1, bgcolor: "primary.main" }}>
 					<Pets />
 				</Avatar>
-				<Typography component="h1" variant="h5">
+				<Typography component='h1' variant='h5'>
 					Registrar perro perdido
 				</Typography>
 
-				<Box component="form" onSubmit={handleSubmit} sx={{ mt: 3 }}>
+				<Box component='form' onSubmit={handleSubmit} sx={{ mt: 3 }}>
 					<Grid container spacing={2}>
 						<Grid item xs={12} sm={6}>
 							<TextField
-								name="nombre"
+								name='nombre'
 								required
 								fullWidth
-								id="nombre"
-								label="Nombre"
+								id='nombre'
+								label='Nombre'
 								autoFocus
 							/>
 						</Grid>
@@ -119,29 +122,30 @@ function LostDogsRegisterPage() {
 							<TextField
 								required
 								fullWidth
-								id="fecha"
-								label="Fecha"
-								name="fecha"
+								id='fecha'
+								label='Fecha'
+								name='fecha'
 								defaultValue={hoy}
-								type="date"
+								inputProps={{ max: formattedToday }}
+								type='date'
 							/>
 						</Grid>
 						<Grid item xs={12}>
 							<TextField
-								name="zona"
+								name='zona'
 								required
 								fullWidth
-								id="zona"
-								label="Zona"
+								id='zona'
+								label='Zona'
 							/>
 						</Grid>
 						<Grid item xs={12}>
 							<TextField
-								name="descripcion"
+								name='descripcion'
 								required
 								fullWidth
-								id="descripcion"
-								label="Descripción"
+								id='descripcion'
+								label='Descripción'
 							/>
 						</Grid>
 						{!usuario && (
@@ -150,9 +154,9 @@ function LostDogsRegisterPage() {
 									<TextField
 										fullWidth
 										required
-										name="email"
-										label="Email"
-										id="email"
+										name='email'
+										label='Email'
+										id='email'
 									/>
 								</Grid>
 							</>
@@ -168,7 +172,7 @@ function LostDogsRegisterPage() {
 								}}
 							>
 								<img
-									alt="foto perro perdido"
+									alt='foto perro perdido'
 									style={{
 										width: "100%",
 										borderRadius: 4,
@@ -177,8 +181,8 @@ function LostDogsRegisterPage() {
 									src={URL.createObjectURL(selectedImage)}
 								/>
 								<Button
-									color="error"
-									variant="contained"
+									color='error'
+									variant='contained'
 									startIcon={<Remove />}
 									onClick={() => setSelectedImage(null)}
 								>
@@ -207,7 +211,7 @@ function LostDogsRegisterPage() {
 							}}
 						/>
 					</Button> */}
-					<Button sx={{ mt: 2 }} type="submit" fullWidth variant="contained">
+					<Button sx={{ mt: 2 }} type='submit' fullWidth variant='contained'>
 						Registrar
 					</Button>
 					{!!snackbar && (

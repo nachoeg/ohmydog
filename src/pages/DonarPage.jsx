@@ -146,7 +146,7 @@ function DonarPage() {
 	};
 	const hoy = new Date().toISOString().split("T")[0];
 	return (
-		<Container component="main" maxWidth="xs">
+		<Container component='main' maxWidth='xs'>
 			<Box
 				sx={{
 					marginTop: 4,
@@ -155,51 +155,54 @@ function DonarPage() {
 					alignItems: "center",
 				}}
 			>
-				<Typography component="h1" variant="h5">
+				<Typography component='h1' variant='h5'>
 					Donar a {nombreCampaniaConEspacios}
 				</Typography>
 				<Typography
-					variant="body1"
-					component="h1"
+					variant='body1'
+					component='h1'
 					style={{ marginTop: "10px" }}
 				>
 					Ingrese los datos de la tarjeta
 				</Typography>
-				<Box component="form" onSubmit={handleSubmit} sx={{ mt: 3 }}>
+				<Box component='form' onSubmit={handleSubmit} sx={{ mt: 3 }}>
 					<Grid container spacing={2}>
 						<Grid item xs={12} sm={12}>
 							<TextField
-								name="nombre"
+								name='nombre'
 								required
 								fullWidth
-								id="nombre"
-								label="Nombre del titular (tal cual figura en la tarjeta)"
+								id='nombre'
+								label='Nombre del titular (tal cual figura en la tarjeta)'
 								autoFocus
 							/>
 						</Grid>
 						<Grid item xs={12} sm={12}>
 							<TextField
-								name="numeroTarjeta"
+								name='numeroTarjeta'
 								required
 								fullWidth
-								id="numeroTarjeta"
-								label="Numero de tarjeta"
-								type="number"
+								id='numeroTarjeta'
+								label='Numero de tarjeta'
+								type='number'
+								inputProps={{
+									min: 1,
+								}}
 							/>
 						</Grid>
 						{!isChecked ? (
 							<Grid item xs={12} sm={12}>
 								<TextField
-									name="dni"
+									name='dni'
 									required
 									fullWidth
-									id="dni"
-									label="DNI"
-									type="number"
+									id='dni'
+									label='DNI'
+									type='number'
 								/>
 								<Typography
-									variant="body2"
-									component="h1"
+									variant='body2'
+									component='h1'
 									style={{ marginLeft: "10px" }}
 								>
 									(Por tu donación, acercandote a nuestra veterinaria con tu DNI
@@ -212,33 +215,36 @@ function DonarPage() {
 							<TextField
 								required
 								fullWidth
-								label="Fecha de vencimiento"
-								id="fechaVencimiento"
-								name="fechaVencimiento"
-								type="date"
+								label='Fecha de vencimiento'
+								id='fechaVencimiento'
+								name='fechaVencimiento'
+								type='date'
 								defaultValue={hoy}
-								variant="outlined"
+								variant='outlined'
 								onFocus={handleTextFieldFocus}
 							/>
 						</Grid>
 						<Grid item xs={12} sm={6}>
 							<TextField
-								label="CVV"
+								label='CVV'
 								fullWidth
-								id="cvv"
-								name="cvv"
-								type="number"
-								variant="outlined"
+								id='cvv'
+								name='cvv'
+								type='number'
+								variant='outlined'
+								inputProps={{
+									min: 1,
+								}}
 							/>
 						</Grid>
 						<Grid item xs={12} sm={12}>
 							<TextField
-								name="cantidadDonacion"
+								name='cantidadDonacion'
 								required
 								fullWidth
-								id="cantidadDonacion"
-								label="Cantidad a donar ($)"
-								type="number"
+								id='cantidadDonacion'
+								label='Cantidad a donar ($)'
+								type='number'
 								inputProps={{
 									min: 1,
 								}}
@@ -248,15 +254,15 @@ function DonarPage() {
 							<Checkbox
 								checked={isChecked}
 								onChange={handleCheckboxChange}
-								color="primary"
+								color='primary'
 							/>
-							<Typography variant="h7" sx={{ mr: "0px" }} disabled={!isChecked}>
+							<Typography variant='h7' sx={{ mr: "0px" }} disabled={!isChecked}>
 								Donar de manera anónima
 							</Typography>
 							{isChecked ? (
 								<Typography
-									variant="body2"
-									component="h1"
+									variant='body2'
+									component='h1'
 									style={{ marginTop: "-1px" }}
 								>
 									(la donación se hará bajo el pseudónimo "Anónimo")
@@ -265,8 +271,8 @@ function DonarPage() {
 						</Grid>
 					</Grid>
 					<Typography
-						variant="body2"
-						component="h1"
+						variant='body2'
+						component='h1'
 						style={{ marginTop: "10px" }}
 					>
 						Desde Oh My Dog! te queríamos contar que además de donar, existen
@@ -274,9 +280,9 @@ function DonarPage() {
 						Si quieres saber cuáles son, comunícate con nosotros al 2213037453.
 					</Typography>
 					<Button
-						type="submit"
+						type='submit'
 						fullWidth
-						variant="contained"
+						variant='contained'
 						sx={{ mt: 3, mb: 2 }}
 						color={"success"}
 					>

@@ -66,7 +66,7 @@ function LostDogsPage() {
 			// ];
 			if (perros.length == 0) {
 				setSnackbar({
-					children: "La lista de perros se encuentra vacia",
+					children: "La lista de perros perdidos se encuentra vacia",
 					severity: "info",
 				});
 				setVacia(true);
@@ -102,8 +102,8 @@ function LostDogsPage() {
 
 	return (
 		<Container
-			component="main"
-			maxWidth="sm"
+			component='main'
+			maxWidth='sm'
 			sx={{
 				display: "flex",
 				alignItems: "center",
@@ -117,7 +117,7 @@ function LostDogsPage() {
 					component={NavLink}
 					to={"/perdidos/registrar"}
 					startIcon={<Add />}
-					variant="contained"
+					variant='contained'
 					fullWidth
 				>
 					Cargar perro
@@ -138,14 +138,14 @@ function LostDogsPage() {
 			)}
 			{vacia && (
 				<>
-					<Typography variant="h6"> No hay perros perdidos cargados</Typography>
+					<Typography variant='h6'> No hay perros perdidos cargados</Typography>
 					<img
 						style={{
 							maxHeight: "50vh",
 							maxWidth: "50vw",
 						}}
-						src="/good-dog.svg"
-						alt="Foto de veterinario"
+						src='/good-dog.svg'
+						alt='Foto de veterinario'
 					/>
 				</>
 			)}
