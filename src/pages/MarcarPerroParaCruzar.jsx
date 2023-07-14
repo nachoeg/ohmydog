@@ -92,7 +92,7 @@ function MarcarPerroParaCruzar() {
 		const data = new FormData(event.currentTarget);
 		const token = localStorage.getItem("jwt");
 		console.log(data.get("perros"));
-		const response = fetch(url + "perros/cruzar/" + data.get("perros"), {
+		fetch(url + "perros/cruzar/" + data.get("perros"), {
 			method: "PUT",
 			credentials: "include",
 			headers: {
@@ -107,7 +107,7 @@ function MarcarPerroParaCruzar() {
 					severity: "success",
 				});
 				setTimeout(() => {
-					location.replace("/cruza");
+					location.replace("/cruzas");
 				}, 1000);
 			} else {
 				setSnackbar({
@@ -126,12 +126,12 @@ function MarcarPerroParaCruzar() {
 	};
 
 	const handleCloseConfirmar = () => {
-		window.location.replace("/cruza");
+		window.location.replace("/cruzas");
 		setOpenConfirmar(false);
 	};
 
 	return (
-		<Container component='main' maxWidth='ml'>
+		<Container component="main" maxWidth="ml">
 			<Box
 				sx={{
 					marginTop: 8,
@@ -143,19 +143,19 @@ function MarcarPerroParaCruzar() {
 				<Avatar sx={{ m: 1, bgcolor: "primary.main" }}>
 					<GridAddIcon />
 				</Avatar>
-				<Typography component='h1' variant='h5'>
+				<Typography component="h1" variant="h5">
 					Agregar perro como disponible para cruzar
 				</Typography>
-				<Box component='form' onSubmit={handleSubmit} sx={{ mt: 3 }}>
+				<Box component="form" onSubmit={handleSubmit} sx={{ mt: 3 }}>
 					<Grid container spacing={2}>
 						<Grid item xs={12} sm={12}>
 							<TextField
 								required
 								fullWidth
 								select
-								id='perros'
-								name='perros'
-								label='Perro'
+								id="perros"
+								name="perros"
+								label="Perro"
 								defaultValue={""}
 							>
 								{perros
@@ -170,9 +170,9 @@ function MarcarPerroParaCruzar() {
 					</Grid>
 
 					<Button
-						type='submit'
+						type="submit"
 						fullWidth
-						variant='contained'
+						variant="contained"
 						sx={{ mt: 3, mb: 2 }}
 					>
 						Agregar perro
@@ -180,17 +180,17 @@ function MarcarPerroParaCruzar() {
 					<Dialog
 						open={openConfirmar}
 						onClose={handleCloseConfirmar}
-						aria-labelledby='confirmar-title'
-						aria-describedby='confirmar-description'
+						aria-labelledby="confirmar-title"
+						aria-describedby="confirmar-description"
 					>
-						<DialogTitle id='confirmar-title'>
+						<DialogTitle id="confirmar-title">
 							No tenes perros cargados que puedan ser marcados como disponibles
 							para cruzas.
 						</DialogTitle>
 						<DialogActions>
 							<Button
-								variant='contained'
-								color='success'
+								variant="contained"
+								color="success"
 								onClick={() => {
 									handleCloseConfirmar();
 								}}

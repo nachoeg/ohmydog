@@ -38,7 +38,7 @@ function PaseadoresCuidadoresPage() {
 				<>
 					<Button
 						fullWidth
-						color="tertiary"
+						color="neutral"
 						variant="contained"
 						component={NavLink}
 						to={`archivados`}

@@ -62,8 +62,8 @@ function BouchersPage() {
 
 	return (
 		<Container
-			component='main'
-			maxWidth='lg'
+			component="main"
+			maxWidth="lg"
 			sx={{
 				display: "flex",
 				alignItems: "center",
@@ -72,28 +72,28 @@ function BouchersPage() {
 			}}
 		>
 			<Card sx={{ padding: "10px", marginTop: 4 }}>
-				<Typography variant='h5'>Buscar cupón de descuento</Typography>
-				<Typography variant='body2' component='h1'>
+				<Typography variant="h5">Buscar cupón de descuento</Typography>
+				<Typography variant="body2" component="h1">
 					(Los cupones de descuento tienen un solo uso*)
 				</Typography>
-				<List component='form' onSubmit={handleSubmit}>
+				<List component="form" onSubmit={handleSubmit}>
 					<ListItem>
 						<TextField
 							fullWidth
-							name='dni'
-							id='dni'
-							label='DNI'
-							variant='outlined'
-							size='small'
-							type='text'
+							name="dni"
+							id="dni"
+							label="DNI"
+							variant="outlined"
+							size="small"
+							type="text"
 						/>
 					</ListItem>
 
 					<Button
 						fullWidth
-						color='tertiary'
-						variant='contained'
-						type='submit'
+						color="primary"
+						variant="contained"
+						type="submit"
 						style={{ marginTop: "10px" }}
 					>
 						Validar descuento

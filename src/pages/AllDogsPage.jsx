@@ -20,12 +20,12 @@ function AllDogsPage() {
 				key="perrosBorrados"
 				component={NavLink}
 				to={`/perros/borrados/`}
-				color="tertiary"
+				color="neutral"
 				variant="contained"
 				sx={{ mt: 1 }}
 				fullWidth
 			>
-				Perros borrados
+				Ver perros borrados
 			</Button>
 		</Container>
 	);

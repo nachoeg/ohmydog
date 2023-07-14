@@ -59,6 +59,7 @@ function App() {
 			},
 			neutral: {
 				main: "#64748B",
+				dark: "#404a59",
 				contrastText: "#fff",
 			},
 			tertiary: {
@@ -164,10 +165,10 @@ function App() {
 							path="usuarios/borrados"
 							element={<UsuariosBorradosPage />}
 						/>
-						<Route path="cruza" element={<CruzasPage />} />
-						<Route path="marcarPerro" element={<MarcarPerroParaCruzar />} />
+						<Route path="cruzas" element={<CruzasPage />} />
+						<Route path="cruzas/agregar" element={<MarcarPerroParaCruzar />} />
 						<Route
-							path="cruza/opciones/:id/:nombrePerro"
+							path="cruzas/opciones/:id/:nombrePerro"
 							element={<OpcionesDeCruza />}
 						/>
 						<Route path="servicios/guarderias" element={<GuarderiasPage />} />

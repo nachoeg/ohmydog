@@ -19,7 +19,7 @@ function UsersPage() {
 			<TablaUsuarios />
 			<Button
 				fullWidth
-				color="tertiary"
+				color="neutral"
 				variant="contained"
 				component={NavLink}
 				to={`/usuarios/borrados`}

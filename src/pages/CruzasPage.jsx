@@ -89,7 +89,7 @@ function CruzasPage() {
 					fullWidth
 					variant="contained"
 					component={NavLink}
-					to="../marcarPerro"
+					to="../cruzas/agregar"
 					startIcon={<Add />}
 					sx={{ mt: 1 }}
 				>
