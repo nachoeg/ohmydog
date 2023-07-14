@@ -3,7 +3,6 @@ const pages = [
 	{ nombre: "Perdidos", url: "/perdidos" },
 	{ nombre: "Campañas", url: "/campanias" },
 	{ nombre: "Cruzas", url: "/cruzas" },
-	{ nombre: "Servicios externos", url: "/servicios" },
 ];
 
 const pagesLoggedUsers = [...pages, { nombre: "Turnos", url: "/mis-turnos" }];
