@@ -1,6 +1,5 @@
 # Oh My Dog!
-Proyecto grupal propuesto por la materia de **Ingenieria de Software 2** por la Facultad de Informática de la UNLP, con la finalidad de llevar a la practica la elicitación requerimientos y el desarrollo de software para un cliente. 
-
+Proyecto grupal propuesto por la materia de **Ingenieria de Software 2** por la Facultad de Informática de la UNLP, con la finalidad de llevar a la práctica todo el proceso que requiere realizar un proyecto de software para un cliente: desde la elicitación y especificación de requerimientos, el desarrollo de software, y hasta la validación del software.
 
 ## Probar la aplicación
 
@@ -16,7 +15,7 @@ Los pasos para correr la aplicación:
 
    > Nota: la aplicación esta diseñada para tener diferentes funcionalidades, dependiendo si es un usuario no-registrado, un usuario registrado (cliente), o un usuario veterinario.
 
-### Usuarios registrados
+### Usuarios registrados para realizar pruebas
 | Correo  | Contraseña |
 | ------------- | ------------- |
 | admin@mail.com  | 0  |
