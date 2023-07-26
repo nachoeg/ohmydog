@@ -14,7 +14,18 @@ Los pasos para correr la aplicación:
 4. Abrir la [**aplicación**](http://localhost:5173/).
 5. Instalar y correr la [**aplicación backend**](https://github.com/nachoeg/ohmydog-backend).
 
-## Consigna
+   > Nota: la aplicación esta diseñada para tener diferentes funcionalidades, dependiendo si es un usuario no-registrado, un usuario registrado (cliente), o un usuario veterinario.
+
+### Usuarios registrados
+| Correo  | Contraseña |
+| ------------- | ------------- |
+| admin@mail.com  | 0  |
+| usuario1@mail.com  | 1  |
+| usuario2@mail.com  | 2  |
+| usuario3@mail.com  | 3  |
+    
+
+## Consigna de la materia
 Realización de un proyecto (en grupo) pasando por todas sus etapas:
 1. Contacto con el cliente para conocer sus necesidades
 2. Documentar toda la información obtenida y otras características del proyecto
@@ -41,7 +52,7 @@ Realización de un proyecto (en grupo) pasando por todas sus etapas:
 
 
 ## Cómo se llevo a cabo
-Para poder desarrollar la aplicación, primero tuvimos que recolectar información, para eso hemos llevado a cabo técnicas de elicitación de requerimientos, tales como entrevistas y formularios. Se realizó documentación necesaria PGP y SRS. También se desarollaron Historias de usuario y Épicas, con las que habia que ponerse de acuerdo con el cliente. Por último se realizaron periodicamente sprints y demos (para mostrar la evolucion de la aplicación).
+Para poder desarrollar la aplicación, primero tuvimos que recolectar información, para eso hemos llevado a cabo técnicas de elicitación de requerimientos, tales como entrevistas y formularios. Se realizó documentación necesaria: PGP y SRS. También se desarollaron Historias de usuario y Épicas, con las que nos pusimos de acuerdo con el cliente. Por último se realizaron periodicamente sprints y demos (para mostrar la evolucion de la aplicación).
 ### Documentos y links:
 * [Entrevista 1](https://github.com/nachoeg/ohmydog-frontend/blob/main/documentos/Entrevista%201.pdf)
 * [Entrevista 2](https://github.com/nachoeg/ohmydog-frontend/blob/main/documentos/Entrevista%202.pdf)
@@ -54,9 +65,9 @@ Para poder desarrollar la aplicación, primero tuvimos que recolectar informaci�
 * [Vídeo presentación (Elevator Pitch)](https://youtu.be/rAVoElv1nP8)
 
 ## Problemas que enfrentamos
-- Limitaciones con el tiempo (deadlines)
-- Obtener toda la información necesaria de los requerimientos del cliente
-- Aprender durante el desarrollo nuevos lenguajes
-- Subir imagenes a la base de datos
+- Limitaciones por los tiempos de entrega (deadlines)
+- Obtener correctamente los requerimientos del cliente
+- Aprender lenguajes y frameworks durante el desarrollo 
+- Técnicos (subir imagenes a la base de datos)
   
 ## Fotos
