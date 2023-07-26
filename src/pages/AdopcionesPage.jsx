@@ -27,7 +27,7 @@ function AdoptPage() {
 			<TablaAdopcion />
 			{noVeterinario && (
 				<NavLink
-					to="/adopcion/registrar"
+					to="/adopciones/registrar"
 					style={{ textDecoration: "none", width: "100%" }}
 				>
 					<Button

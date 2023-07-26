@@ -1,21 +1,21 @@
-import Button from '@mui/material/Button';
-import TextField from '@mui/material/TextField';
-import Grid from '@mui/material/Grid';
-import Snackbar from '@mui/material/Snackbar';
-import Box from '@mui/material/Box';
-import Typography from '@mui/material/Typography';
-import Container from '@mui/material/Container';
-import { Alert, Autocomplete, Avatar, MenuItem } from '@mui/material';
-import url from '../data/url';
-import { useContext, useState } from 'react';
+import Button from "@mui/material/Button";
+import TextField from "@mui/material/TextField";
+import Grid from "@mui/material/Grid";
+import Snackbar from "@mui/material/Snackbar";
+import Box from "@mui/material/Box";
+import Typography from "@mui/material/Typography";
+import Container from "@mui/material/Container";
+import { Alert, Autocomplete, Avatar, MenuItem } from "@mui/material";
+import url from "../data/url";
+import { useContext, useState } from "react";
 
-import { razas, enfermedades } from '../data/perros';
-import { Pets } from '@mui/icons-material';
-import { Context } from '../context/Context';
+import { razas, enfermedades } from "../data/perros";
+import { Pets } from "@mui/icons-material";
+import { Context } from "../context/Context";
 
 function AdoptRegisterPage() {
 	const { usuario } = useContext(Context);
-	const token = localStorage.getItem('jwt');
+	const token = localStorage.getItem("jwt");
 
 	// Se declara una snackbar para mostrar mensajes
 	const [snackbar, setSnackbar] = useState(null);
@@ -32,46 +32,46 @@ function AdoptRegisterPage() {
 		// Se realiza el fetch con la BD y se manda en el cuerpo del mensaje los datos del formulario
 		// Datos de los perros: ID del usuario, nombre, raza, edad, enfermedad, sexo y caracteristicas
 
-		fetch(url + 'adopciones/register', {
-			method: 'POST',
+		fetch(url + "adopciones/register", {
+			method: "POST",
 			headers: {
-				'Content-Type': 'application/json',
+				"Content-Type": "application/json",
 				token: `${token}`,
 			},
-			credentials: 'include',
-			mode: 'cors',
+			credentials: "include",
+			mode: "cors",
 			body: JSON.stringify({
 				idUsuario: usuario ? usuario.id : -1,
-				nombre: data.get('nombre'),
-				raza: data.get('raza'),
-				edad: data.get('edad'),
-				sexo: data.get('sexo'),
-				caracteristicas: data.get('caracteristicas'),
-				descripcion: data.get('descripcion'),
-				email: usuario ? usuario.email : data.get('email'),
-				telefono: usuario ? usuario.telefono : data.get('telefono'),
+				nombre: data.get("nombre"),
+				raza: data.get("raza"),
+				edad: data.get("edad"),
+				sexo: data.get("sexo"),
+				caracteristicas: data.get("caracteristicas"),
+				descripcion: data.get("descripcion"),
+				email: usuario ? usuario.email : data.get("email"),
+				telefono: usuario ? usuario.telefono : data.get("telefono"),
 			}),
 		})
 			.then((response) => {
 				if (response.ok) {
 					setSnackbar({
-						children: 'Registro exitoso.',
-						severity: 'success',
+						children: "Registro exitoso.",
+						severity: "success",
 					});
 					setTimeout(() => {
-						window.location.replace('/adopcion');
+						window.location.replace("/adopciones");
 					}, 1000);
 				} else {
 					setSnackbar({
-						children: 'Error al conectar con la base de datos',
-						severity: 'error',
+						children: "Error al conectar con la base de datos",
+						severity: "error",
 					});
 				}
 			})
 			.catch((error) => {
 				setSnackbar({
-					children: 'Error al conectar con la base de datos',
-					severity: 'error',
+					children: "Error al conectar con la base de datos",
+					severity: "error",
 				});
 				console.error(error);
 			});
@@ -83,12 +83,12 @@ function AdoptRegisterPage() {
 			<Box
 				sx={{
 					marginTop: 4,
-					display: 'flex',
-					flexDirection: 'column',
-					alignItems: 'center',
+					display: "flex",
+					flexDirection: "column",
+					alignItems: "center",
 				}}
 			>
-				<Avatar sx={{ m: 1, bgcolor: 'primary.main' }}>
+				<Avatar sx={{ m: 1, bgcolor: "primary.main" }}>
 					<Pets />
 				</Avatar>
 				<Typography component="h1" variant="h5">
@@ -115,7 +115,7 @@ function AdoptRegisterPage() {
 								id="raza"
 								label="Raza"
 								name="raza"
-								defaultValue={''}
+								defaultValue={""}
 							>
 								{razas.map((raza) => (
 									<MenuItem value={raza} key={raza}>
@@ -147,10 +147,10 @@ function AdoptRegisterPage() {
 								required
 								fullWidth
 							>
-								<MenuItem key={'macho'} value={'Macho'}>
+								<MenuItem key={"macho"} value={"Macho"}>
 									Macho
 								</MenuItem>
-								<MenuItem key={'hembra'} value={'Hembra'}>
+								<MenuItem key={"hembra"} value={"Hembra"}>
 									Hembra
 								</MenuItem>
 							</TextField>
@@ -222,7 +222,7 @@ function AdoptRegisterPage() {
 					{!!snackbar && (
 						<Snackbar
 							open
-							anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+							anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
 							onClose={handleCloseSnackbar}
 							autoHideDuration={6000}
 						>

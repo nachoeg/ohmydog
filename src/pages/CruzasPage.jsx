@@ -12,7 +12,7 @@ import {
 	DialogTitle,
 	Tooltip,
 } from "@mui/material";
-import { Add } from "@mui/icons-material";
+import { Add, Favorite, Healing, Pets } from "@mui/icons-material";
 
 function CruzasPage() {
 	const { usuario } = useContext(Context);
@@ -38,12 +38,7 @@ function CruzasPage() {
 
 	const [openConfirmar, setOpenConfirmar] = useState(false);
 
-	const handleClickOpenConfirmar = () => {
-		setOpenConfirmar(true);
-	};
-
 	const handleCloseConfirmar = () => {
-		window.open("/adopcion", "_blank", "noopener"); // Abre una nueva pestaña con la página "adopciones"
 		setOpenConfirmar(false);
 	};
 
@@ -66,21 +61,24 @@ function CruzasPage() {
 				aria-describedby="confirmar-description"
 			>
 				<DialogTitle id="confirmar-title">
-					Te queriamos contar que desde Oh My Dog! creemos que adoptar siempre
-					es una mejor opcion que hacer cruzas. Hay muchos perritos esperando
-					encontrar un hogar! Por eso, abriremos un link a la pagina de
-					adopciones♥
+					Te queriamos contar que desde OhMyDog creemos que adoptar siempre es
+					una mejor opcion que hacer cruzas. Te sugerimos entrar al link de la
+					pagina de adopciones, hay muchos perritos esperando encontrar un
+					hogar!
 				</DialogTitle>
 				<DialogActions>
+					<Button onClick={handleCloseConfirmar} color="inherit" sx={{ mr: 1 }}>
+						Cerrar
+					</Button>
 					<Button
 						variant="contained"
 						color="success"
-						onClick={() => {
-							handleCloseConfirmar();
-						}}
+						endIcon={<Favorite />}
+						component={NavLink}
+						to={"/adopciones"}
 						autoFocus
 					>
-						Cerrar
+						Adopciones
 					</Button>
 				</DialogActions>
 			</Dialog>

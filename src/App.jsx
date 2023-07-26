@@ -32,7 +32,6 @@ import LostDogsPage from "./pages/PerrosPerdidosPage";
 import LostDogsRegisterPage from "./pages/PerrosPerdidosRegistrarPage";
 import ServiciosExternosPage from "./pages/ServiciosExternosPage";
 import PaseadoresCuidadoresPage from "./pages/PaseadoresCuidadoresPage";
-import GuarderiasPage from "./pages/GuarderiasPage";
 import RegistrarPaseadorCuidador from "./pages/RegistrarPaseadorCuidador";
 import PaseadoresCuidadoresBorradosPage from "./pages/PaseadoresCuidadoresArchivadosPage";
 import PaseadorCuidadorProfilePage from "./pages/PaseadorCuidadorPerfilPage";
@@ -115,8 +114,11 @@ function App() {
 						<Route path="mis-turnos" element={<MyTurnsPage />} />
 						<Route path="mis-turnos/solicitar-turno" element={<AddTurn />} />
 						<Route path="perros" element={<AllDogsPage />} />
-						<Route path="adopcion" element={<AdoptPage />} />
-						<Route path="adopcion/registrar" element={<AdoptRegisterPage />} />
+						<Route path="adopciones" element={<AdoptPage />} />
+						<Route
+							path="adopciones/registrar"
+							element={<AdoptRegisterPage />}
+						/>
 						<Route path="perdidos" element={<LostDogsPage />} />
 						<Route
 							path="perdidos/registrar"
@@ -140,7 +142,7 @@ function App() {
 							element={<GetDataForAdoptPage />}
 						/>
 						<Route
-							path="adopciones/confimar/:idPerro"
+							path="adopciones/confirmar/:idPerro"
 							element={<ConfirmAdoptPage />}
 						/>
 						<Route path="servicios" element={<ServiciosExternosPage />} />
@@ -171,7 +173,6 @@ function App() {
 							path="cruzas/opciones/:id/:nombrePerro"
 							element={<OpcionesDeCruza />}
 						/>
-						<Route path="servicios/guarderias" element={<GuarderiasPage />} />
 						<Route path="campanias/descuentos" element={<BouchersPage />} />
 						<Route path="cambiar-contraseña" element={<ChangePassword />} />
 						<Route path="*" element={<NotFoundPage />} />

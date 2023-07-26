@@ -87,7 +87,8 @@ function GetDataForAdoptPage() {
 		// URL para confirmar la adopcion
 		const urlConfirmar = document.createElement("input");
 		urlConfirmar.name = "urlConfirmar";
-		urlConfirmar.value = "http://localhost:5173/adopciones/confimar/" + idPerro;
+		urlConfirmar.value =
+			"http://localhost:5173/adopciones/confirmar/" + idPerro;
 		urlConfirmar.style.display = "none"; // Ocultar el campo de entrada
 		e.target.appendChild(urlConfirmar);
 
@@ -121,7 +122,7 @@ function GetDataForAdoptPage() {
 			severity: "success",
 		});
 		setTimeout(() => {
-			window.location.replace("/adopcion");
+			window.location.replace("/adopciones");
 		}, 1000);
 	};
 

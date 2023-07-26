@@ -24,6 +24,7 @@ import { Context } from "../context/Context";
 import Copyright from "./Copyright";
 import "../css/animaciones.css";
 import { styled } from "@mui/material";
+import { Warning } from "@mui/icons-material";
 
 function ResponsiveAppBar() {
 	const [routes, setRoutes] = useState([]);
@@ -237,17 +238,11 @@ function ResponsiveAppBar() {
 								>
 									<MenuItem>Paseadores y cuidadores</MenuItem>
 								</NavLink>
-								<NavLink
-									to={"/servicios/guarderias"}
-									key={"servicios"}
-									style={({ isActive }) =>
-										isActive
-											? { color: "#545e6f", textDecoration: "none" }
-											: { color: "#545e6f", textDecoration: "none" }
-									}
-								>
-									<MenuItem>Guarderias</MenuItem>
-								</NavLink>
+								<Tooltip title="En desarrollo">
+									<MenuItem sx={{ color: "grey" }}>
+										Guarderias <Warning sx={{ ml: 1 }} color="disabled" />
+									</MenuItem>
+								</Tooltip>
 							</Menu>
 						</Box>
 						{auth ? (

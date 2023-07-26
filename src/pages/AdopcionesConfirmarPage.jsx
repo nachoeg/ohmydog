@@ -11,7 +11,7 @@ import { useEffect, useState } from "react";
 function ConfirmAdoptPage() {
 	// Obtiene el id del perro que se pasa como parametro en la url
 	const location = useLocation();
-	const idPerro = location.pathname.split("/")[2];
+	const idPerro = location.pathname.split("/")[3];
 
 	const token = localStorage.getItem("jwt");
 
@@ -20,7 +20,7 @@ function ConfirmAdoptPage() {
 	const handleCloseSnackbar = () => setSnackbar(null);
 
 	// Perro que se solicita adoptar
-	const [perro, setPerro] = useState(obtenerPerro);
+	const [perro, setPerro] = useState({ nombre: "..." });
 
 	// Asigna a perro el perro obtenido de la BD.
 	useEffect(() => {
@@ -53,7 +53,7 @@ function ConfirmAdoptPage() {
 				children: "Error al conectar con la base de datos",
 				severity: "error",
 			});
-			return null;
+			return { nombre: "..." };
 		}
 	}
 
@@ -73,7 +73,7 @@ function ConfirmAdoptPage() {
 				severity: "success",
 			});
 			setTimeout(() => {
-				window.location.replace("/adopcion");
+				window.location.replace("/adopciones");
 			}, 1000);
 		}
 		if (response.status == 500) {
@@ -101,7 +101,7 @@ function ConfirmAdoptPage() {
 				severity: "success",
 			});
 			setTimeout(() => {
-				window.location.replace("/adopcion");
+				window.location.replace("/adopciones");
 			}, 1000);
 		}
 		if (response.status == 500) {
@@ -114,8 +114,8 @@ function ConfirmAdoptPage() {
 
 	return (
 		<Container
-			component='main'
-			maxWidth='xs'
+			component="main"
+			maxWidth="xs"
 			sx={{
 				display: "flex",
 				justifyContent: "center",
@@ -130,23 +130,23 @@ function ConfirmAdoptPage() {
 					alignItems: "center",
 				}}
 			>
-				<Typography component='h3' variant='h6'>
+				<Typography component="h3" variant="h6">
 					¿Confirmar la adopcion de {perro.nombre}?
 				</Typography>
 				<Button
-					color='success'
-					variant='outlined'
+					color="success"
+					variant="outlined"
 					onClick={handleConfirmarAdopcion}
 					sx={{ marginTop: 2 }}
 				>
 					Confirmar
 				</Button>
-				<Typography component='h3' variant='caption' sx={{ marginTop: 2 }}>
+				<Typography component="h3" variant="caption" sx={{ marginTop: 2 }}>
 					Tambien podés eliminarlo asi ya no figura en el sistema
 				</Typography>
 				<Button
-					variant='contained'
-					color='error'
+					variant="contained"
+					color="error"
 					sx={{ marginTop: 2 }}
 					onClick={() => {
 						handleConfirmarEliminar();
@@ -154,7 +154,7 @@ function ConfirmAdoptPage() {
 				>
 					Eliminar del sistema
 				</Button>
-				<Typography component='h4' variant='caption' sx={{ marginTop: 2 }}>
+				<Typography component="h4" variant="caption" sx={{ marginTop: 2 }}>
 					(Ninguna de estas acciones puede revertirse)
 				</Typography>
 			</div>

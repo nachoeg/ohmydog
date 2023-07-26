@@ -1,5 +1,5 @@
 const pages = [
-	{ nombre: "Adopcion", url: "/adopcion" },
+	{ nombre: "Adopciones", url: "/adopciones" },
 	{ nombre: "Perdidos", url: "/perdidos" },
 	{ nombre: "Campañas", url: "/campanias" },
 	{ nombre: "Cruzas", url: "/cruzas" },

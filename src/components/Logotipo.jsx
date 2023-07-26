@@ -1,19 +1,19 @@
-import Link from '@mui/material/Link';
-import Avatar from '@mui/material/Avatar';
-import Box from '@mui/material/Box';
-import Typography from '@mui/material/Typography';
-import { NavLink } from 'react-router-dom';
-import '../css/animaciones.css';
+import Link from "@mui/material/Link";
+import Avatar from "@mui/material/Avatar";
+import Box from "@mui/material/Box";
+import Typography from "@mui/material/Typography";
+import { NavLink } from "react-router-dom";
+import "../css/animaciones.css";
 
 function Logotipo() {
 	const handleClick = (event) => {
 		const logo = event.currentTarget;
-		logo.classList.add('shake');
+		logo.classList.add("shake");
 	};
 
 	const handleAnimationEnd = (event) => {
 		const logo = event.currentTarget;
-		logo.classList.remove('shake');
+		logo.classList.remove("shake");
 	};
 
 	return (
@@ -21,16 +21,16 @@ function Logotipo() {
 			<NavLink
 				to="/"
 				style={{
-					textDecoration: 'none',
-					color: '#0197b2',
-					display: 'flex',
+					textDecoration: "none",
+					color: "#0197b2",
+					display: "flex",
 				}}
 			>
 				<Avatar
 					sx={{
 						// display: { xs: 'none', md: 'block' },
 						mr: { xs: 0, sm: 1 },
-						alignSelf: 'center',
+						alignSelf: "center",
 					}}
 					alt="Oh My Dog! logo"
 					src="/logo.png"
@@ -38,8 +38,8 @@ function Logotipo() {
 				/>
 				<Box
 					sx={{
-						display: { xs: 'none', sm: 'flex' },
-						flexDirection: 'column',
+						display: { xs: "none", sm: "flex" },
+						flexDirection: "column",
 						marginRight: { xs: 0, sm: 3 },
 					}}
 				>
@@ -48,7 +48,7 @@ function Logotipo() {
 						noWrap
 						sx={{
 							fontWeight: 700,
-							textAlign: 'center',
+							textAlign: "center",
 						}}
 					>
 						¡Oh my dog!
@@ -57,9 +57,9 @@ function Logotipo() {
 						variant="subtitle2"
 						noWrap
 						sx={{
-							textAlign: 'center',
+							textAlign: "center",
 							fontWeight: 500,
-							letterSpacing: '.2rem',
+							letterSpacing: ".2rem",
 						}}
 					>
 						VETERINARIA

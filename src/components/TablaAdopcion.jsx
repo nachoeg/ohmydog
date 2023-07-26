@@ -416,7 +416,7 @@ function TablaAdopcion() {
 		const urlConfirmar = document.createElement("input");
 		urlConfirmar.name = "urlConfirmar";
 		urlConfirmar.value =
-			"http://localhost:5173/adopciones/confimar/" + perroSolicitado.id;
+			"http://localhost:5173/adopciones/confirmar/" + perroSolicitado.id;
 		urlConfirmar.style.display = "none"; // Ocultar el campo de entrada
 		e.target.appendChild(urlConfirmar);
 
