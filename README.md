@@ -13,7 +13,7 @@ Los pasos para correr la aplicación:
 4. Abrir la [**aplicación**](http://localhost:5173/).
 5. Instalar y correr la [**aplicación backend**](https://github.com/nachoeg/ohmydog-backend).
 
-   > Nota: la aplicación esta diseñada para tener diferentes funcionalidades, dependiendo si es un usuario no-registrado, un usuario registrado (cliente), o un usuario veterinario.
+   > Nota: la aplicación esta diseñada para tener diferentes funcionalidades, dependiendo si es un usuario no-registrado, un usuario  cliente (registrado), o un usuario veterinario (registrado).
 
 ### Usuarios registrados para realizar pruebas
 | Correo  | Contraseña |
@@ -50,8 +50,8 @@ Realización de un proyecto (en grupo) pasando por todas sus etapas:
 </details>
 
 
-## Cómo se llevo a cabo
-Para poder desarrollar la aplicación, primero tuvimos que recolectar información, para eso hemos llevado a cabo técnicas de elicitación de requerimientos, tales como entrevistas y formularios. Se realizó documentación necesaria: PGP y SRS. También se desarollaron Historias de usuario y Épicas, con las que nos pusimos de acuerdo con el cliente. Por último se realizaron periodicamente sprints y demos (para mostrar la evolucion de la aplicación).
+## Cómo se llevó a cabo
+Para poder desarrollar la aplicación, primero tuvimos que recolectar información, para eso hemos llevado a cabo técnicas de elicitación de requerimientos, tales como entrevistas y formularios. Se realizó documentación necesaria: PGP y SRS. También se desarollaron Historias de usuario y Épicas, con las que especifícamos los requerimientos con el cliente. Por último se realizaron periodicamente sprints y demos (para mostrar la evolucion de la aplicación).
 ### Documentos y links:
 * [Entrevista 1](https://github.com/nachoeg/ohmydog-frontend/blob/main/documentos/Entrevista%201.pdf)
 * [Entrevista 2](https://github.com/nachoeg/ohmydog-frontend/blob/main/documentos/Entrevista%202.pdf)
