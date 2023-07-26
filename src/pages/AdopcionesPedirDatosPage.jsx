@@ -87,7 +87,7 @@ function GetDataForAdoptPage() {
 		// URL para confirmar la adopcion
 		const urlConfirmar = document.createElement("input");
 		urlConfirmar.name = "urlConfirmar";
-		urlConfirmar.value = "http://localhost:5173/confirmar-adopcion/" + idPerro;
+		urlConfirmar.value = "http://localhost:5173/adopciones/confimar/" + idPerro;
 		urlConfirmar.style.display = "none"; // Ocultar el campo de entrada
 		e.target.appendChild(urlConfirmar);
 
@@ -126,7 +126,7 @@ function GetDataForAdoptPage() {
 	};
 
 	return (
-		<Container component='main' maxWidth='xs'>
+		<Container component="main" maxWidth="xs">
 			<Box
 				sx={{
 					marginTop: 4,
@@ -135,23 +135,23 @@ function GetDataForAdoptPage() {
 					alignItems: "center",
 				}}
 			>
-				<Typography component='h1' variant='h5'>
+				<Typography component="h1" variant="h5">
 					Enviar solicitud para adoptar a {perro.nombre}
 				</Typography>
-				<Typography component='h2' variant='h6'>
+				<Typography component="h2" variant="h6">
 					Ingrese sus datos personales
 				</Typography>
 
-				<Box component='form' onSubmit={handleSubmit} sx={{ mt: 3 }}>
+				<Box component="form" onSubmit={handleSubmit} sx={{ mt: 3 }}>
 					<Grid container spacing={2}>
 						<Grid item xs={12} sm={6}>
 							<TextField
-								autoComplete='given-name'
-								name='nombrePersona'
+								autoComplete="given-name"
+								name="nombrePersona"
 								required
 								fullWidth
-								id='nombre'
-								label='Nombre'
+								id="nombre"
+								label="Nombre"
 								autoFocus
 							/>
 						</Grid>
@@ -159,42 +159,42 @@ function GetDataForAdoptPage() {
 							<TextField
 								required
 								fullWidth
-								id='apellido'
-								label='Apellido'
-								name='apellidoPersona'
-								autoComplete='family-name'
+								id="apellido"
+								label="Apellido"
+								name="apellidoPersona"
+								autoComplete="family-name"
 							/>
 						</Grid>
 						<Grid item xs={12}>
 							<TextField
 								required
 								fullWidth
-								id='email'
-								label='Correo electrónico'
-								name='email'
-								autoComplete='email'
+								id="email"
+								label="Correo electrónico"
+								name="email"
+								autoComplete="email"
 							/>
 						</Grid>
 						<Grid item xs={12}>
 							<TextField
 								required
 								fullWidth
-								type='number'
-								name='telefonoPersona'
-								label='Telefono'
-								id='telefono'
-								autoComplete='tel'
+								type="number"
+								name="telefonoPersona"
+								label="Telefono"
+								id="telefono"
+								autoComplete="tel"
 							/>
 						</Grid>
 					</Grid>
-					<Typography component='h6' variant='caption'>
+					<Typography component="h6" variant="caption">
 						(*Los datos que proporcione se enviaran a la persona que publico a{" "}
 						{perro.nombre} para que se ponga en contacto con usted.)
 					</Typography>
 					<Button
-						type='submit'
+						type="submit"
 						fullWidth
-						variant='contained'
+						variant="contained"
 						sx={{ mt: 3, mb: 2 }}
 					>
 						Enviar solicitud

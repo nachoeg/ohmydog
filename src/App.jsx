@@ -1,46 +1,46 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import CssBaseline from "@mui/material/CssBaseline";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import LogInPage from "./pages/LogInPage";
-import HomePage from "./pages/HomePage";
-import NotFoundPage from "./pages/NotFoundPage";
-import SignUpPage from "./pages/SignUpPage";
-import UsersPage from "./pages/UsersPage";
-import Turns from "./pages/Turns";
+import LogInPage from "./pages/InicioSesionPage";
+import HomePage from "./pages/InicioPage";
+import NotFoundPage from "./pages/Error404Page";
+import SignUpPage from "./pages/RegistrarPage";
+import UsersPage from "./pages/UsuariosPage";
+import Turns from "./pages/TurnosPage";
 import Navbar from "./components/Navbar";
-import ProfilePage from "./pages/ProfilePage";
-import MyDogsPage from "./pages/MyDogsPage";
-import LoadDogPage from "./pages/LoadDogPage";
-import UserDogsPage from "./pages/UserDogsPage";
-import AllDogsPage from "./pages/AllDogsPage";
-import ChangePassword from "./pages/ChangePasswordPage";
-import AdoptPage from "./pages/AdoptPage";
-import AdoptRegisterPage from "./pages/AdoptRegisterPage";
+import ProfilePage from "./pages/UsuarioPerfilPage";
+import MyDogsPage from "./pages/MisPerrosPage";
+import LoadDogPage from "./pages/PerrosRegistrarPage";
+import UserDogsPage from "./pages/PerrosUsuarioPage";
+import AllDogsPage from "./pages/PerrosPage";
+import ChangePassword from "./pages/CambiarContraseñaPage";
+import AdoptPage from "./pages/AdopcionesPage";
+import AdoptRegisterPage from "./pages/AdopcionesRegistrarPage";
 import HistorialClinicoPage from "./pages/HistorialClinicoPage";
-import MyTurnsPage from "./pages/MyTurnsPage";
-import AddTurn from "./pages/AddTurnPage";
-import DogsUsersTurnsPage from "./pages/DogsUsersTurnsPage";
-import GetDataForAdoptPage from "./pages/GetDataForAdoptPage";
-import ConfirmAdoptPage from "./pages/ConfirmAdoptPage";
-import CampaniasPage from "./pages/CampaniasPage";
-import RegisterCampaniaPage from "./pages/RegisterCampaniaPage";
-import CampaniaProfilePage from "./pages/CampaniaProfilePage";
+import MyTurnsPage from "./pages/MisTurnosPage";
+import AddTurn from "./pages/TurnosRegistrarPage";
+import DogsUsersTurnsPage from "./pages/TurnosPerroPage";
+import GetDataForAdoptPage from "./pages/AdopcionesPedirDatosPage";
+import ConfirmAdoptPage from "./pages/AdopcionesConfirmarPage";
+import CampaniasPage from "./pages/CampañasPage";
+import RegisterCampaniaPage from "./pages/CampañasRegistrarPage";
+import CampaniaProfilePage from "./pages/CampañaPerfilPage";
 import DonarPage from "./pages/DonarPage";
-import OldCampainsPage from "./pages/OldCampainsPage";
+import OldCampainsPage from "./pages/CampañasArchivadasPage";
 import TablaTurnos from "./components/TablaTurnos";
-import LostDogsPage from "./pages/LostDogsPage";
-import LostDogsRegisterPage from "./pages/LostDogsRegisterPage";
+import LostDogsPage from "./pages/PerrosPerdidosPage";
+import LostDogsRegisterPage from "./pages/PerrosPerdidosRegistrarPage";
 import ServiciosExternosPage from "./pages/ServiciosExternosPage";
 import PaseadoresCuidadoresPage from "./pages/PaseadoresCuidadoresPage";
 import GuarderiasPage from "./pages/GuarderiasPage";
 import RegistrarPaseadorCuidador from "./pages/RegistrarPaseadorCuidador";
-import PaseadoresCuidadoresBorradosPage from "./pages/PaseadoresCuidadoresBorradosPage";
-import PaseadorCuidadorProfilePage from "./pages/PaseadorCuidadorProfilePage";
+import PaseadoresCuidadoresBorradosPage from "./pages/PaseadoresCuidadoresArchivadosPage";
+import PaseadorCuidadorProfilePage from "./pages/PaseadorCuidadorPerfilPage";
 import CruzasPage from "./pages/CruzasPage";
-import MarcarPerroParaCruzar from "./pages/MarcarPerroParaCruzar";
-import OpcionesDeCruza from "./pages/OpcionesDeCruza";
-import PerrosBorrados from "./pages/PerrosBorradosPage";
-import UsuariosBorradosPage from "./pages/UsuariosBorradosPage";
+import MarcarPerroParaCruzar from "./pages/CruzasMarcarPerroPage";
+import OpcionesDeCruza from "./pages/CruzasOpcionesPage";
+import PerrosBorrados from "./pages/PerrosArchivadosPage";
+import UsuariosBorradosPage from "./pages/UsuariosArchivadosPage";
 import BouchersPage from "./pages/BouchersPage";
 
 function App() {
@@ -140,7 +140,7 @@ function App() {
 							element={<GetDataForAdoptPage />}
 						/>
 						<Route
-							path="confirmar-adopcion/:idPerro"
+							path="adopciones/confimar/:idPerro"
 							element={<ConfirmAdoptPage />}
 						/>
 						<Route path="servicios" element={<ServiciosExternosPage />} />
