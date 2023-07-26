@@ -71,3 +71,14 @@ Para poder desarrollar la aplicación, primero tuvimos que recolectar informaci�
 - Técnicos (subir imagenes a la base de datos)
   
 ## Fotos
+![Pagina de inicio](https://github.com/nachoeg/ohmydog-frontend/blob/main/capturas/inicio.png)
+![Perdidos](https://github.com/nachoeg/ohmydog-frontend/blob/main/capturas/perdidos.png)
+![Registrar Perro Perdido](https://github.com/nachoeg/ohmydog-frontend/blob/main/capturas/registrar-perro-perdido.png)
+![Solicitar Adopcion](https://github.com/nachoeg/ohmydog-frontend/blob/main/capturas/solicitar-adopcion.png)
+![Turnos](https://github.com/nachoeg/ohmydog-frontend/blob/main/capturas/ver-turnos.png)
+![Solicitar Turnos](https://github.com/nachoeg/ohmydog-frontend/blob/main/capturas/solicitar-turno.png)
+![Registrar usuario](https://github.com/nachoeg/ohmydog-frontend/blob/main/capturas/registrar%20usuario.png)
+![Perfil](https://github.com/nachoeg/ohmydog-frontend/blob/main/capturas/perfil.png)
+![Usuarios](https://github.com/nachoeg/ohmydog-frontend/blob/main/capturas/usuarios.png)
+![Perros de un usuario](https://github.com/nachoeg/ohmydog-frontend/blob/main/capturas/perros.png)
+![Historial clinico de un perro](https://github.com/nachoeg/ohmydog-frontend/blob/main/capturas/historial-clinico.png)
